@@ -17,7 +17,7 @@ const pressStart2P = Press_Start_2P({
 })
 
 export const metadata: Metadata = {
-  title: "AlpacaOS - Arka Gantait",
+  title: "AlpacaOS",
   description: "Portfolio website styled as an operating system",
     generator: 'v0.dev'
 }
