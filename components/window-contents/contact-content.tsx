@@ -33,9 +33,14 @@ export default function ContactContent() {
         from_name: formData.name,
         from_email: formData.email,
         message: formData.feedback,
-        to_email: "arkaparna.gantait@gmail.com",
-        reply_to: formData.email,
       }
+      
+      console.log("Attempting to send email with:", {
+        serviceId: EMAILJS_SERVICE_ID,
+        templateId: EMAILJS_TEMPLATE_ID,
+        publicKey: EMAILJS_PUBLIC_KEY,
+        params: templateParams
+      })
       
       // Pass public key as 4th argument for stateless execution
       const response = await emailjs.send(
