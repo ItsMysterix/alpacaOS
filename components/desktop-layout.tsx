@@ -12,6 +12,7 @@ const WINDOW_CONFIGS = {
   experience: { width: 820, height: 580, x: 250, y: 120 },
   projects: { width: 850, height: 600, x: 200, y: 100 },
   skills: { width: 780, height: 550, x: 300, y: 140 },
+  resume: { width: 900, height: 800, x: 100, y: 50 },
   contact: { width: 600, height: 520, x: 350, y: 160 },
   terminal: { width: 700, height: 450, x: 400, y: 180 },
   spotify: { width: 900, height: 650, x: 180, y: 90 },
@@ -115,7 +116,7 @@ export default function DesktopLayout() {
   ]
 
   const rightSideApps = [
-    { id: "resume", name: "Resume", icon: "/images/resume.png", isExternal: true, url: "/Arkaparna_Gantait_Resume.pdf" },
+    { id: "resume", name: "Resume", icon: "/images/resume.png" },
     { id: "contact", name: "Contact Me", icon: "/images/contact.png" },
   ]
 
@@ -285,7 +286,7 @@ export default function DesktopLayout() {
   // Listen for resume open event - now just opens the PDF directly
   useEffect(() => {
     const handleOpenResume = () => {
-      window.open("/Arkaparna_Gantait_Resume.pdf", "_blank")
+      addApp("resume")
     }
 
     window.addEventListener("open-resume", handleOpenResume)

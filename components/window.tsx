@@ -595,7 +595,7 @@ export default function Window({
           </div>
 
           {/* System Footer Bar with Telemetry Animation - Hidden for terminal to keep it clean */}
-          {appId !== "terminal" && (
+          {appId !== "terminal" && appId !== "contact" && (
             <div className="h-14 bg-[#E1F5FE] border-t-4 border-black flex items-center px-4 gap-4 relative z-20 shrink-0">
               <div className="flex flex-col flex-1">
                 <span className="font-vt323 text-black text-lg uppercase tracking-tight overflow-hidden whitespace-nowrap">
