@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import type React from "react"
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import AboutContent from "./window-contents/about-content"
 import ProjectsContent from "./window-contents/projects-content"
 import ExperienceContent from "./window-contents/experience-content"
@@ -12,6 +12,7 @@ import TerminalContent from "./window-contents/terminal-content"
 import MusicContent from "./window-contents/spotify-content"
 import ResumeContent from "./window-contents/resume-content"
 import { X, Maximize2, Minimize2 } from "lucide-react"
+import gsap from "gsap"
 
 interface WindowProps {
   title: string
@@ -57,12 +58,36 @@ export default function Window({
 
   // Refs for tracking previous state and resize operations
   const windowRef = useRef<HTMLDivElement>(null)
+  const headerRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const prevSizeRef = useRef(initialSize || DEFAULT_SIZE)
   const prevPositionRef = useRef(initialPosition || DEFAULT_POSITION)
   const resizeStartRef = useRef({ x: 0, y: 0, width: 0, height: 0, windowX: 0, windowY: 0 })
 
   // Flag to prevent initial update loops
   const initializedRef = useRef(false)
+
+  // GSAP Opening Animation
+  useEffect(() => {
+    if (windowRef.current && headerRef.current && contentRef.current) {
+      const tl = gsap.timeline({ defaults: { ease: "elastic.out(1, 0.75)", duration: 0.8 } })
+      
+      tl.fromTo(windowRef.current, 
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "power2.out" }
+      )
+      .fromTo(headerRef.current,
+        { y: -20, opacity: 0 },
+        { y: 0, opacity: 1 },
+        "-=0.3"
+      )
+      .fromTo(contentRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1 },
+        "-=0.5"
+      )
+    }
+  }, [])
 
   // Check if device is mobile
   useEffect(() => {
@@ -275,12 +300,11 @@ export default function Window({
         ),
       )
 
+      const newPosition = { x: newX, y: newY }
       const newSize = {
         width: constrainedWidth,
         height: constrainedHeight,
       }
-
-      const newPosition = { x: newX, y: newY }
 
       setWindowSize(newSize)
       setWindowPosition(newPosition)
@@ -477,9 +501,14 @@ export default function Window({
       onDrag={handleDrag} // Add real-time drag handling for smoother movement
       onDragEnd={handleDragEnd}
       onClick={handleWindowClick}
-      className={`${isMobile ? "fixed" : "absolute"} z-50 bg-white flex flex-col shadow-2xl ${!isMobile ? "drag-effect" : ""} overflow-hidden border-2 ${
-        isActive ? "border-black" : "border-gray-400"
-      }`}
+      className={`
+        ${isMobile ? "fixed" : "absolute"} z-50 
+        flex flex-col shadow-2xl 
+        ${!isMobile ? "drag-effect" : ""} 
+        overflow-hidden border-2 
+        ${isActive ? "border-black shadow-[rgba(0,0,0,0.5)_5px_5px_0px_0px]" : "border-gray-400 opacity-90"}
+        backdrop-blur-md bg-white/90
+      `}
       style={{
         width: `${windowSize.width}px`,
         height: `${windowSize.height}px`,
@@ -488,8 +517,15 @@ export default function Window({
         zIndex: zIndex,
       }}
     >
+      {/* CRT Scanline Overlay */}
+      <div className="absolute inset-0 pointer-events-none z-[60] opacity-[0.03] overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]" />
+        <div className="absolute inset-0 animate-scanline bg-[linear-gradient(rgba(18,16,16,0)_0%,rgba(18,16,16,0.1)_50%,rgba(18,16,16,0)_100%)] h-[100px]" />
+      </div>
+
       {/* Window Header - Top Bar */}
       <div
+        ref={headerRef}
         className={`${isActive ? "bg-[#FF7676]" : "bg-gray-400"} text-white p-1 flex items-center ${!isMobile ? "cursor-move" : ""} relative overflow-hidden border-b-2 border-black`}
         onMouseDown={!isMobile ? handleWindowClick : undefined} // Ensure clicking header also brings window to front
       >
@@ -500,12 +536,13 @@ export default function Window({
             backgroundImage:
               "repeating-linear-gradient(45deg, rgb(0,0,0), rgb(0,0,0) 2.5px, transparent 2.5px, transparent 8px)",
             zIndex: 1,
+            opacity: 0.2
           }}
         ></div>
 
         <div className="flex items-center ml-2 relative z-10 gap-2">
           <button
-            className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"
+            className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-black hover:bg-red-600 transition-transform active:scale-95"
             onClick={(e) => {
               if (!isDragging) {
                 onClose()
@@ -518,7 +555,7 @@ export default function Window({
 
           {!isMobile && (
             <button
-              className="w-6 h-6 bg-[#FFCD4B] rounded-full flex items-center justify-center hover:bg-yellow-400 transition-colors"
+              className="w-6 h-6 bg-[#FFCD4B] rounded-full flex items-center justify-center border-2 border-black hover:bg-yellow-400 transition-transform active:scale-95"
               onClick={(e) => {
                 if (!isDragging) {
                   toggleMaximize()
@@ -537,7 +574,9 @@ export default function Window({
 
         <div className="flex-1 flex justify-center relative z-10">
           {appId !== "terminal" && appId !== "contact" && (
-            <div className="bg-[#FFCD4B] px-8 py-1 uppercase font-bold text-black font-vt323 text-xl">{title}</div>
+            <div className="bg-[#FFCD4B] px-8 py-1 uppercase font-bold text-black font-vt323 text-xl border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+              {title}
+            </div>
           )}
         </div>
 
@@ -545,12 +584,14 @@ export default function Window({
       </div>
 
       {/* Window Content */}
-      <div className="flex-1 overflow-hidden">{renderContent()}</div>
+      <div ref={contentRef} className="flex-1 overflow-hidden bg-white/50 backdrop-blur-sm">
+        {renderContent()}
+      </div>
 
       {/* Resize handle - only show on desktop */}
       {!isMobile && !isMaximized && (
         <div
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize bg-[#87CEEB] border-l-2 border-t-2 border-black flex items-center justify-center"
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-se-resize bg-[#87CEEB] border-l-2 border-t-2 border-black flex items-center justify-center z-[70]"
           onMouseDown={(e) => handleResizeStart(e, "se")}
         >
           {/* Three slanted lines */}

@@ -1,10 +1,12 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { FileText, Briefcase, GraduationCap, Code, ChevronRight, Download, Menu, X } from "lucide-react"
+import gsap from "gsap"
 
 export default function ResumeContent() {
   const [selectedSection, setSelectedSection] = useState<string>("education")
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
 
   const sections = [
     { id: "education", name: "Education", icon: <GraduationCap className="w-5 h-5 text-[#0802A3]" /> },
@@ -13,12 +15,22 @@ export default function ResumeContent() {
     { id: "skills", name: "Skills", icon: <FileText className="w-5 h-5 text-[#0802A3]" /> },
   ]
 
+  useEffect(() => {
+    if (contentRef.current) {
+      const items = contentRef.current.querySelectorAll(".resume-card")
+      gsap.fromTo(items, 
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, stagger: 0.1, duration: 0.5, ease: "back.out(1.2)" }
+      )
+    }
+  }, [selectedSection])
+
   const renderContent = () => {
     switch (selectedSection) {
       case "education":
         return (
-          <div className="space-y-4 p-4">
-            <div className="bg-white p-4 border-2 border-black">
+          <div className="space-y-4 p-4" ref={contentRef}>
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Georgia State University</h3>
               <p className="font-vt323 text-lg">Bachelor of Science in Computer Science</p>
               <p className="font-vt323 text-lg">Aug. 2022 – Dec. 2025</p>
@@ -39,8 +51,8 @@ export default function ResumeContent() {
         )
       case "experience":
         return (
-          <div className="space-y-4 p-4">
-            <div className="bg-white p-4 border-2 border-black">
+          <div className="space-y-4 p-4" ref={contentRef}>
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Undergraduate Teaching Assistant</h3>
                 <p className="font-vt323 text-lg">Sept 2023 - Mar 2025</p>
@@ -58,7 +70,7 @@ export default function ResumeContent() {
               </ul>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">CS Tutor</h3>
                 <p className="font-vt323 text-lg">Sept 2023 - Present</p>
@@ -74,7 +86,7 @@ export default function ResumeContent() {
               </ul>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Student Assistant</h3>
                 <p className="font-vt323 text-lg">Aug 2023 - May 2024</p>
@@ -93,8 +105,8 @@ export default function ResumeContent() {
         )
       case "projects":
         return (
-          <div className="space-y-4 p-4">
-            <div className="bg-white p-4 border-2 border-black">
+          <div className="space-y-4 p-4" ref={contentRef}>
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Slurpy - AI Mental Health Companion</h3>
                 <p className="font-vt323 text-lg">Apr 2025 - Present</p>
@@ -114,7 +126,7 @@ export default function ResumeContent() {
               </ul>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Sarge - DevOps Monitoring Platform</h3>
                 <p className="font-vt323 text-lg">Mar 2025 - May 2025</p>
@@ -135,7 +147,7 @@ export default function ResumeContent() {
               </ul>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Notoria - Academic Mobile App</h3>
                 <p className="font-vt323 text-lg">Jan 2024 - Apr 2025</p>
@@ -158,40 +170,40 @@ export default function ResumeContent() {
         )
       case "skills":
         return (
-          <div className="space-y-4 p-4">
-            <div className="bg-white p-4 border-2 border-black">
+          <div className="space-y-4 p-4" ref={contentRef}>
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Programming Languages</h3>
               <p className="font-vt323 text-lg">Python, JavaScript, TypeScript, Java, C#</p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Backend & APIs</h3>
               <p className="font-vt323 text-lg">FastAPI, Node.js, Express.js, REST, WebSockets, JWT, GraphQL, tRPC</p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Frontend & Mobile</h3>
               <p className="font-vt323 text-lg">React, Next.js, Vue.js, Flutter</p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">AI & Machine Learning</h3>
               <p className="font-vt323 text-lg">NLP, LLMs, DistilBERT, PyTorch, HuggingFace, RAG, Vector Databases</p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">DevOps & Cloud</h3>
               <p className="font-vt323 text-lg">
                 AWS (EC2, S3, Lambda), Docker, GitHub Actions, CI/CD, Prometheus, Grafana, Nginx
               </p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Databases & Storage</h3>
               <p className="font-vt323 text-lg">PostgreSQL, MongoDB, Supabase, NeonDB, Firebase, Qdrant, Redis</p>
             </div>
 
-            <div className="bg-white p-4 border-2 border-black">
+            <div className="resume-card bg-white p-4 border-2 border-black retro-shadow">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Testing & Tools</h3>
               <p className="font-vt323 text-lg">Jest, Playwright, PyTest, TDD, Git, Linux, VS Code</p>
             </div>
@@ -205,7 +217,7 @@ export default function ResumeContent() {
   return (
     <div className="flex flex-col md:flex-row h-full">
       {/* Mobile header with menu button */}
-      <div className="md:hidden bg-[#87CEEB] border-b-2 border-black p-2 flex items-center justify-between">
+      <div className="md:hidden bg-[#87CEEB] border-b-2 border-black p-2 flex items-center justify-between z-20 sticky top-0 backdrop-blur-sm">
         <div className="relative px-2">
           <div className="absolute top-0.5 left-1.5 bg-black px-2 py-0.5 uppercase font-vt323 text-lg font-extrabold">
             FAVS
@@ -223,9 +235,9 @@ export default function ResumeContent() {
       <div
         className={`
         ${sidebarOpen ? "block" : "hidden"} md:block
-        w-full md:w-1/4 bg-[#87CEEB] border-r-2 border-black p-2
+        w-full md:w-1/4 bg-[#87CEEB]/80 border-r-2 border-black p-2
         ${sidebarOpen ? "absolute inset-x-0 top-12 bottom-0 z-10" : ""}
-        overflow-y-auto
+        overflow-y-auto backdrop-blur-sm
       `}
       >
         {/* Desktop heading */}
@@ -233,7 +245,7 @@ export default function ResumeContent() {
           <div className="absolute top-1 left-1 bg-black px-3 py-1 uppercase font-vt323 text-xl font-extrabold">
             FAVOURITES
           </div>
-          <div className="relative z-10 bg-[#FFCD4B] border-2 border-black px-3 py-1 uppercase font-vt323 text-xl font-extrabold text-[#0802A3]">
+          <div className="relative z-10 bg-[#FFCD4B] border-2 border-black px-3 py-1 uppercase font-vt323 text-xl font-extrabold text-[#0802A3] retro-shadow-sm">
             FAVOURITES
           </div>
         </div>
@@ -251,8 +263,10 @@ export default function ResumeContent() {
         {sections.map((section) => (
           <div
             key={section.id}
-            className={`flex items-center gap-2 p-2 cursor-pointer rounded border-2 mb-2 ${
-              selectedSection === section.id ? "bg-[#FFCD4B] border-black" : "border-transparent hover:border-black"
+            className={`flex items-center gap-2 p-2 cursor-pointer transition-all border-2 mb-2 ${
+              selectedSection === section.id 
+                ? "bg-[#FFCD4B] border-black retro-shadow-sm translate-x-[2px] translate-y-[2px]" 
+                : "bg-white/50 border-black/20 hover:border-black hover:bg-white retro-shadow-sm hover:translate-x-[-2px] hover:translate-y-[-2px]"
             }`}
             onClick={() => {
               setSelectedSection(section.id)
@@ -265,11 +279,11 @@ export default function ResumeContent() {
           </div>
         ))}
 
-        <div className="mt-6">
+        <div className="mt-6 px-1">
           <a
             href="/Arkaparna_Gantait_Resume.pdf"
             download
-            className="flex items-center gap-2 p-2 bg-[#FFCD4B] border-2 border-black rounded-none cursor-pointer"
+            className="flex items-center gap-2 p-2 bg-[#FFCD4B] border-2 border-black rounded-none cursor-pointer hover:bg-[#FFE07D] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[0px] active:translate-y-[0px] retro-shadow-sm"
           >
             <Download className="w-5 h-5 text-[#0802A3]" />
             <span className="font-vt323 text-lg font-bold">Download PDF</span>
@@ -278,16 +292,16 @@ export default function ResumeContent() {
       </div>
 
       {/* Content area */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-2 bg-[#87CEEB] border-b-2 border-black font-vt323 text-lg font-bold flex justify-center">
-          <span className="bg-[#FFCD4B] px-4 py-0.5 border-2 border-black uppercase">
+      <div className="flex-1 overflow-auto bg-white/30 backdrop-blur-md flex flex-col">
+        <div className="p-2 bg-[#87CEEB]/50 border-b-2 border-black font-vt323 text-lg font-bold flex justify-center sticky top-0 z-10 backdrop-blur-sm">
+          <span className="bg-[#FFCD4B] px-4 py-0.5 border-2 border-black uppercase retro-shadow-sm">
             {sections.find((s) => s.id === selectedSection)?.name || "Resume"}
           </span>
         </div>
-        <div className="bg-white min-h-0 overflow-y-auto">{renderContent()}</div>
+        <div className="flex-1 min-h-0 overflow-y-auto">{renderContent()}</div>
 
         {/* Contact info footer */}
-        <div className="p-3 bg-[#87CEEB] border-t-2 border-black">
+        <div className="p-3 bg-[#87CEEB]/80 border-t-2 border-black backdrop-blur-sm">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
             <p className="font-vt323 text-lg">
               <span className="font-bold">Arkaparna Gantait</span>

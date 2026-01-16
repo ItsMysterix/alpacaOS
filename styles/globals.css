@@ -10,6 +10,28 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  .retro-shadow {
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+  }
+
+  .retro-shadow-sm {
+    box-shadow: 2px 2px 0px 0px rgba(0,0,0,1);
+  }
+
+  .retro-active {
+    transform: translate(2px, 2px);
+    box-shadow: 0px 0px 0px 0px rgba(0,0,0,1);
+  }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-scanline {
+  animation: scanline 8s linear infinite;
 }
 
 @layer base {

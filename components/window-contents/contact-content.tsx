@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
 import { Send, Mail, Phone, ExternalLink } from "lucide-react"
+import gsap from "gsap"
 
 // EmailJS configuration with your actual values
 const EMAILJS_SERVICE_ID = "service_dsx5gt3"
@@ -23,11 +24,21 @@ export default function ContactContent() {
   const [formStatus, setFormStatus] = useState<null | "success" | "error" | "loading">(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailjsStatus, setEmailjsStatus] = useState<"loading" | "ready" | "error">("loading")
+  const formRef = useRef<HTMLDivElement>(null)
 
   // Use a ref to track initialization attempts
   const initAttempts = useRef(0)
   const maxAttempts = 3
   const checkInterval = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (formRef.current) {
+      gsap.fromTo(formRef.current,
+        { opacity: 0, scale: 0.9, y: 20 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" }
+      )
+    }
+  }, [])
 
   // Initialize EmailJS when component mounts
   useEffect(() => {
@@ -152,16 +163,16 @@ export default function ContactContent() {
   }
 
   return (
-    <div className="flex h-full bg-[#87CEEB] p-4 overflow-y-auto">
+    <div className="flex h-full bg-[#87CEEB]/50 backdrop-blur-md p-4 overflow-y-auto">
       <div className="max-w-xl mx-auto w-full">
         <div className="text-center mb-4">
-          <span className="inline-block bg-[#FFCD4B] px-6 py-1 border-2 border-black uppercase font-vt323 text-3xl font-bold text-[#0802A3]">
+          <span className="inline-block bg-[#FFCD4B] px-6 py-1 border-2 border-black uppercase font-vt323 text-3xl font-bold text-[#0802A3] retro-shadow">
             Contact Me
           </span>
         </div>
 
         {/* Form container */}
-        <div className="bg-white border-4 border-black p-4 relative">
+        <div ref={formRef} className="bg-white/90 backdrop-blur-sm border-4 border-black p-4 relative retro-shadow">
           {/* Pixelated corners */}
           <div className="absolute top-0 left-0 w-4 h-4 bg-[#FF4B91]"></div>
           <div className="absolute top-0 right-0 w-4 h-4 bg-[#FF4B91]"></div>
@@ -170,21 +181,21 @@ export default function ContactContent() {
 
           {/* Status messages */}
           {formStatus === "success" && (
-            <div className="bg-[#FFCD4B] border-2 border-black p-2 mb-4 text-center">
+            <div className="bg-[#FFCD4B] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
               <p className="font-vt323 text-lg font-bold">Message sent successfully!</p>
               <p className="font-vt323 text-sm">I'll get back to you soon.</p>
             </div>
           )}
 
           {formStatus === "error" && (
-            <div className="bg-[#FF7676] border-2 border-black p-2 mb-4 text-center">
+            <div className="bg-[#FF7676] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
               <p className="font-vt323 text-lg font-bold">Failed to send message.</p>
               <p className="font-vt323 text-sm">Please try again or contact me directly.</p>
             </div>
           )}
 
           {formStatus === "loading" && (
-            <div className="bg-[#87CEEB] border-2 border-black p-2 mb-4 text-center">
+            <div className="bg-[#87CEEB] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
               <p className="font-vt323 text-lg font-bold">Sending message...</p>
               <div className="flex justify-center mt-1">
                 <div className="w-2 h-2 bg-[#0802A3] mx-1 animate-bounce" style={{ animationDelay: "0ms" }}></div>
@@ -195,21 +206,21 @@ export default function ContactContent() {
           )}
 
           {emailjsStatus === "error" && !formStatus && (
-            <div className="bg-[#87CEEB] border-2 border-black p-2 mb-4">
+            <div className="bg-[#87CEEB]/30 border-2 border-black p-2 mb-4 retro-shadow-sm backdrop-blur-sm">
               <p className="font-vt323 text-lg font-bold text-center">Email service unavailable</p>
               <p className="font-vt323 text-sm text-center mb-2">Your message will still be recorded.</p>
 
               <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
                 <a
                   href="mailto:arkaparna.gantait@gmail.com"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323"
+                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
                 >
                   <Mail className="w-4 h-4" />
                   <span>Email Me</span>
                 </a>
                 <a
                   href="tel:4706523218"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323"
+                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
                 >
                   <Phone className="w-4 h-4" />
                   <span>Call Me</span>
@@ -218,7 +229,7 @@ export default function ContactContent() {
                   href="https://www.linkedin.com/in/arkaparna-gantait/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323"
+                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>LinkedIn</span>
@@ -234,13 +245,13 @@ export default function ContactContent() {
               {/* Name field */}
               <div className="flex-1">
                 <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">NAME</label>
-                <div className="border-2 border-black p-1 bg-[#87CEEB]">
+                <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none"
+                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FFCD4B]"
                     required
                     disabled={isSubmitting}
                   />
@@ -250,13 +261,13 @@ export default function ContactContent() {
               {/* Email field */}
               <div className="flex-1">
                 <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">EMAIL</label>
-                <div className="border-2 border-black p-1 bg-[#87CEEB]">
+                <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none"
+                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FFCD4B]"
                     required
                     disabled={isSubmitting}
                   />
@@ -267,13 +278,13 @@ export default function ContactContent() {
             {/* Feedback field */}
             <div>
               <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">MESSAGE</label>
-              <div className="border-2 border-black p-1 bg-[#87CEEB]">
+              <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
                 <textarea
                   name="feedback"
                   value={formData.feedback}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none resize-none"
+                  className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none resize-none focus:ring-2 focus:ring-[#FFCD4B]"
                   required
                   disabled={isSubmitting}
                 ></textarea>
@@ -281,11 +292,11 @@ export default function ContactContent() {
             </div>
 
             {/* Submit button */}
-            <div className="flex justify-center">
+            <div className="flex justify-center pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`flex items-center gap-2 px-6 py-2 bg-[#FFCD4B] border-2 border-black font-vt323 text-xl font-bold hover:bg-[#FFE07D] transition-colors ${
+                className={`flex items-center gap-2 px-8 py-2 bg-[#FFCD4B] border-2 border-black font-vt323 text-xl font-bold hover:bg-[#FFE07D] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[0px] active:translate-y-[0px] retro-shadow ${
                   isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >
@@ -298,10 +309,10 @@ export default function ContactContent() {
 
         {/* Pixelated decorative elements at the bottom */}
         <div className="flex justify-center mt-4 space-x-3">
-          <div className="w-3 h-3 bg-[#0802A3]"></div>
-          <div className="w-3 h-3 bg-[#FF4B91]"></div>
-          <div className="w-3 h-3 bg-[#FF7676]"></div>
-          <div className="w-3 h-3 bg-[#FFCD4B]"></div>
+          <div className="w-3 h-3 bg-[#0802A3] animate-pulse" style={{ animationDelay: "0ms" }}></div>
+          <div className="w-3 h-3 bg-[#FF4B91] animate-pulse" style={{ animationDelay: "200ms" }}></div>
+          <div className="w-3 h-3 bg-[#FF7676] animate-pulse" style={{ animationDelay: "400ms" }}></div>
+          <div className="w-3 h-3 bg-[#FFCD4B] animate-pulse" style={{ animationDelay: "600ms" }}></div>
         </div>
       </div>
     </div>
