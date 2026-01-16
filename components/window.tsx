@@ -218,12 +218,15 @@ export default function Window({
         sizeRef.current = newSize
         positionRef.current = newPosition
       } else if (isMaximized && windowRef.current) {
-        const headerHeight = 48 // Height of the header
+        // Full screen between header and taskbar
+        const headerHeight = 48
+        const taskbarHeight = 56
+        
         const newSize = {
-          width: window.innerWidth - 10, // Subtract a small amount to prevent overflow
-          height: window.innerHeight - headerHeight - 10,
+          width: window.innerWidth,
+          height: window.innerHeight - headerHeight - taskbarHeight,
         }
-        const newPosition = { x: 5, y: 5 } // Small offset from edges
+        const newPosition = { x: 0, y: headerHeight }
 
         setWindowSize(newSize)
         setWindowPosition(newPosition)
@@ -260,8 +263,9 @@ export default function Window({
     if (!windowRef.current || isMaximized || isMobile) return
 
     const headerHeight = 48 // Height of the header
+    const taskbarHeight = 56 // Height of taskbar
     const viewportWidth = window.innerWidth
-    const viewportHeight = window.innerHeight - headerHeight
+    const viewportHeight = window.innerHeight - headerHeight - taskbarHeight
     const windowWidth = windowRef.current.offsetWidth
     const windowHeight = windowRef.current.offsetHeight
 
@@ -271,11 +275,11 @@ export default function Window({
 
     // Ensure window doesn't go off the right or bottom edge
     if (newX + windowWidth > viewportWidth) {
-      newX = viewportWidth - windowWidth
+      newX = Math.max(0, viewportWidth - windowWidth)
     }
 
-    if (newY + windowHeight > viewportHeight) {
-      newY = viewportHeight - windowHeight
+    if (newY + windowHeight > viewportHeight + headerHeight) {
+      newY = Math.max(headerHeight, viewportHeight + headerHeight - windowHeight)
     }
 
     // Ensure window doesn't go off the left or top edge
@@ -311,37 +315,14 @@ export default function Window({
       prevSizeRef.current = windowSize
       prevPositionRef.current = windowPosition
 
-      // Calculate new size (1.5x current size)
-      const newWidth = windowSize.width * 1.5
-      const newHeight = windowSize.height * 1.5
+      const headerHeight = 48
+      const taskbarHeight = 56
 
-      // Ensure the new size doesn't exceed viewport boundaries
-      const headerHeight = 48 // Height of the header
-      const viewportWidth = window.innerWidth
-      const viewportHeight = window.innerHeight - headerHeight
-
-      const constrainedWidth = Math.min(newWidth, viewportWidth - 40)
-      const constrainedHeight = Math.min(newHeight, viewportHeight - 40)
-
-      // Calculate new position to keep window centered
-      const newX = Math.max(
-        20,
-        Math.min(windowPosition.x - (constrainedWidth - windowSize.width) / 2, viewportWidth - constrainedWidth - 20),
-      )
-
-      const newY = Math.max(
-        20,
-        Math.min(
-          windowPosition.y - (constrainedHeight - windowSize.height) / 2,
-          viewportHeight - constrainedHeight - 20,
-        ),
-      )
-
-      const newPosition = { x: newX, y: newY }
       const newSize = {
-        width: constrainedWidth,
-        height: constrainedHeight,
+        width: window.innerWidth,
+        height: window.innerHeight - headerHeight - taskbarHeight,
       }
+      const newPosition = { x: 0, y: headerHeight }
 
       setWindowSize(newSize)
       setWindowPosition(newPosition)
