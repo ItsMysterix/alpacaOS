@@ -4,7 +4,7 @@ import type React from "react"
 import { Send, Mail, Phone, ExternalLink, ShieldCheck, Zap } from "lucide-react"
 // Formspree configuration
 // Sign up at https://formspree.io/ to get your unique form ID
-const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_ID_HERE" // <--- PASTE YOUR ID HERE
+const FORMSPREE_FORM_ID = "xgoookzr"
 
 export default function ContactContent() {
   const [formData, setFormData] = useState({
@@ -25,14 +25,6 @@ export default function ContactContent() {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus("loading")
-
-    if (FORMSPREE_FORM_ID === "YOUR_FORMSPREE_ID_HERE") {
-        console.error("Please update the FORMSPREE_FORM_ID in contact-content.tsx with your actual ID from formspree.io")
-        alert("Setup Required: Please add your Formspree ID in the code.")
-        setFormStatus("error")
-        setIsSubmitting(false)
-        return
-    }
 
     try {
       const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
