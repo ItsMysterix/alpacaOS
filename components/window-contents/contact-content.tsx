@@ -5,10 +5,10 @@ import { Send, Mail, Phone, ExternalLink, Terminal, ShieldCheck, Zap } from "luc
 import gsap from "gsap"
 
 // EmailJS configuration
-// EmailJS configuration - REPLACE THESE WITH YOUR OWN FROM EMAILJS.COM
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID" // e.g. service_xxxx
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID" // e.g. template_xxxx
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY" // e.g. user_xxxx
+// EmailJS configuration
+const EMAILJS_SERVICE_ID = "service_7jupnol"
+const EMAILJS_TEMPLATE_ID = "template_440psag"
+const EMAILJS_PUBLIC_KEY = "v7Euxj9XIHYlgGpry"
 
 declare global {
   interface Window {
