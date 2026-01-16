@@ -513,6 +513,8 @@ export default function Window({
       animate={{
         opacity: 1,
         scale: 1,
+        x: isMaximized ? 0 : undefined,
+        y: isMaximized ? 0 : undefined,
       }}
       exit={{ opacity: 0, scale: isMobile ? 1 : 0.9 }}
       drag={!isMaximized && !isMobile}
