@@ -148,23 +148,6 @@ export default function ContactContent() {
           </form>
         </div>
 
-        {/* Secondary Links */}
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <a
-            href="mailto:arkaparna.gantait@gmail.com"
-            className="flex items-center justify-center gap-2 p-3 bg-[#FFCD4B] border-2 border-black text-black font-vt323 text-lg hover:bg-white hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <Mail className="w-5 h-5" /> Email Direct
-          </a>
-          <a
-            href="https://linkedin.com/in/arkaparna-gantait"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 p-3 bg-white border-2 border-black text-black font-vt323 text-lg hover:bg-[#FF7676] hover:text-white hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <ExternalLink className="w-5 h-5" /> LinkedIn
-          </a>
-        </div>
       </div>
     </div>
   )
