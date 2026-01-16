@@ -25,6 +25,12 @@ export default function DesktopLayout() {
   const [appPositions, setAppPositions] = useState<Record<string, { x: number; y: number }>>({})
   const [appSizes, setAppSizes] = useState<Record<string, { width: number; height: number }>>({})
   const [isMobile, setIsMobile] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // Hydration fix
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   // Atmospheric Sync System - Combining high-fidelity assets with curated audio
   const BACKGROUNDS = [
@@ -457,12 +463,16 @@ export default function DesktopLayout() {
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-all duration-1000 pointer-events-none
           ${activeApps.length > 0 ? "opacity-5 scale-95 blur-md" : "opacity-80 scale-100"}`}
       >
-        <div className="font-vt323 text-[180px] leading-none text-white drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] animate-pulse-slow">
-          {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-        </div>
-        <div className="font-vt323 text-4xl text-white/70 uppercase tracking-[0.2em] bg-black/40 px-6 py-2 rounded-full backdrop-blur-sm border-2 border-white/20">
-          {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
-        </div>
+        {mounted && (
+          <>
+            <div className="font-vt323 text-[180px] leading-none text-white drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] animate-pulse-slow">
+              {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+            </div>
+            <div className="font-vt323 text-4xl text-white/70 uppercase tracking-[0.2em] bg-black/40 px-6 py-2 rounded-full backdrop-blur-sm border-2 border-white/20">
+              {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Grid Layout Container - hide on mobile when window is open */}
