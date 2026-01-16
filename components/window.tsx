@@ -223,7 +223,7 @@ export default function Window({
         const taskbarHeight = 56
         
         const newSize = {
-          width: window.innerWidth,
+          width: document.documentElement.clientWidth,
           height: window.innerHeight - headerHeight - taskbarHeight,
         }
         // y is 0 because the container (DesktopLayout) is already below the header
@@ -320,7 +320,7 @@ export default function Window({
       const taskbarHeight = 56
 
       const newSize = {
-        width: window.innerWidth,
+        width: document.documentElement.clientWidth,
         height: window.innerHeight - headerHeight - taskbarHeight,
       }
       // y is 0 because the container is already offset
@@ -392,7 +392,8 @@ export default function Window({
       newX = Math.max(0, newX)
 
       // Top constraint - don't allow window to go beyond header
-      newY = Math.max(headerHeight, newY)
+      // Relative to container (0,0 is top-left below header)
+      newY = Math.max(0, newY)
 
       // Right constraint - don't allow window to go beyond right edge
       newX = Math.min(newX, viewportWidth - windowWidth)
@@ -536,6 +537,7 @@ export default function Window({
         left: windowPosition.x,
         top: windowPosition.y,
         zIndex: zIndex,
+        transform: isMaximized ? "none" : undefined, // Clearing transform is critical for maximized state
       }}
     >
       {/* CRT Scanline Overlay */}
