@@ -3,10 +3,17 @@ import { useState } from "react"
 import { Briefcase, Calendar, ChevronRight, Menu, X } from "lucide-react"
 
 export default function ExperienceContent() {
-  const [selectedJob, setSelectedJob] = useState<string | null>("tutor")
+  const [selectedJob, setSelectedJob] = useState<string | null>("uta")
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const jobs = [
+    {
+      id: "uta",
+      name: "Undergraduate Teaching Assistant",
+      company: "Georgia State University",
+      period: "Sep. 2023 – Mar. 2025",
+      icon: <Briefcase className="w-5 h-5 text-[#FF7676]" />,
+    },
     {
       id: "tutor",
       name: "CS Tutor",
@@ -25,53 +32,93 @@ export default function ExperienceContent() {
 
   const renderJobDetails = () => {
     switch (selectedJob) {
-      case "tutor":
+      case "uta":
         return (
           <div className="space-y-4 p-4">
             <div className="flex items-center gap-3 mb-4">
               <Calendar className="w-5 h-5 text-[#FF7676]" />
-              <span className="font-vt323 text-lg">Sept 2023 - Present</span>
+              <span className="font-vt323 text-lg">Sep. 2023 – Mar. 2025</span>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
               <h3 className="font-vt323 text-xl font-bold">Job Description</h3>
               <p className="font-vt323 text-lg mt-2">
-                Provided tutoring and academic support to students in computer science courses.
+                Providing technical support and guidance to students in data structures and software engineering courses.
               </p>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold">Key Achievements</h3>
+              <h3 className="font-vt323 text-xl font-bold">Key Responsibilities</h3>
               <ul className="list-disc list-inside space-y-1 mt-2">
                 <li className="font-vt323 text-lg">
-                  Guided over 10 students in foundational computer science concepts, including algorithms, data
-                  structures, and problem-solving, leading to improved academic performance.
+                  Assisted 100+ students with debugging, code reviews, and programming concepts in data structures and
+                  software engineering.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Created personalized study plans and explained tricky concepts in a way that was easy to understand,
-                  showing strong communication and mentoring skills.
+                  Held weekly office hours for support on assignments, backend concepts, APIs, and system design.
+                </li>
+                <li className="font-vt323 text-lg">Graded assignments and provided feedback on code quality.</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-3 rounded-none border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold">Skills Shared</h3>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {["Debugging", "Code Review", "Data Structures", "Software Engineering", "System Design", "APIs"].map(
+                  (skill) => (
+                    <span
+                      key={skill}
+                      className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2"
+                    >
+                      {skill}
+                    </span>
+                  ),
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      case "tutor":
+        return (
+          <div className="space-y-4 p-4">
+            <div className="flex items-center gap-3 mb-4">
+              <Calendar className="w-5 h-5 text-[#FF7676]" />
+              <span className="font-vt323 text-lg">Sep. 2023 – Present</span>
+            </div>
+
+            <div className="bg-white p-3 rounded-none border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold">Job Description</h3>
+              <p className="font-vt323 text-lg mt-2">
+                Providing specialized academic support and technical guidance to honors students in Computer Science.
+              </p>
+            </div>
+
+            <div className="bg-white p-3 rounded-none border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold">Key Responsibilities</h3>
+              <ul className="list-disc list-inside space-y-1 mt-2">
+                <li className="font-vt323 text-lg">
+                  Led peer tutoring sessions for core CS courses, focusing on advanced algorithms and data structures.
+                </li>
+                <li className="font-vt323 text-lg">
+                  Assisted students in mastering system programming and theoretical foundations of computer science.
+                </li>
+                <li className="font-vt323 text-lg">
+                  Facilitated study groups and provided individualized mentorship for project development.
                 </li>
               </ul>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold">Technologies Used</h3>
+              <h3 className="font-vt323 text-xl font-bold">Skills Shared</h3>
               <div className="flex flex-wrap gap-2 mt-2">
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Python
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Java
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  C++
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Data Structures
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Algorithms
-                </span>
+                {["Mentorship", "Algorithms", "Data Structures", "Peer Education", "Problem Solving"].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -81,43 +128,42 @@ export default function ExperienceContent() {
           <div className="space-y-4 p-4">
             <div className="flex items-center gap-3 mb-4">
               <Calendar className="w-5 h-5 text-[#FF7676]" />
-              <span className="font-vt323 text-lg">Aug 2023 - May 2024</span>
+              <span className="font-vt323 text-lg">Aug. 2023 – May 2024</span>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
               <h3 className="font-vt323 text-xl font-bold">Job Description</h3>
-              <p className="font-vt323 text-lg mt-2">Provided administrative and research support at Patton Hall.</p>
+              <p className="font-vt323 text-lg mt-2">
+                Supporting administrative operations and student community engagement at GSU housing facilities.
+              </p>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold">Key Achievements</h3>
+              <h3 className="font-vt323 text-xl font-bold">Key Responsibilities</h3>
               <ul className="list-disc list-inside space-y-1 mt-2">
                 <li className="font-vt323 text-lg">
-                  Assisted students and parents with research resources and answered their questions, making the support
-                  experience smoother and more effective.
+                  Managed resident inquiries and provided administrative support for facility management.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Worked closely with a team to achieve and exceed goals for student services, demonstrating strong
-                  collaboration and communication skills.
+                  Coordinated with housing staff to ensure a safe and supportive living environment for students.
+                </li>
+                <li className="font-vt323 text-lg">
+                  Leveraging organizational skills to handle resident documentation and community event planning.
                 </li>
               </ul>
             </div>
 
             <div className="bg-white p-3 rounded-none border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold">Skills Developed</h3>
+              <h3 className="font-vt323 text-xl font-bold">Skills Shared</h3>
               <div className="flex flex-wrap gap-2 mt-2">
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Research
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Communication
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Teamwork
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2">
-                  Problem Solving
-                </span>
+                {["Administration", "Communication", "Conflict Resolution", "Organization", "Support"].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-black border-2"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

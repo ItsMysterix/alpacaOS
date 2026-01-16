@@ -3,95 +3,116 @@ import { useState } from "react"
 import { Folder, FileText, Code, ExternalLink, Github, ChevronRight, Menu, X } from "lucide-react"
 
 export default function ProjectsContent() {
-  const [selectedProject, setSelectedProject] = useState<string | null>("pulse")
+  const [selectedProject, setSelectedProject] = useState<string | null>("slurpy")
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
-  const projects = [{ id: "pulse", name: "Pulse", icon: <Folder className="w-5 h-5 text-[#0802A3]" /> }]
+  const projects = [
+    { id: "slurpy", name: "Slurpy", icon: <Folder className="w-5 h-5 text-[#0802A3]" /> },
+    { id: "sarge", name: "Sarge", icon: <Folder className="w-5 h-5 text-[#0802A3]" /> },
+    { id: "notoria", name: "Notoria", icon: <Folder className="w-5 h-5 text-[#0802A3]" /> },
+  ]
 
   const renderProjectDetails = () => {
     switch (selectedProject) {
-      case "pulse":
+      case "slurpy":
         return (
           <div className="space-y-4 p-4">
             <div className="bg-white p-3 rounded-none border-2 border-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Pulse</h3>
-                <p className="font-vt323 text-lg">Sept 2024 - Nov 2024</p>
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Slurpy - AI Mental Health Companion</h3>
+                <p className="font-vt323 text-lg">Apr 2025 - Present</p>
               </div>
               <p className="font-vt323 text-lg mt-2">
-                A microservices-based application with automated infrastructure and monitoring.
+                A multi-persona AI chatbot designed to provide mental health support and companionship.
+              </p>
+
+              <ul className="list-disc list-inside space-y-2 mt-4">
+                <li className="font-vt323 text-lg">Deployed a multi-persona AI chatbot for 50+ users.</li>
+                <li className="font-vt323 text-lg">Fine-tuned DistilBERT for 89% emotion detection accuracy.</li>
+                <li className="font-vt323 text-lg">
+                  Implemented RAG using Qdrant and Model Context Protocol for reduced latency.
+                </li>
+                <li className="font-vt323 text-lg">Developed backend using FastAPI and Supabase with JWT and RLS.</li>
+              </ul>
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                {["FastAPI", "Supabase", "DistilBERT", "Qdrant", "RAG", "Python"].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      case "sarge":
+        return (
+          <div className="space-y-4 p-4">
+            <div className="bg-white p-3 rounded-none border-2 border-black">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Sarge - DevOps Monitoring Platform</h3>
+                <p className="font-vt323 text-lg">Mar 2025 - May 2025</p>
+              </div>
+              <p className="font-vt323 text-lg mt-2">
+                A self-service platform for infrastructure management and real-time CI/CD monitoring.
               </p>
 
               <ul className="list-disc list-inside space-y-2 mt-4">
                 <li className="font-vt323 text-lg">
-                  Automated infrastructure deployment using Docker and Jenkins, reducing manual setup time by 40% and
-                  streamlining development pipelines.
+                  Built a self-service platform for infrastructure management from GitHub repositories.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Configured a CI/CD pipeline that facilitated 100% automated testing and integration, increasing
-                  deployment efficiency by 35%.
+                  Implemented AWS-like cloud emulation and CI/CD monitoring with Docker, Prometheus, and Grafana.
+                </li>
+                <li className="font-vt323 text-lg">Unified management and monitoring across 3 Dockerized microservices.</li>
+              </ul>
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                {["Docker", "Prometheus", "Grafana", "AWS", "CI/CD", "Nginx"].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )
+      case "notoria":
+        return (
+          <div className="space-y-4 p-4">
+            <div className="bg-white p-3 rounded-none border-2 border-black">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Notoria - Academic Collaboration App</h3>
+                <p className="font-vt323 text-lg">Jan 2024 - Apr 2025</p>
+              </div>
+              <p className="font-vt323 text-lg mt-2">
+                A mobile application for academic collaboration and real-time communication.
+              </p>
+
+              <ul className="list-disc list-inside space-y-2 mt-4">
+                <li className="font-vt323 text-lg">
+                  Developed a Flutter and Firebase mobile app with role-based access control.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Deployed microservices on AWS, scaling applications to handle 10,000+ concurrent users with load
-                  balancers and auto-scaling.
-                </li>
-                <li className="font-vt323 text-lg">
-                  Monitored application performance using Grafana and Prometheus, ensuring 99.9% uptime and improving
-                  issue detection time by 20%.
+                  Enabled real-time collaboration through shared notes and Discord-style communication.
                 </li>
               </ul>
 
-              <div className="mt-4 space-y-2">
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-[#0802A3]" />
-                  <span className="font-vt323 text-lg">README.md</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Code className="w-4 h-4 text-[#0802A3]" />
-                  <span className="font-vt323 text-lg">docker-compose.yml</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Code className="w-4 h-4 text-[#0802A3]" />
-                  <span className="font-vt323 text-lg">Jenkinsfile</span>
-                </div>
-              </div>
-
               <div className="flex flex-wrap gap-2 mt-4">
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  Docker
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  Jenkins
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  AWS
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  Grafana
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  Prometheus
-                </span>
-                <span className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black">
-                  CI/CD
-                </span>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                <a
-                  href="#"
-                  className="flex items-center justify-center gap-1 px-2 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3]"
-                >
-                  <Github className="w-4 h-4" />
-                  <span className="font-vt323 text-lg">Repository</span>
-                </a>
-                <a
-                  href="#"
-                  className="flex items-center justify-center gap-1 px-2 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3]"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span className="font-vt323 text-lg">Live Demo</span>
-                </a>
+                {["Flutter", "Firebase", "Real-time", "Mobile", "Academic"].map((skill) => (
+                  <span
+                    key={skill}
+                    className="px-2 py-1 bg-[#FFCD4B] text-[#0802A3] text-xs font-medium rounded-none border-2 border-black"
+                  >
+                    {skill}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

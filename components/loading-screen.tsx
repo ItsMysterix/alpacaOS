@@ -73,7 +73,7 @@ export default function LoadingScreen() {
     initial: {
       y: 0,
       height: "100vh",
-      position: "fixed",
+      position: "fixed" as const,
       top: 0,
       left: 0,
       right: 0,

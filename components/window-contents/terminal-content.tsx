@@ -4,7 +4,7 @@ import type React from "react"
 
 interface Command {
   input: string
-  output: string | JSX.Element
+  output: string | React.ReactNode
 }
 
 export default function TerminalContent() {
@@ -62,7 +62,7 @@ export default function TerminalContent() {
     if (!currentInput.trim()) return
 
     const input = currentInput.trim()
-    let output: string | JSX.Element = ""
+    let output: string | React.ReactNode = ""
 
     // Add the command to history
     setCommands([...commands, { input, output: "" }])

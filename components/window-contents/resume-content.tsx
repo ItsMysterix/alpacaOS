@@ -21,9 +21,10 @@ export default function ResumeContent() {
             <div className="bg-white p-4 border-2 border-black">
               <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Georgia State University</h3>
               <p className="font-vt323 text-lg">Bachelor of Science in Computer Science</p>
-              <p className="font-vt323 text-lg">Expected Graduation 2025</p>
+              <p className="font-vt323 text-lg">Aug. 2022 – Dec. 2025</p>
               <p className="font-vt323 text-lg">Atlanta, GA</p>
-              <p className="font-vt323 text-lg font-bold mt-2">GSU HONORS PROGRAM GPA 3.66/4</p>
+              <p className="font-vt323 text-lg font-bold mt-2">GPA 3.58/4.0</p>
+              <p className="font-vt323 text-lg mt-1 italic">Honors: Honors College Student, Dean's List (5 of 9 semesters)</p>
 
               <div className="mt-4">
                 <p className="font-vt323 text-lg font-bold">Relevant Coursework:</p>
@@ -41,59 +42,50 @@ export default function ResumeContent() {
           <div className="space-y-4 p-4">
             <div className="bg-white p-4 border-2 border-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Pulse</h3>
-                <p className="font-vt323 text-lg">Sept 2024 - Nov 2024</p>
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Undergraduate Teaching Assistant</h3>
+                <p className="font-vt323 text-lg">Sept 2023 - Mar 2025</p>
               </div>
+              <p className="font-vt323 text-lg font-bold">Georgia State University</p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
-                  Automated infrastructure deployment using Docker and Jenkins, reducing manual setup time by 40% and
-                  streamlining development pipelines.
+                  Assisted 100+ students with debugging, code reviews, and programming concepts in data structures and
+                  software engineering.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Configured a CI/CD pipeline that facilitated 100% automated testing and integration, increasing
-                  deployment efficiency by 35%.
+                  Held weekly office hours for support on assignments, backend concepts, APIs, and system design.
                 </li>
-                <li className="font-vt323 text-lg">
-                  Deployed microservices on AWS, scaling applications to handle 10,000+ concurrent users with load
-                  balancers and auto-scaling.
-                </li>
-                <li className="font-vt323 text-lg">
-                  Monitored application performance using Grafana and Prometheus, ensuring 99.9% uptime and improving
-                  issue detection time by 20%.
-                </li>
+                <li className="font-vt323 text-lg">Graded assignments and provided feedback on code quality.</li>
               </ul>
             </div>
 
             <div className="bg-white p-4 border-2 border-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">CS Tutor, Honors College</h3>
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">CS Tutor</h3>
                 <p className="font-vt323 text-lg">Sept 2023 - Present</p>
               </div>
+              <p className="font-vt323 text-lg font-bold">Honors College</p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
-                  Guided over 10 students in foundational computer science concepts, including algorithms, data
-                  structures, and problem-solving, leading to improved academic performance.
+                  Providing academic support and technical guidance to honors students in Computer Science.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Created personalized study plans and explained tricky concepts in a way that was easy to understand,
-                  showing strong communication and mentoring skills.
+                  Peer tutoring for core courses like Algorithms, Data Structures, and Theoretical Foundations.
                 </li>
               </ul>
             </div>
 
             <div className="bg-white p-4 border-2 border-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Student Assistant, Patton Hall</h3>
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Student Assistant</h3>
                 <p className="font-vt323 text-lg">Aug 2023 - May 2024</p>
               </div>
+              <p className="font-vt323 text-lg font-bold">Patton Hall</p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
-                  Assisted students and parents with research resources and answered their questions, making the support
-                  experience smoother and more effective.
+                  Assisted with administrative tasks and student community engagement at GSU housing facilities.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Worked closely with a team to achieve and exceed goals for student services, demonstrating strong
-                  collaboration and communication skills.
+                  Managed resident inquiries and documentation to ensure efficient facility operation.
                 </li>
               </ul>
             </div>
@@ -104,21 +96,46 @@ export default function ResumeContent() {
           <div className="space-y-4 p-4">
             <div className="bg-white p-4 border-2 border-black">
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Portfolio Website</h3>
-                <p className="font-vt323 text-lg">Jan 2024 - Apr 2024</p>
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Slurpy - AI Mental Health Companion</h3>
+                <p className="font-vt323 text-lg">Apr 2025 - Present</p>
+              </div>
+              <ul className="list-disc list-inside space-y-2 mt-2">
+                <li className="font-vt323 text-lg">Deployed a multi-persona AI chatbot for 50+ users.</li>
+                <li className="font-vt323 text-lg">Fine-tuned DistilBERT for 89% emotion detection accuracy.</li>
+                <li className="font-vt323 text-lg">
+                  Implemented RAG using Qdrant and Model Context Protocol for reduced latency.
+                </li>
+                <li className="font-vt323 text-lg">Developed backend using FastAPI and Supabase with JWT and RLS.</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Sarge - DevOps Monitoring Platform</h3>
+                <p className="font-vt323 text-lg">Mar 2025 - May 2025</p>
               </div>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
-                  Built a portfolio website using TypeScript, Tailwind CSS, and Next.js, generating 50+ visitors monthly
-                  to showcase personal projects.
+                  Built a self-service platform for infrastructure management from GitHub repositories.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Improved user engagement by 30% by integrating Framer Motion animations, delivering a smooth and
-                  interactive experience.
+                  Implemented AWS-like cloud emulation and CI/CD monitoring with Docker, Prometheus, and Grafana.
+                </li>
+                <li className="font-vt323 text-lg">Unified management and monitoring across 3 Dockerized microservices.</li>
+              </ul>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
+                <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Notoria - Academic Mobile App</h3>
+                <p className="font-vt323 text-lg">Jan 2024 - Apr 2025</p>
+              </div>
+              <ul className="list-disc list-inside space-y-2 mt-2">
+                <li className="font-vt323 text-lg">
+                  Developed a Flutter and Firebase mobile app with role-based access control.
                 </li>
                 <li className="font-vt323 text-lg">
-                  Ensured cross-device compatibility with responsive design principles, achieving a seamless user
-                  experience on desktops, tablets, and mobile devices.
+                  Enabled real-time collaboration through shared notes and Discord-style communication.
                 </li>
               </ul>
             </div>
@@ -128,27 +145,40 @@ export default function ResumeContent() {
         return (
           <div className="space-y-4 p-4">
             <div className="bg-white p-4 border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Languages</h3>
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Programming Languages</h3>
+              <p className="font-vt323 text-lg">Python, JavaScript, TypeScript, Java, C#</p>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Backend & APIs</h3>
+              <p className="font-vt323 text-lg">FastAPI, Node.js, Express.js, REST, WebSockets, JWT, GraphQL, tRPC</p>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Frontend & Mobile</h3>
+              <p className="font-vt323 text-lg">React, Next.js, Vue.js, Flutter</p>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">AI & Machine Learning</h3>
+              <p className="font-vt323 text-lg">NLP, LLMs, DistilBERT, PyTorch, HuggingFace, RAG, Vector Databases</p>
+            </div>
+
+            <div className="bg-white p-4 border-2 border-black">
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">DevOps & Cloud</h3>
               <p className="font-vt323 text-lg">
-                Python, HTML5, CSS3, Java, C/C++, JavaScript/TypeScript, PowerShell, Assembly, SQL, Scala
+                AWS (EC2, S3, Lambda), Docker, GitHub Actions, CI/CD, Prometheus, Grafana, Nginx
               </p>
             </div>
 
             <div className="bg-white p-4 border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Frameworks & Libraries</h3>
-              <p className="font-vt323 text-lg">Next.js, Node.js, Tailwind CSS, Framer Motion</p>
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Databases & Storage</h3>
+              <p className="font-vt323 text-lg">PostgreSQL, MongoDB, Supabase, NeonDB, Firebase, Qdrant, Redis</p>
             </div>
 
             <div className="bg-white p-4 border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Databases</h3>
-              <p className="font-vt323 text-lg">MySQL, Firebase</p>
-            </div>
-
-            <div className="bg-white p-4 border-2 border-black">
-              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Developer Tools</h3>
-              <p className="font-vt323 text-lg">
-                Wireshark, Jupyter Notebook, Git/GitHub, Figma, Visual Studio Code, Docker, Prometheus, Grafana
-              </p>
+              <h3 className="font-vt323 text-xl font-bold text-[#FF4B91] mb-2">Testing & Tools</h3>
+              <p className="font-vt323 text-lg">Jest, Playwright, PyTest, TDD, Git, Linux, VS Code</p>
             </div>
           </div>
         )
@@ -222,7 +252,7 @@ export default function ResumeContent() {
 
         <div className="mt-6">
           <a
-            href="/resume.pdf"
+            href="/Arkaparna_Gantait_Resume.pdf"
             download
             className="flex items-center gap-2 p-2 bg-[#FFCD4B] border-2 border-black rounded-none cursor-pointer"
           >

@@ -58,19 +58,19 @@ export default function AboutContent() {
           <div className="space-y-3 p-4">
             <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
               <Info className="w-5 h-5 text-[#FF4B91]" />
+              <span className="font-vt323 text-lg">Deep Learning & AI</span>
+            </div>
+            <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
+              <Info className="w-5 h-5 text-[#FF4B91]" />
+              <span className="font-vt323 text-lg">DevOps & Cloud Computing</span>
+            </div>
+            <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
+              <Info className="w-5 h-5 text-[#FF4B91]" />
               <span className="font-vt323 text-lg">Web Development</span>
             </div>
             <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
               <Info className="w-5 h-5 text-[#FF4B91]" />
               <span className="font-vt323 text-lg">UI/UX Design</span>
-            </div>
-            <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
-              <Info className="w-5 h-5 text-[#FF4B91]" />
-              <span className="font-vt323 text-lg">Cloud Computing</span>
-            </div>
-            <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
-              <Info className="w-5 h-5 text-[#FF4B91]" />
-              <span className="font-vt323 text-lg">Gaming</span>
             </div>
           </div>
         )

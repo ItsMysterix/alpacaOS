@@ -1,53 +1,51 @@
 "use client"
 import { useState } from "react"
-import { Code, Database, Users, ChevronRight, Menu, X } from "lucide-react"
+import { Code, Database, Users, ChevronRight, Menu, X, Cpu, Settings } from "lucide-react"
 
 export default function SkillsContent() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>("programming")
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const categories = [
-    { id: "programming", name: "Programming Languages", icon: <Code className="w-5 h-5 text-[#FF4B91]" /> },
-    { id: "frameworks", name: "Frameworks & Libraries", icon: <Code className="w-5 h-5 text-[#FF7676]" /> },
-    { id: "tools", name: "Tools & Platforms", icon: <Database className="w-5 h-5 text-[#FFCD4B]" /> },
-    { id: "soft", name: "Soft Skills", icon: <Users className="w-5 h-5 text-[#0C4A9C]" /> },
+    { id: "programming", name: "Languages", icon: <Code className="w-5 h-5 text-[#FF4B91]" /> },
+    { id: "frameworks", name: "Frameworks & Libs", icon: <Settings className="w-5 h-5 text-[#FF7676]" /> },
+    { id: "ai", name: "Deep Learning & AI", icon: <Cpu className="w-5 h-5 text-[#FFCD4B]" /> },
+    { id: "devops", name: "DevOps & Tools", icon: <Database className="w-5 h-5 text-[#0C4A9C]" /> },
   ]
 
   const skills = {
     programming: [
+      { name: "Python", level: 95 },
+      { name: "SQL", level: 90 },
+      { name: "C++", level: 85 },
+      { name: "Java", level: 85 },
+      { name: "Dart", level: 80 },
       { name: "JavaScript/TypeScript", level: 90 },
-      { name: "Python", level: 85 },
-      { name: "HTML5/CSS3", level: 95 },
-      { name: "Java", level: 80 },
-      { name: "C/C++", level: 75 },
-      { name: "SQL", level: 70 },
-      { name: "PowerShell", level: 65 },
-      { name: "Assembly", level: 60 },
-      { name: "Scala", level: 55 },
+      { name: "Swift", level: 75 },
     ],
     frameworks: [
-      { name: "Next.js", level: 90 },
+      { name: "FastAPI", level: 90 },
+      { name: "Flutter", level: 85 },
       { name: "Node.js", level: 85 },
-      { name: "Tailwind CSS", level: 90 },
-      { name: "Framer Motion", level: 80 },
+      { name: "Firebase", level: 90 },
+      { name: "Supabase", level: 85 },
+      { name: "React / Next.js", level: 90 },
     ],
-    tools: [
-      { name: "Git/GitHub", level: 90 },
-      { name: "Docker", level: 85 },
-      { name: "Prometheus", level: 80 },
-      { name: "Grafana", level: 80 },
-      { name: "Wireshark", level: 75 },
-      { name: "Jupyter Notebook", level: 85 },
-      { name: "Figma", level: 70 },
-      { name: "Visual Studio Code", level: 95 },
+    ai: [
+      { name: "PyTorch", level: 80 },
+      { name: "HuggingFace", level: 85 },
+      { name: "OpenAI / Anthropic APIs", level: 90 },
+      { name: "GCP AI", level: 80 },
+      { name: "RAG & LLM Agents", level: 85 },
     ],
-    soft: [
-      { name: "Problem Solving", level: 90 },
-      { name: "Communication", level: 85 },
-      { name: "Teamwork", level: 90 },
-      { name: "Time Management", level: 80 },
-      { name: "Adaptability", level: 85 },
-      { name: "Creativity", level: 80 },
+    devops: [
+      { name: "Docker", level: 90 },
+      { name: "AWS / GCP", level: 85 },
+      { name: "Jenkins", level: 80 },
+      { name: "Nginx / Linux", level: 85 },
+      { name: "Git", level: 95 },
+      { name: "Grafana / Prometheus", level: 80 },
+      { name: "MCP (Model Context Protocol)", level: 85 },
     ],
   }
 
@@ -57,9 +55,9 @@ export default function SkillsContent() {
         return "bg-[#FF4B91]"
       case "frameworks":
         return "bg-[#FF7676]"
-      case "tools":
+      case "ai":
         return "bg-[#FFCD4B]"
-      case "soft":
+      case "devops":
         return "bg-[#0C4A9C]"
       default:
         return "bg-gray-400"

@@ -48,7 +48,7 @@ export default function DesktopLayout() {
   ]
 
   const rightSideApps = [
-    { id: "resume", name: "Resume", icon: "/images/resume.png", isExternal: true, url: "/resume.pdf" },
+    { id: "resume", name: "Resume", icon: "/images/resume.png", isExternal: true, url: "/Arkaparna_Gantait_Resume.pdf" },
     { id: "contact", name: "Contact Me", icon: "/images/contact.png" },
   ]
 
@@ -218,7 +218,7 @@ export default function DesktopLayout() {
   // Listen for resume open event - now just opens the PDF directly
   useEffect(() => {
     const handleOpenResume = () => {
-      window.open("/resume.pdf", "_blank")
+      window.open("/Arkaparna_Gantait_Resume.pdf", "_blank")
     }
 
     window.addEventListener("open-resume", handleOpenResume)
