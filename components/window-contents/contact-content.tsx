@@ -1,20 +1,14 @@
+```typescript
 "use client"
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
-import { Send, Mail, Phone, ExternalLink, Terminal, ShieldCheck, Zap } from "lucide-react"
-import gsap from "gsap"
+import { Send, Mail, Phone, ExternalLink, ShieldCheck, Zap } from "lucide-react"
+import emailjs from "@emailjs/browser"
 
-// EmailJS configuration
 // EmailJS configuration
 const EMAILJS_SERVICE_ID = "service_7jupnol"
 const EMAILJS_TEMPLATE_ID = "template_440psag"
 const EMAILJS_PUBLIC_KEY = "v7Euxj9XIHYlgGpry"
-
-declare global {
-  interface Window {
-    emailjs: any
-  }
-}
 
 export default function ContactContent() {
   const [formData, setFormData] = useState({
@@ -24,33 +18,11 @@ export default function ContactContent() {
   })
   const [formStatus, setFormStatus] = useState<null | "success" | "error" | "loading">(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [emailjsStatus, setEmailjsStatus] = useState<"loading" | "ready" | "error">("loading")
   const formRef = useRef<HTMLDivElement>(null)
 
-  const initAttempts = useRef(0)
-  const maxAttempts = 3
-  const checkInterval = useRef<NodeJS.Timeout | null>(null)
-
-  // Synchronize with Window shell opening
-
   useEffect(() => {
-    const initEmailJS = () => {
-      initAttempts.current += 1
-      if (typeof window !== "undefined" && window.emailjs) {
-        try {
-          window.emailjs.init(EMAILJS_PUBLIC_KEY)
-          setEmailjsStatus("ready")
-          if (checkInterval.current) clearInterval(checkInterval.current)
-        } catch (error) {
-          if (initAttempts.current >= maxAttempts) setEmailjsStatus("error")
-        }
-      } else if (initAttempts.current >= maxAttempts) {
-        setEmailjsStatus("error")
-      }
-    }
-    initEmailJS()
-    checkInterval.current = setInterval(initEmailJS, 1000)
-    return () => { if (checkInterval.current) clearInterval(checkInterval.current) }
+    // Initialize EmailJS
+    emailjs.init(EMAILJS_PUBLIC_KEY)
   }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -63,12 +35,6 @@ export default function ContactContent() {
     setIsSubmitting(true)
     setFormStatus("loading")
     try {
-      if (emailjsStatus !== "ready" || !window.emailjs) {
-        await new Promise((resolve) => setTimeout(resolve, 1500))
-        setFormStatus("success")
-        setFormData({ name: "", email: "", feedback: "" })
-        return
-      }
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
@@ -76,7 +42,9 @@ export default function ContactContent() {
         to_email: "arkaparna.gantait@gmail.com",
         reply_to: formData.email,
       }
-      const response = await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      
+      const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      
       if (response.status === 200) {
         setFormStatus("success")
         setFormData({ name: "", email: "", feedback: "" })
@@ -84,6 +52,7 @@ export default function ContactContent() {
         setFormStatus("error")
       }
     } catch (error) {
+      console.error("EmailJS Error:", error)
       setFormStatus("error")
     } finally {
       setIsSubmitting(false)
