@@ -45,6 +45,18 @@ export default function ProjectsContent() {
                   </span>
                 ))}
               </div>
+
+              <div className="mt-4 pt-4 border-t-2 border-black border-dashed flex gap-4">
+                <a
+                  href="https://slurpy.life"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 font-vt323 text-lg hover:text-[#FF4B91] transition-colors"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  <span>Live Demo</span>
+                </a>
+              </div>
             </div>
           </div>
         )
@@ -80,6 +92,18 @@ export default function ProjectsContent() {
                   </span>
                 ))}
               </div>
+
+              <div className="mt-4 pt-4 border-t-2 border-black border-dashed flex gap-4">
+                <a
+                  href="https://v0-sarge.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 font-vt323 text-lg hover:text-[#FF4B91] transition-colors"
+                >
+                  <ExternalLink className="w-5 h-5" />
+                  <span>Live Demo</span>
+                </a>
+              </div>
             </div>
           </div>
         )
@@ -113,6 +137,18 @@ export default function ProjectsContent() {
                     {skill}
                   </span>
                 ))}
+              </div>
+
+              <div className="mt-4 pt-4 border-t-2 border-black border-dashed flex gap-4">
+                <a
+                  href="https://github.com/ItsMysterix/notoria"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 font-vt323 text-lg hover:text-[#FF4B91] transition-colors"
+                >
+                  <Github className="w-5 h-5" />
+                  <span>View GitHub</span>
+                </a>
               </div>
             </div>
           </div>

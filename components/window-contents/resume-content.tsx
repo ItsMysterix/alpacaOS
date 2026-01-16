@@ -99,6 +99,11 @@ export default function ResumeContent() {
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Slurpy - AI Mental Health Companion</h3>
                 <p className="font-vt323 text-lg">Apr 2025 - Present</p>
               </div>
+              <p className="font-vt323 text-lg text-blue-600 hover:underline">
+                <a href="https://slurpy.life" target="_blank" rel="noopener noreferrer">
+                  slurpy.life
+                </a>
+              </p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">Deployed a multi-persona AI chatbot for 50+ users.</li>
                 <li className="font-vt323 text-lg">Fine-tuned DistilBERT for 89% emotion detection accuracy.</li>
@@ -114,6 +119,11 @@ export default function ResumeContent() {
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Sarge - DevOps Monitoring Platform</h3>
                 <p className="font-vt323 text-lg">Mar 2025 - May 2025</p>
               </div>
+              <p className="font-vt323 text-lg text-blue-600 hover:underline">
+                <a href="https://v0-sarge.vercel.app" target="_blank" rel="noopener noreferrer">
+                  v0-sarge.vercel.app
+                </a>
+              </p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
                   Built a self-service platform for infrastructure management from GitHub repositories.
@@ -130,6 +140,11 @@ export default function ResumeContent() {
                 <h3 className="font-vt323 text-xl font-bold text-[#FF4B91]">Notoria - Academic Mobile App</h3>
                 <p className="font-vt323 text-lg">Jan 2024 - Apr 2025</p>
               </div>
+              <p className="font-vt323 text-lg text-blue-600 hover:underline">
+                <a href="https://github.com/ItsMysterix/notoria" target="_blank" rel="noopener noreferrer">
+                  github.com/ItsMysterix/notoria
+                </a>
+              </p>
               <ul className="list-disc list-inside space-y-2 mt-2">
                 <li className="font-vt323 text-lg">
                   Developed a Flutter and Firebase mobile app with role-based access control.
@@ -277,7 +292,7 @@ export default function ResumeContent() {
             <p className="font-vt323 text-lg">
               <span className="font-bold">Arkaparna Gantait</span>
             </p>
-            <p className="font-vt323 text-lg">Atlanta, GA • 4706523218 • arkaparna.90@gmail.com</p>
+            <p className="font-vt323 text-lg">Atlanta, GA • 4706523218 • arkaparna.gantait@gmail.com</p>
           </div>
         </div>
       </div>

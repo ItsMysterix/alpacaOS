@@ -127,7 +127,7 @@ export default function ContactContent() {
         from_name: formData.name,
         from_email: formData.email,
         message: formData.feedback,
-        to_email: "arkaparna.90@gmail.com",
+        to_email: "arkaparna.gantait@gmail.com",
         reply_to: formData.email,
       }
 
@@ -201,7 +201,7 @@ export default function ContactContent() {
 
               <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
                 <a
-                  href="mailto:arkaparna.90@gmail.com"
+                  href="mailto:arkaparna.gantait@gmail.com"
                   className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323"
                 >
                   <Mail className="w-4 h-4" />
@@ -215,7 +215,7 @@ export default function ContactContent() {
                   <span>Call Me</span>
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/arkaparna-gantait-99b17b217/"
+                  href="https://www.linkedin.com/in/arkaparna-gantait/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323"

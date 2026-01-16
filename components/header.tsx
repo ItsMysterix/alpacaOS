@@ -91,7 +91,7 @@ export default function Header() {
           <Link href="https://github.com/ItsMysterix" target="_blank" aria-label="GitHub">
             <Github className="w-5 h-5 text-[#0C4A9C] hover:text-[#0802A3]" />
           </Link>
-          <Link href="https://www.linkedin.com/in/arkaparna-gantait-99b17b217/" target="_blank" aria-label="LinkedIn">
+          <Link href="https://www.linkedin.com/in/arkaparna-gantait/" target="_blank" aria-label="LinkedIn">
             <Linkedin className="w-5 h-5 text-[#0C4A9C] hover:text-[#0802A3]" />
           </Link>
           <Link href="https://www.instagram.com/xo.arka00/" target="_blank" aria-label="Instagram">

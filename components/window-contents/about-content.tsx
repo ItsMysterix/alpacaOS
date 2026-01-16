@@ -23,7 +23,7 @@ export default function AboutContent() {
             </div>
             <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
               <Mail className="w-5 h-5 text-[#FF4B91]" />
-              <span className="font-vt323 text-lg">Email: arkaparna.90@gmail.com</span>
+              <span className="font-vt323 text-lg">Email: arkaparna.gantait@gmail.com</span>
             </div>
             <div className="flex items-center gap-3 p-2 bg-white border-2 border-black">
               <MapPin className="w-5 h-5 text-[#FF4B91]" />
@@ -42,8 +42,8 @@ export default function AboutContent() {
               <FileText className="w-5 h-5 mt-1 text-[#FF4B91]" />
               <div>
                 <span className="font-vt323 text-lg font-bold block">Bachelor of Science in Computer Science</span>
-                <span className="font-vt323 text-lg block">Georgia State University 2022 - 2025</span>
-                <span className="font-vt323 text-lg block text-gray-600">GSU HONORS PROGRAM GPA 3.66/4</span>
+                <span className="font-vt323 text-lg block">Georgia State University Aug. 2022 - Dec. 2025</span>
+                <span className="font-vt323 text-lg block text-gray-600">GSU HONORS PROGRAM GPA 3.58/4.0</span>
                 <span className="font-vt323 text-lg block text-gray-600 mt-2">
                   Relevant Coursework: Principles of Computer Science, Theoretical Foundation of Computer Science, Data
                   Structures, System-Level Programming, Designs and Analysis: Algorithms, Computer Org and Programming,
