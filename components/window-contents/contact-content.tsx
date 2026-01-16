@@ -157,12 +157,6 @@ export default function ContactContent() {
             <Mail className="w-5 h-5" /> Email Direct
           </a>
           <a
-            href="tel:4706523218"
-            className="flex items-center justify-center gap-2 p-3 bg-white border-2 border-black text-black font-vt323 text-lg hover:bg-[#FFCD4B] hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
-          >
-            <Phone className="w-5 h-5" /> Call Me
-          </a>
-          <a
             href="https://linkedin.com/in/arkaparna-gantait"
             target="_blank"
             rel="noopener noreferrer"
