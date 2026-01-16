@@ -29,6 +29,7 @@ body {
   font-family: "Inter", sans-serif;
   color: #333;
   background-color: #4169e1;
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewport='0 0 24 24' fill='black' stroke='white' stroke-width='2'><path d='M5.5,2.5l0.1,15l4.5,-4.5l3.5,8l3.5,-1.5l-3.5,-8l6.9,0L5.5,2.5z'/></svg>") 4 2, auto;
 }
 
 /* Font classes */

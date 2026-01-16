@@ -69,6 +69,7 @@ export default function DesktopLayout() {
 
   // System State
   const [isPlaying, setIsPlaying] = useState(false)
+  const [volume, setVolume] = useState(0.5)
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   // Synchronized Background & Music Toggle
@@ -590,18 +591,7 @@ export default function DesktopLayout() {
               {/* Multimedia Controls - Synchronized with Atmospheric Choice */}
               <div className="flex items-center gap-6">
                  <div className="flex items-center gap-3">
-                    {/* Synchronized Skip Back */}
-                    <button 
-                      onClick={() => {
-                        const nextIdx = (currentBgIdx - 1 + BACKGROUNDS.length) % BACKGROUNDS.length;
-                        setCurrentBgIdx(nextIdx);
-                      }}
-                      className="w-10 h-10 bg-[#85C3D5] border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all group"
-                    >
-                       <svg width="14" height="14" viewBox="0 0 24 24" fill="black" className="group-hover:scale-110"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-                    </button>
-                    
-                    {/* High-Fidelity 8-Bit Play/Pause */}
+                     {/* High-Fidelity 8-Bit Play/Pause */}
                     <button 
                       onClick={() => {
                         if (isPlaying) {
@@ -612,24 +602,45 @@ export default function DesktopLayout() {
                           setIsPlaying(true);
                         }
                       }}
-                      className="w-16 h-16 bg-[#FEDA45] border-[4px] border-black flex items-center justify-center shadow-[6px_6px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1.5 transition-all relative group"
+                      className="w-14 h-14 bg-[#FEDA45] border-[4px] border-black flex items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all relative group"
                     >
                       <div className="absolute top-0 left-0 w-full h-1 bg-white/40" />
                       <div className="absolute top-0 left-0 w-1 h-full bg-white/40" />
                       {isPlaying ? (
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="black" className="drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="black" className="drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                       ) : (
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="black" className="ml-1 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M8 5v14l11-7z"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="black" className="ml-1 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M8 5v14l11-7z"/></svg>
                       )}
                     </button>
 
-                    {/* Synchronized Skip Forward */}
-                    <button 
-                      onClick={toggleAtmosphere}
-                      className="w-10 h-10 bg-[#85C3D5] border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all group"
-                    >
-                       <svg width="14" height="14" viewBox="0 0 24 24" fill="black" className="group-hover:scale-110"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
-                    </button>
+                    {/* Retro Volume Slider */}
+                    <div className="flex items-center gap-2 bg-[#85C3D5] p-2 border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)]">
+                       <svg width="16" height="16" viewBox="0 0 24 24" fill="black"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                       <div className="relative w-24 h-6 flex items-center">
+                          <input 
+                            type="range" 
+                            min="0" 
+                            max="1" 
+                            step="0.05" 
+                            value={volume} 
+                            onChange={(e) => {
+                               const newVol = parseFloat(e.target.value);
+                               setVolume(newVol);
+                               if(audioRef.current) audioRef.current.volume = newVol;
+                            }}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                          />
+                          {/* 8-Bit Segmented Visualization */}
+                          <div className="w-full h-4 bg-[#0C4A9C] border-2 border-black flex items-center p-0.5 gap-0.5">
+                             {[...Array(10)].map((_, i) => (
+                                <div 
+                                  key={i} 
+                                  className={`flex-1 h-full border-r border-black/10 last:border-r-0 ${i / 10 < volume ? "bg-[#FEDA45]" : "bg-[#1a3b5c]"}`}
+                                />
+                             ))}
+                          </div>
+                       </div>
+                    </div>
                  </div>
 
                  <div className="flex items-center gap-6 border-l border-white/20 pl-6 ml-4">
