@@ -33,6 +33,8 @@ export default function ContactContent() {
         from_name: formData.name,
         from_email: formData.email,
         message: formData.feedback,
+        to_name: "Arkaparna",
+        reply_to: formData.email,
       }
       
       console.log("Attempting to send email with:", {
@@ -42,12 +44,12 @@ export default function ContactContent() {
         params: templateParams
       })
       
-      // Pass public key as 4th argument for stateless execution
+      // Pass public key as options object for v4 syntax
       const response = await emailjs.send(
         EMAILJS_SERVICE_ID, 
         EMAILJS_TEMPLATE_ID, 
         templateParams,
-        EMAILJS_PUBLIC_KEY
+        { publicKey: EMAILJS_PUBLIC_KEY }
       )
       
       if (response.status === 200) {
