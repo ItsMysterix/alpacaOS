@@ -226,7 +226,8 @@ export default function Window({
           width: window.innerWidth,
           height: window.innerHeight - headerHeight - taskbarHeight,
         }
-        const newPosition = { x: 0, y: headerHeight }
+        // y is 0 because the container (DesktopLayout) is already below the header
+        const newPosition = { x: 0, y: 0 }
 
         setWindowSize(newSize)
         setWindowPosition(newPosition)
@@ -284,7 +285,7 @@ export default function Window({
 
     // Ensure window doesn't go off the left or top edge
     if (newX < 0) newX = 0
-    if (newY < headerHeight) newY = headerHeight
+    if (newY < 0) newY = 0 // Adjusted to 0 relative to container
 
     // Update position if changed
     if (newX !== windowPosition.x || newY !== windowPosition.y) {
@@ -322,7 +323,8 @@ export default function Window({
         width: window.innerWidth,
         height: window.innerHeight - headerHeight - taskbarHeight,
       }
-      const newPosition = { x: 0, y: headerHeight }
+      // y is 0 because the container is already offset
+      const newPosition = { x: 0, y: 0 }
 
       setWindowSize(newSize)
       setWindowPosition(newPosition)
@@ -523,6 +525,7 @@ export default function Window({
         ${isMobile ? "fixed" : "absolute"} z-50 
         flex flex-col shadow-2xl 
         ${!isMobile ? "drag-effect" : ""} 
+        ${!isDragging && !isResizing ? "transition-[width,height,top,left] duration-300 ease-out" : ""}
         overflow-hidden border-2 
         ${isActive ? "border-black shadow-[rgba(0,0,0,0.5)_5px_5px_0px_0px]" : "border-gray-400 opacity-90"}
         backdrop-blur-md bg-white/90
