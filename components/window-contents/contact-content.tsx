@@ -19,11 +19,6 @@ export default function ContactContent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const formRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    // Initialize EmailJS
-    emailjs.init(EMAILJS_PUBLIC_KEY)
-  }, [])
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -42,12 +37,19 @@ export default function ContactContent() {
         reply_to: formData.email,
       }
       
-      const response = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+      // Pass public key as 4th argument for stateless execution
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID, 
+        EMAILJS_TEMPLATE_ID, 
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      )
       
       if (response.status === 200) {
         setFormStatus("success")
         setFormData({ name: "", email: "", feedback: "" })
       } else {
+        console.error("EmailJS Response:", response)
         setFormStatus("error")
       }
     } catch (error) {
