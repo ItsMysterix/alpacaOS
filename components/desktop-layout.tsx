@@ -3,8 +3,10 @@
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import Window from "@/components/window"
+import { Terminal, Folder, ExternalLink, Github, Mail, Linkedin, Music, User, Code, Briefcase, FileText } from "lucide-react"
 
 // Define specific window sizes and positions for each app type
+// ... (rest of the file until the return)
 const WINDOW_CONFIGS = {
   about: { width: 800, height: 500, x: 150, y: 80 },
   experience: { width: 820, height: 580, x: 250, y: 120 },
@@ -23,6 +25,64 @@ export default function DesktopLayout() {
   const [appPositions, setAppPositions] = useState<Record<string, { x: number; y: number }>>({})
   const [appSizes, setAppSizes] = useState<Record<string, { width: number; height: number }>>({})
   const [isMobile, setIsMobile] = useState(false)
+
+  // Atmospheric Sync System - Combining high-fidelity assets with curated audio
+  const BACKGROUNDS = [
+    { 
+      id: 'meadow', 
+      name: 'MEADOW_LUSH', 
+      path: '/images/Meadow.png', 
+      saturation: '1.3', 
+      brightness: '1.1',
+      trackName: 'Beautiful Fairy Piano',
+      trackUrl: '/beautiful-fairy-piano.mp3'
+    },
+    { 
+      id: 'sunrise', 
+      name: 'SOLAR_RISE', 
+      path: '/images/Sunrise.png', 
+      saturation: '1.5', 
+      brightness: '1.2',
+      trackName: 'Calm Chill Piano',
+      trackUrl: '/calm chill piano.mp3'
+    },
+    { 
+      id: 'ramen', 
+      name: 'NEON_RAMEN', 
+      path: '/images/Ramen-shop.png', 
+      saturation: '1.4', 
+      brightness: '1.0',
+      trackName: 'Relaxing Piano Music',
+      trackUrl: '/relaxing-piano-music.mp3'
+    },
+    { 
+      id: 'skyline', 
+      name: 'CITY_SKYLINE', 
+      path: '/images/Skyline.png', 
+      saturation: '1.2', 
+      brightness: '0.9',
+      trackName: 'Relaxing Piano Jazz',
+      trackUrl: '/relaxing-piano-jazz.mp3'
+    },
+  ]
+  const [currentBgIdx, setCurrentBgIdx] = useState(0)
+
+  // System State
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Synchronized Background & Music Toggle
+  const toggleAtmosphere = () => {
+    setCurrentBgIdx((prev) => (prev + 1) % BACKGROUNDS.length)
+  }
+
+  // Environmental Autocycle - Automatically transition atmosphere every 60s
+  useEffect(() => {
+    const cycleInterval = setInterval(() => {
+      toggleAtmosphere()
+    }, 60000) // 1 minute cycle
+    return () => clearInterval(cycleInterval)
+  }, [currentBgIdx]) // Re-run if manually changed to reset timer
 
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerDimensions, setContainerDimensions] = useState({ width: 0, height: 0 })
@@ -308,19 +368,113 @@ export default function DesktopLayout() {
     }
   }
 
+  // Function to get current time
+
+  // Function to get current time
+  const [time, setTime] = useState(new Date())
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Handle music control via events
+  useEffect(() => {
+    const handleMusicChange = (e: any) => {
+      const { action } = e.detail
+      if (action === 'play') {
+        setIsPlaying(true)
+        if (audioRef.current) audioRef.current.play()
+      } else if (action === 'pause') {
+        setIsPlaying(false)
+        if (audioRef.current) audioRef.current.pause()
+      } else if (action === 'change') {
+        // Now synchronized with backgrounds
+        setIsPlaying(true)
+      }
+    }
+    window.addEventListener('alpaca-music-control', handleMusicChange)
+    return () => window.removeEventListener('alpaca-music-control', handleMusicChange)
+  }, [])
+
+  // Autoplay attempt on first interaction or load
+  useEffect(() => {
+    const startAudio = () => {
+      if (audioRef.current && !isPlaying) {
+        audioRef.current.play()
+          .then(() => setIsPlaying(true))
+          .catch(() => console.log("Autoplay blocked. Waiting for interaction."))
+      }
+    }
+    
+    // Try to play on load (often blocked)
+    startAudio()
+    
+    // Also try on first click to bypass browser policy
+    window.addEventListener('click', startAudio, { once: true })
+    return () => window.removeEventListener('click', startAudio)
+  }, [])
+
   return (
-    <div className="flex-1 bg-[#4169E1] relative overflow-hidden crt-effect w-full h-full" ref={containerRef}>
+    <div className="flex-1 relative overflow-hidden crt-effect w-full h-full bg-black flex flex-col" ref={containerRef}>
+      {/* Dynamic Environmental Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden bg-[#0A192F]">
+        {BACKGROUNDS.map((bg, idx) => (
+          <div 
+            key={bg.id}
+            className={`absolute inset-0 transform scale-110 animate-slow-zoom transition-opacity duration-1000 pointer-events-none ${
+              idx === currentBgIdx ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <Image 
+              src={bg.path} 
+              alt={bg.name} 
+              fill 
+              className="object-cover"
+              style={{ filter: `saturate(${bg.saturation}) brightness(${bg.brightness})` }}
+              priority
+            />
+          </div>
+        ))}
+
+        {/* Tactical Grid & Vignette Overlay - Softened to let colors pop */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
+        <div className="absolute inset-0 backdrop-blur-[0.5px] pointer-events-none" />
+      </div>
+
+      {/* Background Audio - Synchronized with Environment */}
+      <audio 
+        key={BACKGROUNDS[currentBgIdx].trackUrl} // Force re-render on source change to trigger autoplay
+        ref={audioRef}
+        src={BACKGROUNDS[currentBgIdx].trackUrl}
+        loop
+        autoPlay={isPlaying}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+      {/* Desktop Centerpiece - Simple & Peaceful */}
+      <div 
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-all duration-1000 pointer-events-none
+          ${activeApps.length > 0 ? "opacity-5 scale-95 blur-md" : "opacity-80 scale-100"}`}
+      >
+        <div className="font-vt323 text-[140px] leading-none text-white drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] animate-pulse-slow">
+          {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+        </div>
+        <div className="font-vt323 text-3xl text-white/50 uppercase tracking-[0.2em]">
+          {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+        </div>
+      </div>
+
       {/* Grid Layout Container - hide on mobile when window is open */}
-      <div className={`grid-layout w-full h-full ${isMobile && activeApps.length > 0 ? "hidden" : ""}`}>
+      <div className={`grid-layout w-full h-full relative z-10 ${isMobile && activeApps.length > 0 ? "hidden" : ""}`}>
         {/* Left Side Apps */}
         <div className="left-apps absolute left-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
           {leftSideApps.map((app, index) => (
             <div
               key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer"
+              className="icon-container flex flex-col items-center cursor-pointer group"
               onClick={() => handleIconClick(app)}
             >
-              <div className="w-20 h-20 flex items-center justify-center">
+              <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
                   src={app.icon || "/placeholder.svg"}
                   alt={app.name}
@@ -335,10 +489,10 @@ export default function DesktopLayout() {
                 />
               </div>
               <div
-                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border border-black`}
+                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
                 style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
               >
-                <span className="text-black text-center text-lg font-vt323 font-bold block w-full">{app.name}</span>
+                <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
               </div>
             </div>
           ))}
@@ -349,10 +503,10 @@ export default function DesktopLayout() {
           {rightSideApps.map((app, index) => (
             <div
               key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer"
+              className="icon-container flex flex-col items-center cursor-pointer group"
               onClick={() => handleIconClick(app)}
             >
-              <div className="w-20 h-20 flex items-center justify-center">
+              <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
                   src={app.icon || "/placeholder.svg"}
                   alt={app.name}
@@ -367,13 +521,135 @@ export default function DesktopLayout() {
                 />
               </div>
               <div
-                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border border-black`}
+                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
                 style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
               >
-                <span className="text-black text-center text-lg font-vt323 font-bold block w-full">{app.name}</span>
+                <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Bottom Taskbar - System v5 High-Fidelity Layout */}
+      <div className="absolute bottom-0 left-0 w-full h-14 bg-[#335DA1] border-t-2 border-black flex items-center px-2 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.3)]">
+        
+        {/* Left Side: Dynamic App Tabs */}
+        <div className="flex items-center gap-1 h-full py-1.5 overflow-x-auto no-scrollbar max-w-[40%]">
+          {activeApps.map(appId => {
+            const app = [...leftSideApps, ...rightSideApps].find(a => a.id === appId) || { id: appId, name: appId.toUpperCase() }
+            const isActive = activeAppId === appId
+            
+            return (
+              <button 
+                key={appId}
+                onClick={() => bringToFront(appId)}
+                className={`h-full px-4 border-2 border-black flex items-center gap-3 transition-all relative ${
+                  isActive 
+                    ? "bg-[#FEDA45] shadow-[2px_2px_0px_rgba(0,0,0,1)] z-10 translate-y-[-1px]" 
+                    : "bg-[#85C3D5] opacity-80 hover:opacity-100"
+                }`}
+              >
+                <Folder className={`w-5 h-5 ${isActive ? "text-black fill-black/20" : "text-black/60"}`} />
+                <span className={`font-vt323 text-xl font-bold uppercase tracking-tight whitespace-nowrap ${isActive ? "text-black" : "text-black/60"}`}>
+                  {app.name}
+                </span>
+                {isActive && <div className="absolute -top-1 left-0 w-full h-0.5 bg-white/40" />}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Middle: Terminal Icon Only */}
+        <div className="flex items-center gap-1 h-full py-1.5 ml-4">
+             <button 
+               onClick={() => handleIconClick({ id: 'terminal', name: 'Terminal' })}
+               className="w-11 h-full bg-[#85C3D5] border-2 border-black flex items-center justify-center hover:bg-white transition-colors shadow-[inset_-1px_-1px_0px_rgba(0,0,0,0.2)] active:scale-90"
+             >
+               <Image src="/terminal.png" alt="T" width={22} height={22} className="pixelated" />
+             </button>
+        </div>
+
+        {/* Right Side: Long System Telemetry & Multimedia Bar (No Time) */}
+        <div className="flex-1 h-full py-1.5 ml-4 flex items-center">
+           <div className="w-full h-full bg-[#0C4A9C] border-2 border-black relative flex items-center justify-between px-4 overflow-hidden">
+              {/* Reference Style: Dashed top highlight */}
+              <div className="absolute top-0 left-0 w-full h-[1px] border-t border-dashed border-white/30" />
+              
+              <div className="flex items-center gap-3">
+                 <div className="relative">
+                   <Folder className="w-4 h-4 text-orange-400 fill-orange-400 animate-pulse" />
+                   <div className="absolute -bottom-0.5 -right-0.5 w-1.5 h-1.5 bg-green-500 rounded-full border border-black" />
+                 </div>
+                 <span className="font-vt323 text-[#FFCD4B] text-lg uppercase tracking-[0.1em] drop-shadow-[1px_1px_0px_rgba(0,0,0,0.5)]">
+                    Active Process: {activeAppId ? activeAppId.replace(/-/g, '_').toUpperCase() : "OS_CORE"}
+                 </span>
+              </div>
+
+              {/* Multimedia Controls - 8-Bit Pixel-Art Design */}
+              {/* Multimedia Controls - Synchronized with Atmospheric Choice */}
+              <div className="flex items-center gap-6">
+                 <div className="flex items-center gap-3">
+                    {/* Synchronized Skip Back */}
+                    <button 
+                      onClick={() => {
+                        const nextIdx = (currentBgIdx - 1 + BACKGROUNDS.length) % BACKGROUNDS.length;
+                        setCurrentBgIdx(nextIdx);
+                      }}
+                      className="w-10 h-10 bg-[#85C3D5] border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all group"
+                    >
+                       <svg width="14" height="14" viewBox="0 0 24 24" fill="black" className="group-hover:scale-110"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                    </button>
+                    
+                    {/* High-Fidelity 8-Bit Play/Pause */}
+                    <button 
+                      onClick={() => {
+                        if (isPlaying) {
+                          audioRef.current?.pause();
+                          setIsPlaying(false);
+                        } else {
+                          audioRef.current?.play();
+                          setIsPlaying(true);
+                        }
+                      }}
+                      className="w-16 h-16 bg-[#FEDA45] border-[4px] border-black flex items-center justify-center shadow-[6px_6px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1.5 transition-all relative group"
+                    >
+                      <div className="absolute top-0 left-0 w-full h-1 bg-white/40" />
+                      <div className="absolute top-0 left-0 w-1 h-full bg-white/40" />
+                      {isPlaying ? (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="black" className="drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                      ) : (
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="black" className="ml-1 drop-shadow-[2px_2px_0px_rgba(255,255,255,0.3)]"><path d="M8 5v14l11-7z"/></svg>
+                      )}
+                    </button>
+
+                    {/* Synchronized Skip Forward */}
+                    <button 
+                      onClick={toggleAtmosphere}
+                      className="w-10 h-10 bg-[#85C3D5] border-4 border-black flex items-center justify-center shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 transition-all group"
+                    >
+                       <svg width="14" height="14" viewBox="0 0 24 24" fill="black" className="group-hover:scale-110"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+                    </button>
+                 </div>
+
+                 <div className="flex items-center gap-6 border-l border-white/20 pl-6 ml-4">
+                    <button 
+                      onClick={toggleAtmosphere}
+                      className="h-10 px-4 bg-[#FEDA45] border-2 border-black flex items-center gap-3 hover:bg-white active:translate-y-1 active:shadow-none shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all group"
+                    >
+                       <div className="w-5 h-5 bg-black border border-white flex items-center justify-center group-hover:rotate-90 transition-transform">
+                          <div className="w-1.5 h-1.5 bg-yellow-400" />
+                       </div>
+                       <div className="flex flex-col items-start leading-none">
+                          <span className="font-vt323 text-black text-[10px] uppercase opacity-70">Atmosphere</span>
+                          <span className="font-vt323 text-black text-lg font-bold uppercase tracking-tight">
+                            {BACKGROUNDS[currentBgIdx].name}
+                          </span>
+                       </div>
+                    </button>
+                 </div>
+              </div>
+           </div>
         </div>
       </div>
 

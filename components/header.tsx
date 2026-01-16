@@ -65,15 +65,6 @@ export default function Header() {
             {isDropdownOpen && (
               <div className="absolute top-full left-0 mt-1 w-48 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.3)] z-50">
                 <div
-                  className="flex items-center gap-3 p-3 hover:bg-[#B0C4DE] cursor-pointer border-b-2 border-gray-200"
-                  onClick={handleTerminalClick}
-                >
-                  <div className="w-8 h-8 relative">
-                    <Image src="/terminal.png" alt="Terminal" width={32} height={32} className="pixel-effect" />
-                  </div>
-                  <span className="font-vt323 text-lg font-bold">Terminal</span>
-                </div>
-                <div
                   className="flex items-center gap-3 p-3 hover:bg-[#B0C4DE] cursor-pointer"
                   onClick={handleMusicClick}
                 >
@@ -81,6 +72,9 @@ export default function Header() {
                     <Image src="/soundcloud-icon.png" alt="Music" width={32} height={32} className="pixel-effect" />
                   </div>
                   <span className="font-vt323 text-lg font-bold">Music</span>
+                </div>
+                <div className="p-2 border-t border-gray-100 bg-gray-50 flex justify-center">
+                  <p className="font-vt323 text-[10px] text-gray-400 uppercase tracking-widest">System v1.2</p>
                 </div>
               </div>
             )}

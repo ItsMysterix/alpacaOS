@@ -1,10 +1,10 @@
 "use client"
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
-import { Send, Mail, Phone, ExternalLink } from "lucide-react"
+import { Send, Mail, Phone, ExternalLink, Terminal, ShieldCheck, Zap } from "lucide-react"
 import gsap from "gsap"
 
-// EmailJS configuration with your actual values
+// EmailJS configuration
 const EMAILJS_SERVICE_ID = "service_dsx5gt3"
 const EMAILJS_TEMPLATE_ID = "template_440psag"
 const EMAILJS_PUBLIC_KEY = "v7Euxj9XIHYlgGpry"
@@ -26,89 +26,30 @@ export default function ContactContent() {
   const [emailjsStatus, setEmailjsStatus] = useState<"loading" | "ready" | "error">("loading")
   const formRef = useRef<HTMLDivElement>(null)
 
-  // Use a ref to track initialization attempts
   const initAttempts = useRef(0)
   const maxAttempts = 3
   const checkInterval = useRef<NodeJS.Timeout | null>(null)
 
-  useEffect(() => {
-    if (formRef.current) {
-      gsap.fromTo(formRef.current,
-        { opacity: 0, scale: 0.9, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.6, ease: "back.out(1.7)" }
-      )
-    }
-  }, [])
+  // Synchronize with Window shell opening
 
-  // Initialize EmailJS when component mounts
   useEffect(() => {
-    // Function to check and initialize EmailJS
     const initEmailJS = () => {
-      // Increment attempt counter
       initAttempts.current += 1
-
-      // Check if EmailJS is available in window
       if (typeof window !== "undefined" && window.emailjs) {
         try {
           window.emailjs.init(EMAILJS_PUBLIC_KEY)
           setEmailjsStatus("ready")
-          console.log("EmailJS initialized successfully")
-
-          // Clear interval if it exists
-          if (checkInterval.current) {
-            clearInterval(checkInterval.current)
-            checkInterval.current = null
-          }
+          if (checkInterval.current) clearInterval(checkInterval.current)
         } catch (error) {
-          console.error("EmailJS initialization error:", error)
-
-          // If we've reached max attempts, mark as error
-          if (initAttempts.current >= maxAttempts) {
-            setEmailjsStatus("error")
-            if (checkInterval.current) {
-              clearInterval(checkInterval.current)
-              checkInterval.current = null
-            }
-          }
+          if (initAttempts.current >= maxAttempts) setEmailjsStatus("error")
         }
-      } else {
-        // If we've reached max attempts, mark as error
-        if (initAttempts.current >= maxAttempts) {
-          console.log(`EmailJS not found after ${maxAttempts} attempts`)
-          setEmailjsStatus("error")
-          if (checkInterval.current) {
-            clearInterval(checkInterval.current)
-            checkInterval.current = null
-          }
-        }
-      }
-    }
-
-    // Try immediately
-    initEmailJS()
-
-    // Set up interval to check periodically
-    checkInterval.current = setInterval(initEmailJS, 2000)
-
-    // Set a timeout to give up after 10 seconds
-    const timeout = setTimeout(() => {
-      if (emailjsStatus === "loading") {
+      } else if (initAttempts.current >= maxAttempts) {
         setEmailjsStatus("error")
-        console.log("EmailJS initialization timed out")
-        if (checkInterval.current) {
-          clearInterval(checkInterval.current)
-          checkInterval.current = null
-        }
       }
-    }, 10000)
-
-    // Clean up
-    return () => {
-      if (checkInterval.current) {
-        clearInterval(checkInterval.current)
-      }
-      clearTimeout(timeout)
     }
+    initEmailJS()
+    checkInterval.current = setInterval(initEmailJS, 1000)
+    return () => { if (checkInterval.current) clearInterval(checkInterval.current) }
   }, [])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -120,20 +61,13 @@ export default function ContactContent() {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus("loading")
-
     try {
-      // If EmailJS is not available, simulate success after a delay
       if (emailjsStatus !== "ready" || !window.emailjs) {
-        console.log("EmailJS not available, simulating submission")
         await new Promise((resolve) => setTimeout(resolve, 1500))
         setFormStatus("success")
         setFormData({ name: "", email: "", feedback: "" })
-        setIsSubmitting(false)
-        setTimeout(() => setFormStatus(null), 5000)
         return
       }
-
-      // Prepare template parameters
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
@@ -141,178 +75,125 @@ export default function ContactContent() {
         to_email: "arkaparna.gantait@gmail.com",
         reply_to: formData.email,
       }
-
-      // Send email using EmailJS
       const response = await window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
-
       if (response.status === 200) {
         setFormStatus("success")
-        // Reset form after success
         setFormData({ name: "", email: "", feedback: "" })
       } else {
         setFormStatus("error")
       }
     } catch (error) {
-      console.error("EmailJS error:", error)
       setFormStatus("error")
     } finally {
       setIsSubmitting(false)
-      // Clear status after 5 seconds
       setTimeout(() => setFormStatus(null), 5000)
     }
   }
 
   return (
-    <div className="flex h-full bg-[#87CEEB]/50 backdrop-blur-md p-4 overflow-y-auto">
-      <div className="max-w-xl mx-auto w-full">
-        <div className="text-center mb-4">
-          <span className="inline-block bg-[#FFCD4B] px-6 py-1 border-2 border-black uppercase font-vt323 text-3xl font-bold text-[#0802A3] retro-shadow">
-            Contact Me
-          </span>
+    <div className="flex h-full p-4 overflow-y-auto">
+
+      <div className="max-w-xl mx-auto w-full py-4">
+        {/* Standardized Window Title Header */}
+        <div className="flex justify-center mb-6">
+          <div className="bg-[#FF7676] border-2 border-black px-8 py-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] text-center">
+            <h2 className="font-vt323 text-3xl font-bold text-white uppercase tracking-wider">Contact Me</h2>
+          </div>
         </div>
 
         {/* Form container */}
-        <div ref={formRef} className="bg-white/90 backdrop-blur-sm border-4 border-black p-4 relative retro-shadow">
-          {/* Pixelated corners */}
-          <div className="absolute top-0 left-0 w-4 h-4 bg-[#FF4B91]"></div>
-          <div className="absolute top-0 right-0 w-4 h-4 bg-[#FF4B91]"></div>
-          <div className="absolute bottom-0 left-0 w-4 h-4 bg-[#FF4B91]"></div>
-          <div className="absolute bottom-0 right-0 w-4 h-4 bg-[#FF4B91]"></div>
-
-          {/* Status messages */}
+        <div ref={formRef} className="bg-white border-2 border-black p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.2)]">
           {formStatus === "success" && (
-            <div className="bg-[#FFCD4B] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
-              <p className="font-vt323 text-lg font-bold">Message sent successfully!</p>
-              <p className="font-vt323 text-sm">I'll get back to you soon.</p>
+            <div className="bg-green-100 border-2 border-green-500 p-3 mb-4 text-green-700 font-vt323 text-xl flex items-center gap-2">
+              <ShieldCheck className="w-6 h-6" /> Message Sent Successfully!
             </div>
           )}
 
           {formStatus === "error" && (
-            <div className="bg-[#FF7676] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
-              <p className="font-vt323 text-lg font-bold">Failed to send message.</p>
-              <p className="font-vt323 text-sm">Please try again or contact me directly.</p>
+            <div className="bg-red-100 border-2 border-red-500 p-3 mb-4 text-red-700 font-vt323 text-xl flex items-center gap-2">
+              <Zap className="w-6 h-6" /> Error! Please try again later.
             </div>
           )}
 
-          {formStatus === "loading" && (
-            <div className="bg-[#87CEEB] border-2 border-black p-2 mb-4 text-center retro-shadow-sm">
-              <p className="font-vt323 text-lg font-bold">Sending message...</p>
-              <div className="flex justify-center mt-1">
-                <div className="w-2 h-2 bg-[#0802A3] mx-1 animate-bounce" style={{ animationDelay: "0ms" }}></div>
-                <div className="w-2 h-2 bg-[#0802A3] mx-1 animate-bounce" style={{ animationDelay: "150ms" }}></div>
-                <div className="w-2 h-2 bg-[#0802A3] mx-1 animate-bounce" style={{ animationDelay: "300ms" }}></div>
-              </div>
-            </div>
-          )}
-
-          {emailjsStatus === "error" && !formStatus && (
-            <div className="bg-[#87CEEB]/30 border-2 border-black p-2 mb-4 retro-shadow-sm backdrop-blur-sm">
-              <p className="font-vt323 text-lg font-bold text-center">Email service unavailable</p>
-              <p className="font-vt323 text-sm text-center mb-2">Your message will still be recorded.</p>
-
-              <div className="flex flex-col sm:flex-row gap-2 justify-center mt-2">
-                <a
-                  href="mailto:arkaparna.gantait@gmail.com"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
-                >
-                  <Mail className="w-4 h-4" />
-                  <span>Email Me</span>
-                </a>
-                <a
-                  href="tel:4706523218"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
-                >
-                  <Phone className="w-4 h-4" />
-                  <span>Call Me</span>
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/arkaparna-gantait/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1 px-3 py-1 bg-[#FFCD4B] border-2 border-black text-[#0802A3] font-vt323 hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all retro-shadow-sm"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>LinkedIn</span>
-                </a>
-              </div>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3">
-            {/* Name and Email in a row */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              {/* Name field */}
-              <div className="flex-1">
-                <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">NAME</label>
-                <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FFCD4B]"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-              </div>
-
-              {/* Email field */}
-              <div className="flex-1">
-                <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">EMAIL</label>
-                <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none focus:ring-2 focus:ring-[#FFCD4B]"
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Feedback field */}
-            <div>
-              <label className="block font-vt323 text-lg font-bold mb-1 text-[#0802A3]">MESSAGE</label>
-              <div className="border-2 border-black p-1 bg-[#87CEEB]/20 backdrop-blur-sm">
-                <textarea
-                  name="feedback"
-                  value={formData.feedback}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-1">
+                <label className="font-vt323 text-lg text-black font-bold uppercase">Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
-                  rows={3}
-                  className="w-full p-1 font-vt323 text-lg bg-white border-2 border-black focus:outline-none resize-none focus:ring-2 focus:ring-[#FFCD4B]"
+                  className="w-full p-2 bg-[#F8F1E7] border-2 border-black text-black font-vt323 text-xl focus:outline-none focus:bg-white"
                   required
-                  disabled={isSubmitting}
-                ></textarea>
+                  placeholder="Your Name"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-vt323 text-lg text-black font-bold uppercase">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full p-2 bg-[#F8F1E7] border-2 border-black text-black font-vt323 text-xl focus:outline-none focus:bg-white"
+                  required
+                  placeholder="Your Email"
+                />
               </div>
             </div>
 
-            {/* Submit button */}
+            <div className="space-y-1">
+              <label className="font-vt323 text-lg text-black font-bold uppercase">Message</label>
+              <textarea
+                name="feedback"
+                value={formData.feedback}
+                onChange={handleInputChange}
+                rows={4}
+                className="w-full p-2 bg-[#F8F1E7] border-2 border-black text-black font-vt323 text-xl focus:outline-none focus:bg-white resize-none"
+                required
+                placeholder="What's on your mind?"
+              ></textarea>
+            </div>
+
             <div className="flex justify-center pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`flex items-center gap-2 px-8 py-2 bg-[#FFCD4B] border-2 border-black font-vt323 text-xl font-bold hover:bg-[#FFE07D] transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-[0px] active:translate-y-[0px] retro-shadow ${
-                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+                className={`
+                  flex items-center gap-2 px-10 py-3 bg-[#FFCD4B] border-2 border-black text-black font-vt323 text-2xl font-bold uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all
+                  ${isSubmitting ? "opacity-50 cursor-wait" : "hover:bg-[#FFD700] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] active:scale-95"}
+                `}
               >
-                <Send className="w-5 h-5" />
-                {isSubmitting ? "SENDING..." : "SUBMIT"}
+                {isSubmitting ? "SENDING..." : "SEND MESSAGE"} <Send className="w-6 h-6" />
               </button>
             </div>
           </form>
         </div>
 
-        {/* Pixelated decorative elements at the bottom */}
-        <div className="flex justify-center mt-4 space-x-3">
-          <div className="w-3 h-3 bg-[#0802A3] animate-pulse" style={{ animationDelay: "0ms" }}></div>
-          <div className="w-3 h-3 bg-[#FF4B91] animate-pulse" style={{ animationDelay: "200ms" }}></div>
-          <div className="w-3 h-3 bg-[#FF7676] animate-pulse" style={{ animationDelay: "400ms" }}></div>
-          <div className="w-3 h-3 bg-[#FFCD4B] animate-pulse" style={{ animationDelay: "600ms" }}></div>
+        {/* Secondary Links */}
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <a
+            href="mailto:arkaparna.gantait@gmail.com"
+            className="flex items-center justify-center gap-2 p-3 bg-[#FFCD4B] border-2 border-black text-black font-vt323 text-lg hover:bg-white hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <Mail className="w-5 h-5" /> Email Direct
+          </a>
+          <a
+            href="tel:4706523218"
+            className="flex items-center justify-center gap-2 p-3 bg-white border-2 border-black text-black font-vt323 text-lg hover:bg-[#FFCD4B] hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <Phone className="w-5 h-5" /> Call Me
+          </a>
+          <a
+            href="https://linkedin.com/in/arkaparna-gantait"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 p-3 bg-white border-2 border-black text-black font-vt323 text-lg hover:bg-[#FF7676] hover:text-white hover:shadow-[3px_3px_0px_rgba(0,0,0,1)] transition-all"
+          >
+            <ExternalLink className="w-5 h-5" /> LinkedIn
+          </a>
         </div>
       </div>
     </div>

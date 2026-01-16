@@ -1,85 +1,68 @@
 "use client"
 import { useState } from "react"
-import { Code, Database, Users, ChevronRight, Menu, X, Cpu, Settings } from "lucide-react"
+import { Code, Settings, Cpu, Database } from "lucide-react"
 
 export default function SkillsContent() {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>("programming")
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string>("programming")
 
   const categories = [
-    { id: "programming", name: "Languages", icon: <Code className="w-5 h-5 text-[#FF4B91]" /> },
-    { id: "frameworks", name: "Frameworks & Libs", icon: <Settings className="w-5 h-5 text-[#FF7676]" /> },
-    { id: "ai", name: "Deep Learning & AI", icon: <Cpu className="w-5 h-5 text-[#FFCD4B]" /> },
-    { id: "devops", name: "DevOps & Tools", icon: <Database className="w-5 h-5 text-[#0C4A9C]" /> },
+    { id: "programming", name: "Languages", icon: <Code className="w-5 h-5" /> },
+    { id: "frameworks", name: "Frameworks", icon: <Settings className="w-5 h-5" /> },
+    { id: "ai", name: "AI & ML", icon: <Cpu className="w-5 h-5" /> },
+    { id: "devops", name: "Tools", icon: <Database className="w-5 h-5" /> },
   ]
 
   const skills = {
     programming: [
-      { name: "Python", level: 95 },
-      { name: "SQL", level: 90 },
-      { name: "C++", level: 85 },
-      { name: "Java", level: 85 },
-      { name: "Dart", level: 80 },
-      { name: "JavaScript/TypeScript", level: 90 },
-      { name: "Swift", level: 75 },
+      { name: "Python", level: 95, color: "bg-[#FF4B91]" },
+      { name: "SQL", level: 90, color: "bg-[#FF4B91]" },
+      { name: "JavaScript/TypeScript", level: 90, color: "bg-[#FF4B91]" },
+      { name: "C++", level: 85, color: "bg-[#FF4B91]" },
+      { name: "Java", level: 85, color: "bg-[#FF4B91]" },
+      { name: "Dart", level: 80, color: "bg-[#FF4B91]" },
     ],
     frameworks: [
-      { name: "FastAPI", level: 90 },
-      { name: "Flutter", level: 85 },
-      { name: "Node.js", level: 85 },
-      { name: "Firebase", level: 90 },
-      { name: "Supabase", level: 85 },
-      { name: "React / Next.js", level: 90 },
+      { name: "React / Next.js", level: 90, color: "bg-[#FF7676]" },
+      { name: "Node.js", level: 85, color: "bg-[#FF7676]" },
+      { name: "FastAPI", level: 90, color: "bg-[#FF7676]" },
+      { name: "Flutter", level: 85, color: "bg-[#FF7676]" },
+      { name: "Firebase", level: 90, color: "bg-[#FF7676]" },
+      { name: "Supabase", level: 85, color: "bg-[#FF7676]" },
     ],
     ai: [
-      { name: "PyTorch", level: 80 },
-      { name: "HuggingFace", level: 85 },
-      { name: "OpenAI / Anthropic APIs", level: 90 },
-      { name: "GCP AI", level: 80 },
-      { name: "RAG & LLM Agents", level: 85 },
+      { name: "PyTorch", level: 80, color: "bg-[#FFCD4B]" },
+      { name: "HuggingFace", level: 85, color: "bg-[#FFCD4B]" },
+      { name: "LLM Agents & RAG", level: 85, color: "bg-[#FFCD4B]" },
+      { name: "API Integration", level: 90, color: "bg-[#FFCD4B]" },
+      { name: "Computer Vision", level: 75, color: "bg-[#FFCD4B]" },
     ],
     devops: [
-      { name: "Docker", level: 90 },
-      { name: "AWS / GCP", level: 85 },
-      { name: "Jenkins", level: 80 },
-      { name: "Nginx / Linux", level: 85 },
-      { name: "Git", level: 95 },
-      { name: "Grafana / Prometheus", level: 80 },
-      { name: "MCP (Model Context Protocol)", level: 85 },
+      { name: "Docker", level: 90, color: "bg-[#0C4A9C]" },
+      { name: "AWS / GCP", level: 85, color: "bg-[#0C4A9C]" },
+      { name: "Git", level: 95, color: "bg-[#0C4A9C]" },
+      { name: "Jenkins", level: 80, color: "bg-[#0C4A9C]" },
+      { name: "Linux Systems", level: 85, color: "bg-[#0C4A9C]" },
+      { name: "MCP Protocol", level: 85, color: "bg-[#0C4A9C]" },
     ],
-  }
-
-  const getSkillColor = (category: string) => {
-    switch (category) {
-      case "programming":
-        return "bg-[#FF4B91]"
-      case "frameworks":
-        return "bg-[#FF7676]"
-      case "ai":
-        return "bg-[#FFCD4B]"
-      case "devops":
-        return "bg-[#0C4A9C]"
-      default:
-        return "bg-gray-400"
-    }
   }
 
   const renderSkills = () => {
-    if (!selectedCategory) return <div className="p-4 font-vt323 text-lg">Select a category to view skills</div>
-
     const categorySkills = skills[selectedCategory as keyof typeof skills] || []
-    const skillColor = getSkillColor(selectedCategory)
 
     return (
-      <div className="p-4 space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 overflow-y-auto h-full custom-scrollbar">
         {categorySkills.map((skill, index) => (
-          <div key={index} className="bg-white p-3 rounded-none border-2 border-black">
-            <div className="flex justify-between items-center mb-1">
-              <span className="font-vt323 text-lg font-bold">{skill.name}</span>
-              <span className="font-vt323 text-sm">{skill.level}%</span>
+          <div key={index} className="bg-white p-4 border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] flex flex-col gap-2">
+            <div className="flex justify-between items-center">
+              <span className="font-vt323 text-xl font-bold uppercase tracking-tight">{skill.name}</span>
+              <span className="font-vt323 text-lg text-black/50">{skill.level}%</span>
             </div>
-            <div className="w-full bg-[#87CEEB] rounded-none h-4 border-2 border-black">
-              <div className={`${skillColor} h-full`} style={{ width: `${skill.level}%` }}></div>
+            <div className="w-full bg-[#87CEEB]/20 border-2 border-black h-5 relative overflow-hidden">
+              <div 
+                className={`${skill.color} h-full transition-all duration-500 border-r-2 border-black`} 
+                style={{ width: `${skill.level}%` }}
+              />
+              <div className="absolute inset-x-0 bottom-0 h-1 bg-white/30" />
             </div>
           </div>
         ))}
@@ -88,77 +71,38 @@ export default function SkillsContent() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-full">
-      {/* Mobile header with menu button */}
-      <div className="md:hidden bg-[#87CEEB] border-b-2 border-black p-2 flex items-center justify-between">
-        <div className="relative px-2">
-          <div className="absolute top-0.5 left-1.5 bg-black px-2 py-0.5 uppercase font-vt323 text-lg font-extrabold">
-            FAVS
-          </div>
-          <div className="relative z-10 bg-[#FFCD4B] border-2 border-black px-2 py-0.5 uppercase font-vt323 text-lg font-extrabold text-[#0802A3]">
-            FAVS
-          </div>
-        </div>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 bg-[#FFCD4B] border-2 border-black">
-          {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
-      </div>
-
-      {/* Sidebar - responsive */}
-      <div
-        className={`
-        ${sidebarOpen ? "block" : "hidden"} md:block
-        w-full md:w-1/4 bg-[#87CEEB] border-r-2 border-black p-2
-        ${sidebarOpen ? "absolute inset-x-0 top-12 bottom-0 z-10" : ""}
-        overflow-y-auto
-      `}
-      >
-        {/* Desktop heading */}
-        <div className="hidden md:block relative mb-4 px-2">
-          <div className="absolute top-1 left-1 bg-black px-3 py-1 uppercase font-vt323 text-xl font-extrabold">
-            FAVOURITES
-          </div>
-          <div className="relative z-10 bg-[#FFCD4B] border-2 border-black px-3 py-1 uppercase font-vt323 text-xl font-extrabold text-[#0802A3]">
-            FAVOURITES
-          </div>
-        </div>
-
-        {/* Mobile heading */}
-        <div className="md:hidden relative mb-4 px-2">
-          <div className="absolute top-0.5 left-1.5 bg-black px-2 py-0.5 uppercase font-vt323 text-lg font-extrabold">
-            FAVOURITES
-          </div>
-          <div className="relative z-10 bg-[#FFCD4B] border-2 border-black px-2 py-0.5 uppercase font-vt323 text-lg font-extrabold text-[#0802A3]">
-            FAVOURITES
-          </div>
-        </div>
-
+    <div className="flex flex-col h-full overflow-hidden">
+      {/* Navigation Arch-Tabs */}
+      <div className="flex gap-2 p-2 bg-[#B3E5FC]/20 border-b-2 border-black shrink-0 overflow-x-auto no-scrollbar">
         {categories.map((category) => (
-          <div
+          <button 
             key={category.id}
-            className={`flex items-center gap-2 p-2 cursor-pointer rounded border-2 mb-2 ${
-              selectedCategory === category.id ? "bg-[#FFCD4B] border-black" : "border-transparent hover:border-black"
-            }`}
-            onClick={() => {
-              setSelectedCategory(category.id)
-              setSidebarOpen(false)
-            }}
+            onClick={() => setSelectedCategory(category.id)}
+            className={`
+              px-6 py-2 font-vt323 text-xl border-2 border-black relative transition-all duration-150 uppercase tracking-tight whitespace-nowrap
+              ${selectedCategory === category.id 
+                ? "bg-[#FEDA45] text-black shadow-[3px_3px_0px_rgba(0,0,0,1)] -translate-y-0.5 z-10 font-bold" 
+                : "bg-[#88C8E1] text-black/60 hover:bg-white hover:text-black shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+              }
+            `}
           >
-            {category.icon}
-            <span className="font-vt323 text-lg">{category.name}</span>
-            {selectedCategory === category.id && <ChevronRight className="w-4 h-4 ml-auto" />}
-          </div>
+            {category.name}
+            {selectedCategory === category.id && (
+              <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FEDA45] rotate-45 border-r-2 border-b-2 border-black" />
+            )}
+          </button>
         ))}
       </div>
 
-      {/* Content area */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-2 bg-[#87CEEB] border-b-2 border-black font-vt323 text-lg font-bold flex justify-center">
-          <span className="bg-[#FFCD4B] px-4 py-0.5 border-2 border-black uppercase">
-            {categories.find((c) => c.id === selectedCategory)?.name || "Skills"}
-          </span>
+      <div className="flex-1 m-3 border-4 border-black bg-white/5 relative overflow-hidden flex flex-col shadow-[inset_4px_4px_10px_rgba(0,0,0,0.3)]">
+        <div className="absolute inset-0 border-2 border-[#B3E5FC]/30 pointer-events-none z-10" />
+        <div className="flex-1 relative overflow-hidden flex flex-col">
+          <div 
+            className="absolute inset-0 pointer-events-none opacity-[0.05]" 
+            style={{ backgroundImage: "repeating-linear-gradient(0deg, #000, #000 2px, transparent 2px, transparent 4px)" }}
+          />
+          {renderSkills()}
         </div>
-        <div className="bg-white min-h-0 overflow-y-auto">{renderSkills()}</div>
       </div>
     </div>
   )

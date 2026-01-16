@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import LoadingScreen from "@/components/loading-screen"
 import DesktopLayout from "@/components/desktop-layout"
 import Header from "@/components/header"
+import EnvironmentalBackground from "@/components/atmosphere/environmental-background"
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true)
@@ -33,13 +34,13 @@ export default function Home() {
   }, [isLoading])
 
   return (
-    <main className="flex flex-col h-screen w-full overflow-hidden bg-[#4169E1]">
+    <EnvironmentalBackground>
       {isLoading && <LoadingScreen />}
       {/* Only show header when not loading */}
       {!isLoading && <Header />}
       <div className={`flex-1 overflow-hidden ${isLoading ? "pt-0" : ""}`}>
         <DesktopLayout />
       </div>
-    </main>
+    </EnvironmentalBackground>
   )
 }

@@ -241,21 +241,31 @@ export default function TerminalContent() {
           </div>
         ))}
 
-        <form onSubmit={handleSubmit} className="flex items-center mt-2">
-          <span className="text-[#ffcd4b] mr-2 font-bold">$</span>
-          <input
-            ref={inputRef}
-            type="text"
-            value={currentInput}
-            onChange={(e) => setCurrentInput(e.target.value)}
-            className="flex-1 bg-transparent outline-none text-[#87CEEB] font-vt323 text-lg"
-            autoFocus
-          />
-          <span
-            className={`h-5 w-2.5 bg-[#87CEEB] ml-0.5 ${
-              cursorVisible ? "opacity-100" : "opacity-0"
-            } transition-opacity duration-100`}
-          ></span>
+        <form onSubmit={handleSubmit} className="flex items-center mt-2 relative group" onClick={() => inputRef.current?.focus()}>
+          <span className="text-[#ffcd4b] mr-2 font-bold shrink-0">$</span>
+          <div className="relative flex items-center flex-1 overflow-hidden">
+            {/* Visible rendered text */}
+            <span className="text-[#87CEEB] whitespace-pre break-all">
+              {currentInput}
+            </span>
+            
+            {/* Dynamic blinking cursor */}
+            <span
+              className={`h-5 w-2.5 bg-[#87CEEB] shrink-0 ${
+                cursorVisible ? "opacity-100" : "opacity-0"
+              } transition-opacity duration-100`}
+            ></span>
+
+            {/* Hidden input for focus and logic */}
+            <input
+              ref={inputRef}
+              type="text"
+              value={currentInput}
+              onChange={(e) => setCurrentInput(e.target.value)}
+              className="absolute inset-0 opacity-0 cursor-default caret-transparent w-full"
+              autoFocus
+            />
+          </div>
         </form>
       </div>
     </div>

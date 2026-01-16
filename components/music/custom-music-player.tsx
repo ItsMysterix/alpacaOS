@@ -1,81 +1,136 @@
 "use client"
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { Music, Construction } from "lucide-react"
+import { Music, Play, Pause, SkipForward, SkipBack, Volume2 } from "lucide-react"
 
 export default function CustomMusicPlayer() {
-  const [showDetails, setShowDetails] = useState(false)
+  const [currentTrack, setCurrentTrack] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true) // Initialized to true to match desktop logic
 
-  // Toggle details visibility
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowDetails(true)
-    }, 1500)
+  const tracks = [
+    { name: "Peaceful Piano 1", artist: "Classical Dreams", color: "#FFCD4B" },
+    { name: "Peaceful Piano 2", artist: "Misty Mornings", color: "#87CEEB" },
+    { name: "Peaceful Piano 3", artist: "Starlight Beats", color: "#FF7676" },
+  ]
 
-    return () => clearTimeout(timer)
-  }, [])
+  const sendControl = (action: string, index?: number) => {
+    window.dispatchEvent(new CustomEvent('alpaca-music-control', { 
+      detail: { action, index: index !== undefined ? index : currentTrack }
+    }))
+  }
+
+  const handlePlayPause = () => {
+    const newState = !isPlaying
+    setIsPlaying(newState)
+    sendControl(newState ? 'play' : 'pause')
+  }
+
+  const handleNext = () => {
+    const next = (currentTrack + 1) % tracks.length
+    setCurrentTrack(next)
+    sendControl('change', next)
+    setIsPlaying(true)
+  }
+
+  const handlePrev = () => {
+    const prev = (currentTrack - 1 + tracks.length) % tracks.length
+    setCurrentTrack(prev)
+    sendControl('change', prev)
+    setIsPlaying(true)
+  }
+
+  const selectTrack = (index: number) => {
+    setCurrentTrack(index)
+    sendControl('change', index)
+    setIsPlaying(true)
+  }
 
   return (
-    <div className="flex flex-col h-full bg-[#F8F1E7] relative overflow-hidden">
-      {/* Background grid pattern */}
-      <div
-        className="absolute inset-0 z-0 opacity-10"
-        style={{
-          backgroundImage: `
-            linear-gradient(#0802A3 1px, transparent 1px),
-            linear-gradient(90deg, #0802A3 1px, transparent 1px)
-          `,
-          backgroundSize: "20px 20px",
-        }}
-      />
-
-      {/* Coming Soon Content */}
-      <div className="flex flex-col items-center justify-center h-full z-10 p-8">
-        <div className="w-32 h-32 relative mb-6">
-          <Image
-            src="/soundcloud-icon.png"
-            alt="Music"
-            width={128}
-            height={128}
-            className="pixel-effect animate-pulse"
-          />
+    <div className="flex flex-col h-full bg-[#F5F5F5] relative overflow-hidden">
+      {/* Visualizer Header */}
+      <div className="h-40 bg-[#0802A3] relative flex items-center justify-center overflow-hidden border-b-4 border-black">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="w-full h-full" style={{ 
+            backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', 
+            backgroundSize: '20px 20px' 
+          }} />
         </div>
-
-        <h2 className="text-4xl font-bold text-[#0802A3] font-vt323 mb-4 text-center">Music</h2>
-
-        <div className="bg-[#87CEEB] border-2 border-black p-6 max-w-md w-full mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Construction className="w-6 h-6 text-[#FF4B91]" />
-            <h3 className="text-2xl font-bold text-black font-vt323">Coming Soon!</h3>
-            <Construction className="w-6 h-6 text-[#FF4B91]" />
+        
+        <div className="relative z-10 flex flex-col items-center">
+          <div className="w-24 h-24 mb-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] border-2 border-black bg-white p-2">
+            <Image
+              src="/soundcloud-icon.png"
+              alt="Music"
+              width={80}
+              height={80}
+              className={`pixel-effect ${isPlaying ? 'animate-pulse' : ''}`}
+            />
           </div>
+        </div>
 
-          <p className="text-center font-vt323 text-lg mb-4">Our awesome music player is under construction.</p>
+        {/* Fake Bars Visualizer */}
+        <div className="absolute bottom-0 left-0 w-full flex items-end justify-center gap-1 px-4 h-12">
+          {[...Array(20)].map((_, i) => (
+            <div 
+              key={i} 
+              className="w-full bg-white/40" 
+              style={{ 
+                height: isPlaying ? `${Math.random() * 100}%` : '10%',
+                transition: 'height 0.2s ease-in-out'
+              }}
+            />
+          ))}
+        </div>
+      </div>
 
-          {showDetails && (
-            <div className="flex justify-center mt-4">
-              <button className="bg-[#FFCD4B] border-2 border-black px-4 py-2 font-vt323 text-lg font-bold flex items-center gap-2">
-                <Music className="w-5 h-5" />
-                Check Back Later
-              </button>
+      {/* Controls & Track Info */}
+      <div className="flex-1 p-6 flex flex-col gap-6">
+        <div className="bg-white border-4 border-black p-4 shadow-[6px_6px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-3xl font-vt323 font-bold text-black uppercase">{tracks[currentTrack].name}</h2>
+          <p className="text-xl font-vt323 text-gray-500 uppercase">{tracks[currentTrack].artist}</p>
+          
+          <div className="mt-4 h-2 bg-gray-200 border-2 border-black relative">
+            <div className={`h-full bg-[#FFCD4B] ${isPlaying ? 'w-1/3' : 'w-0'} transition-all duration-500`} />
+          </div>
+        </div>
+
+        {/* Interaction Buttons */}
+        <div className="flex justify-center items-center gap-4">
+          <button onClick={handlePrev} className="p-3 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-gray-100 active:translate-y-1 active:shadow-none">
+            <SkipBack className="w-6 h-6" />
+          </button>
+          
+          <button 
+            onClick={handlePlayPause}
+            className="p-5 bg-[#FFCD4B] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-[#FFD700] active:translate-y-1 active:shadow-none"
+          >
+            {isPlaying ? <Pause className="w-8 h-8 font-bold" /> : <Play className="w-8 h-8 font-bold" />}
+          </button>
+
+          <button onClick={handleNext} className="p-3 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-gray-100 active:translate-y-1 active:shadow-none">
+            <SkipForward className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Playlist */}
+        <div className="flex-1 overflow-y-auto border-4 border-black bg-[#E0E0E0] p-2 space-y-1">
+          {tracks.map((track, i) => (
+            <div 
+              key={i}
+              onClick={() => selectTrack(i)}
+              className={`flex items-center gap-3 p-2 cursor-pointer border-2 border-transparent hover:border-black transition-all
+                ${currentTrack === i ? 'bg-[#FFCD4B] border-black' : 'bg-white'}`}
+            >
+              <div className="w-8 h-8 flex items-center justify-center bg-black text-white font-vt323 text-lg">
+                {i + 1}
+              </div>
+              <div className="flex-1">
+                <div className="font-vt323 text-lg font-bold leading-none">{track.name}</div>
+                <div className="font-vt323 text-sm text-gray-500">{track.artist}</div>
+              </div>
+              {currentTrack === i && isPlaying && <Volume2 className="w-4 h-4 animate-bounce" />}
             </div>
-          )}
-        </div>
-
-        {/* Pixelated music notes decoration */}
-        <div className="absolute bottom-10 left-10 w-8 h-8 text-[#FF4B91] opacity-50">
-          <div className="w-4 h-4 border-r-2 border-b-2 border-[#FF4B91] rounded-br-sm absolute top-0 left-0"></div>
-          <div className="w-2 h-6 bg-[#FF4B91] absolute bottom-0 left-1"></div>
-        </div>
-
-        <div className="absolute top-20 right-12 w-8 h-8 text-[#FFCD4B] opacity-50">
-          <div className="w-4 h-4 border-r-2 border-b-2 border-[#FFCD4B] rounded-br-sm absolute top-0 left-0"></div>
-          <div className="w-2 h-6 bg-[#FFCD4B] absolute bottom-0 left-1"></div>
-        </div>
-
-        <div className="absolute bottom-32 right-20 w-6 h-6 text-[#0802A3] opacity-50">
-          <div className="w-3 h-3 border-r-2 border-b-2 border-[#0802A3] rounded-br-sm absolute top-0 left-0"></div>
-          <div className="w-1.5 h-5 bg-[#0802A3] absolute bottom-0 left-0.5"></div>
+          ))}
         </div>
       </div>
     </div>

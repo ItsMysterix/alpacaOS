@@ -11,7 +11,7 @@ import ContactContent from "./window-contents/contact-content"
 import TerminalContent from "./window-contents/terminal-content"
 import MusicContent from "./window-contents/spotify-content"
 import ResumeContent from "./window-contents/resume-content"
-import { X, Maximize2, Minimize2 } from "lucide-react"
+import { X, Maximize2, Minimize2, MousePointer2, Folder, Terminal as TerminalIcon, ShieldCheck } from "lucide-react"
 import gsap from "gsap"
 
 interface WindowProps {
@@ -30,6 +30,43 @@ interface WindowProps {
 // Default window dimensions
 const DEFAULT_SIZE = { width: 700, height: 500 }
 const DEFAULT_POSITION = { x: 100, y: 100 }
+
+// Telemetry Animation Components
+function FooterDots() {
+  const [dots, setDots] = useState(".")
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots(prev => (prev.length >= 3 ? "." : prev + "."))
+    }, 500)
+    return () => clearInterval(interval)
+  }, [])
+  return <span className="inline-block w-8">{dots}</span>
+}
+
+function AnimatedProgressBar({ segments = 20 }: { segments?: number }) {
+  const [progress, setProgress] = useState(12)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress(prev => (prev >= segments ? 5 : prev + (Math.random() > 0.7 ? 1 : 0)))
+    }, 200)
+    return () => clearInterval(interval)
+  }, [segments])
+
+  return (
+    <>
+      {[...Array(segments)].map((_, i) => (
+        <div 
+          key={i} 
+          className={`h-full border-r border-black/20 transition-all duration-300`}
+          style={{ 
+            width: `${100 / segments}%`,
+            backgroundColor: i < progress ? (i % 4 === 0 ? '#4CAF50' : i % 4 === 1 ? '#F44336' : i % 4 === 2 ? '#2196F3' : '#FFEB3B') : 'transparent'
+          }}
+        />
+      ))}
+    </>
+  )
+}
 
 export default function Window({
   title,
@@ -523,69 +560,76 @@ export default function Window({
         <div className="absolute inset-0 animate-scanline bg-[linear-gradient(rgba(18,16,16,0)_0%,rgba(18,16,16,0.1)_50%,rgba(18,16,16,0)_100%)] h-[100px]" />
       </div>
 
-      {/* Window Header - Top Bar */}
+      {/* System v5 Window Frame */}
       <div
         ref={headerRef}
-        className={`${isActive ? "bg-[#FF7676]" : "bg-gray-400"} text-white p-1 flex items-center ${!isMobile ? "cursor-move" : ""} relative overflow-hidden border-b-2 border-black`}
-        onMouseDown={!isMobile ? handleWindowClick : undefined} // Ensure clicking header also brings window to front
+        className={`${isActive ? "bg-[#E13D3F]" : "bg-gray-500"} text-white h-11 flex items-center ${!isMobile ? "cursor-move" : ""} relative border-b-2 border-black px-2 shadow-[inset_0px_2px_0px_rgba(255,255,255,0.3)]`}
+        onMouseDown={!isMobile ? handleWindowClick : undefined}
       >
-        {/* Slanted line pattern overlay - dark black with 8px spacing */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(45deg, rgb(0,0,0), rgb(0,0,0) 2.5px, transparent 2.5px, transparent 8px)",
-            zIndex: 1,
-            opacity: 0.2
-          }}
-        ></div>
+        <div className="flex items-center gap-2 relative z-10 flex-1">
+          <Folder className="w-5 h-5 text-[#FEDA45] fill-[#FEDA45] stroke-black stroke-[2px]" />
+          <span className="font-vt323 text-2xl uppercase tracking-tighter text-white drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+            {title}
+          </span>
+        </div>
 
-        <div className="flex items-center ml-2 relative z-10 gap-2">
-          <button
-            className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center border-2 border-black hover:bg-red-600 transition-transform active:scale-95"
+        {/* Window Controls */}
+        <div className="flex items-center gap-2 relative z-10">
+          <button 
+            className="w-8 h-8 bg-[#FEDA45] hover:bg-yellow-300 border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all active:translate-y-[1px] active:shadow-none"
             onClick={(e) => {
-              if (!isDragging) {
-                onClose()
-              }
+              if (!isDragging) toggleMaximize()
               e.stopPropagation()
             }}
           >
-            <X className="w-5 h-5 text-white" />
+             <div className="w-4 h-4 border-2 border-black relative">
+               <div className="absolute inset-0 bg-black/20" />
+               <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-black" />
+             </div>
           </button>
-
-          {!isMobile && (
-            <button
-              className="w-6 h-6 bg-[#FFCD4B] rounded-full flex items-center justify-center border-2 border-black hover:bg-yellow-400 transition-transform active:scale-95"
-              onClick={(e) => {
-                if (!isDragging) {
-                  toggleMaximize()
-                }
-                e.stopPropagation()
-              }}
-            >
-              {isMaximized ? (
-                <Minimize2 className="w-4 h-4 text-black" />
-              ) : (
-                <Maximize2 className="w-4 h-4 text-black" />
-              )}
-            </button>
-          )}
+          <button
+            className="w-8 h-8 bg-[#FF5C5C] hover:bg-red-600 border-2 border-black flex items-center justify-center shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all active:translate-y-[1px] active:shadow-none font-bold text-white text-xl"
+            onClick={(e) => {
+              if (!isDragging) onClose()
+              e.stopPropagation()
+            }}
+          >
+            <X className="w-5 h-5 stroke-[4px]" />
+          </button>
         </div>
-
-        <div className="flex-1 flex justify-center relative z-10">
-          {appId !== "terminal" && appId !== "contact" && (
-            <div className="bg-[#FFCD4B] px-8 py-1 uppercase font-bold text-black font-vt323 text-xl border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-              {title}
-            </div>
-          )}
-        </div>
-
-        <div className="w-14 relative z-10">{/* Spacer to balance the header */}</div>
       </div>
 
-      {/* Window Content */}
-      <div ref={contentRef} className="flex-1 overflow-hidden bg-white/50 backdrop-blur-sm">
-        {renderContent()}
+      {/* Window Body */}
+      <div ref={contentRef} className="flex-1 relative flex flex-col min-h-0 bg-[#3A76D1]">
+          {/* Main Content Area */}
+          <div className="flex-1 relative overflow-hidden flex flex-col">
+            {renderContent()}
+          </div>
+
+          {/* System Footer Bar with Telemetry Animation - Hidden for terminal to keep it clean */}
+          {appId !== "terminal" && (
+            <div className="h-14 bg-[#E1F5FE] border-t-4 border-black flex items-center px-4 gap-4 relative z-20 shrink-0">
+              <div className="flex flex-col flex-1">
+                <span className="font-vt323 text-black text-lg uppercase tracking-tight overflow-hidden whitespace-nowrap">
+                  SYS: Opening {appId.toUpperCase()}.EXE<FooterDots />
+                </span>
+                <div className="h-4 w-full bg-black/20 border-2 border-black flex overflow-hidden">
+                  <AnimatedProgressBar segments={20} />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1">
+                 <div className="flex flex-col gap-1 items-center">
+                    <div className="w-1.5 h-1.5 bg-orange-500 border border-black rounded-full animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                    <div className="w-1.5 h-1.5 bg-black rounded-full" />
+                 </div>
+                 <button className="bg-[#3A76D1] text-white font-vt323 text-xl px-5 py-1.5 border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 relative overflow-hidden group">
+                    <span className="relative z-10">READING<FooterDots /></span>
+                    <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                 </button>
+              </div>
+            </div>
+          )}
       </div>
 
       {/* Resize handle - only show on desktop */}
