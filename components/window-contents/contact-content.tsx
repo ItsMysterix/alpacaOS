@@ -2,12 +2,9 @@
 import { useState, useEffect, useRef } from "react"
 import type React from "react"
 import { Send, Mail, Phone, ExternalLink, ShieldCheck, Zap } from "lucide-react"
-import emailjs from "@emailjs/browser"
-
-// EmailJS configuration
-const EMAILJS_SERVICE_ID = "service_7jupnol"
-const EMAILJS_TEMPLATE_ID = "template_440psag"
-const EMAILJS_PUBLIC_KEY = "v7Euxj9XIHYlgGpry"
+// Formspree configuration
+// Sign up at https://formspree.io/ to get your unique form ID
+const FORMSPREE_FORM_ID = "YOUR_FORMSPREE_ID_HERE" // <--- PASTE YOUR ID HERE
 
 export default function ContactContent() {
   const [formData, setFormData] = useState({
@@ -18,7 +15,7 @@ export default function ContactContent() {
   const [formStatus, setFormStatus] = useState<null | "success" | "error" | "loading">(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const formRef = useRef<HTMLDivElement>(null)
-
+  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
@@ -28,39 +25,37 @@ export default function ContactContent() {
     e.preventDefault()
     setIsSubmitting(true)
     setFormStatus("loading")
+
+    if (FORMSPREE_FORM_ID === "YOUR_FORMSPREE_ID_HERE") {
+        console.error("Please update the FORMSPREE_FORM_ID in contact-content.tsx with your actual ID from formspree.io")
+        alert("Setup Required: Please add your Formspree ID in the code.")
+        setFormStatus("error")
+        setIsSubmitting(false)
+        return
+    }
+
     try {
-      const templateParams = {
-        from_name: formData.name,
-        from_email: formData.email,
-        message: formData.feedback,
-        to_name: "Arkaparna",
-        reply_to: formData.email,
-      }
-      
-      console.log("Attempting to send email with:", {
-        serviceId: EMAILJS_SERVICE_ID,
-        templateId: EMAILJS_TEMPLATE_ID,
-        publicKey: EMAILJS_PUBLIC_KEY,
-        params: templateParams
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.feedback,
+        }),
       })
-      
-      // Pass public key as options object for v4 syntax
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID, 
-        EMAILJS_TEMPLATE_ID, 
-        templateParams,
-        { publicKey: EMAILJS_PUBLIC_KEY }
-      )
-      
-      if (response.status === 200) {
+
+      if (response.ok) {
         setFormStatus("success")
         setFormData({ name: "", email: "", feedback: "" })
       } else {
-        console.error("EmailJS Response:", response)
+        console.error("Formspree Error:", await response.json())
         setFormStatus("error")
       }
     } catch (error) {
-      console.error("EmailJS Error:", error)
+      console.error("Formspree Network Error:", error)
       setFormStatus("error")
     } finally {
       setIsSubmitting(false)
