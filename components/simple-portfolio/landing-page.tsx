@@ -34,87 +34,82 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#050511] text-gray-200 font-mono selection:bg-[#FEDA45] selection:text-black">
+    <div className="min-h-screen bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black">
       {/* Main Content Container */}
       <motion.div 
-        className="max-w-3xl mx-auto px-6 py-20 pb-32"
+        className="max-w-3xl mx-auto px-6 py-12 md:py-20 pb-40"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
         {/* Header / Intro */}
-        <motion.div variants={itemVariants} className="mb-20">
-          <div className="w-24 h-24 bg-gray-800 rounded-lg mb-8 overflow-hidden border-2 border-gray-700">
-             {/* Placeholder for profile pic if available, else initials */}
-             <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-gray-500">
+        <motion.div variants={itemVariants} className="mb-16 md:mb-20">
+          <div className="w-24 h-24 bg-[#FEDA45] border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] mb-8 flex items-center justify-center">
+             {/* Initials with VT323 font */}
+             <div className="text-4xl font-bold text-black font-vt323">
                AG
              </div>
           </div>
           
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-6 leading-tight">
-            Hi, I'm <span className="bg-white text-black px-2">Arkaparna Gantait</span>. <br />
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
+            Hi, I'm <span className="bg-[#FEDA45] text-black px-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] inline-block transform -rotate-1">Arkaparna Gantait</span>. <br />
             I'm a {PORTFOLIO_DATA.personal.role} building scalable web applications and AI solutions.
           </h1>
           
-          <div className="p-6 border border-blue-500/30 rounded-lg bg-blue-900/10 backdrop-blur-sm relative">
-            <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-blue-500 rounded-full" />
-            <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-blue-500 rounded-full" />
-            <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-blue-500 rounded-full" />
-            <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-blue-500 rounded-full" />
-            
-            <p className="text-lg text-blue-100 leading-relaxed">
+          <div className="p-6 border-2 border-black bg-[#E1F5FE] shadow-[6px_6px_0px_rgba(0,0,0,1)] relative mt-8">
+            <p className="text-xl md:text-2xl text-black leading-relaxed font-vt323">
               {PORTFOLIO_DATA.personal.about}
             </p>
           </div>
         </motion.div>
 
         {/* What I do */}
-        <motion.div variants={itemVariants} className="mb-20">
-          <h2 className="text-xl font-bold text-white bg-white/10 inline-block px-2 py-1 mb-8">
-            What I do
+        <motion.div variants={itemVariants} className="mb-16 md:mb-20">
+          <h2 className="text-3xl font-bold text-[#FEDA45] bg-black inline-block px-3 py-1 mb-8 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
+            WHAT I DO
           </h2>
-          <div className="space-y-6 text-gray-300 leading-relaxed">
+          <div className="space-y-6 text-white text-xl md:text-2xl leading-relaxed">
             <p>
               I help technical teams and startups build digital products from scratch or improve existing ones. 
-              Whether you're building a <strong>SaaS platform</strong>, <strong>AI integration</strong>, or <strong>Developer Tool</strong>, 
+              Whether you're building a <strong className="text-[#FEDA45]">SaaS platform</strong>, <strong className="text-[#FF4B91]">AI integration</strong>, or <strong className="text-[#87CEEB]">Developer Tool</strong>, 
               I write clean, maintainable code across the full stack.
             </p>
             <p>
-              From architecting backend systems with <strong>FastAPI</strong> and <strong>Supabase</strong> to crafting responsive frontends with <strong>React</strong> and <strong>Next.js</strong>,
+              From architecting backend systems with <strong className="text-[#FEDA45]">FastAPI</strong> and <strong className="text-[#FEDA45]">Supabase</strong> to crafting responsive frontends with <strong className="text-[#87CEEB]">React</strong> and <strong className="text-[#87CEEB]">Next.js</strong>,
               I ensure your product is not just functional, but performant and user-friendly.
             </p>
           </div>
         </motion.div>
 
         {/* Projects */}
-        <motion.div variants={itemVariants} className="mb-20">
-          <h2 className="text-xl font-bold text-white bg-white/10 inline-block px-2 py-1 mb-8">
-            Selected Work
+        <motion.div variants={itemVariants} className="mb-16 md:mb-20">
+          <h2 className="text-3xl font-bold text-[#FEDA45] bg-black inline-block px-3 py-1 mb-8 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
+            SELECTED WORK
           </h2>
           <div className="grid gap-8">
             {PORTFOLIO_DATA.projects.map((project) => (
-              <div key={project.id} className="group border-l-2 border-gray-800 pl-6 hover:border-[#FEDA45] transition-colors duration-300">
-                <div className="flex items-baseline justify-between mb-2">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-[#FEDA45] transition-colors">
+              <div key={project.id} className="group border-2 border-black bg-[#E1F5FE] p-6 shadow-[6px_6px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-200">
+                <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-4 gap-2">
+                  <h3 className="text-3xl font-bold text-black group-hover:text-[#335DA1] transition-colors uppercase">
                     {project.name}
                   </h3>
-                  <div className="flex gap-4 opacity-50 group-hover:opacity-100 transition-opacity">
+                  <div className="flex gap-4">
                     {project.link && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                        <ExternalLink size={18} />
+                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-black hover:text-[#FF4B91] transition-colors border-2 border-transparent hover:border-black p-1">
+                        <ExternalLink size={24} />
                       </a>
                     )}
                     {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="hover:text-white">
-                        <Github size={18} />
+                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="text-black hover:text-[#FF4B91] transition-colors border-2 border-transparent hover:border-black p-1">
+                        <Github size={24} />
                       </a>
                     )}
                   </div>
                 </div>
-                <p className="text-gray-400 mb-4">{project.description}</p>
+                <p className="text-black text-xl mb-6 font-vt323">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map(t => (
-                    <span key={t} className="text-xs font-bold text-blue-300 bg-blue-900/30 px-2 py-1 rounded">
+                    <span key={t} className="text-lg font-bold text-black bg-[#87CEEB] px-2 py-1 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                       {t}
                     </span>
                   ))}
@@ -126,15 +121,15 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
 
         {/* Footer / Contact */}
         <motion.div variants={itemVariants} className="mb-12">
-           <h2 className="text-xl font-bold text-white bg-white/10 inline-block px-2 py-1 mb-6">
-            Let's Talk
+           <h2 className="text-3xl font-bold text-[#FEDA45] bg-black inline-block px-3 py-1 mb-6 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
+            LET'S TALK
           </h2>
-          <p className="text-gray-400 mb-6">
+          <p className="text-xl text-white/90 mb-6 font-vt323">
             I'm currently open to new opportunities. Feel free to reach out.
           </p>
           <a 
             href={`mailto:${PORTFOLIO_DATA.personal.email}`}
-            className="inline-flex items-center gap-2 text-xl font-bold text-white border-b-2 border-white hover:text-[#FEDA45] hover:border-[#FEDA45] transition-colors pb-1"
+            className="inline-flex items-center gap-2 text-2xl font-bold text-white border-b-4 border-[#FF4B91] hover:text-[#FEDA45] hover:border-[#FEDA45] transition-colors pb-1"
           >
             {PORTFOLIO_DATA.personal.email}
           </a>
@@ -142,37 +137,37 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
 
       </motion.div>
 
-      {/* Floating Action Bar */}
+      {/* Floating Action Bar - Mobile Optimized */}
       <motion.div 
-        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-auto max-w-[90vw]"
+        className="fixed bottom-6 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none"
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1, duration: 0.5 }}
       >
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-3 w-full max-w-md pointer-events-auto">
           
           {/* THE CREATIVE OS TRIGGER */}
           <button
             onClick={onEnterOS}
-            className="group relative overflow-hidden bg-white text-black font-bold py-3 px-6 rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(254,218,69,0.5)] transition-all duration-300 flex items-center gap-3 active:scale-95"
+            className="group relative overflow-hidden bg-[#E1F5FE] text-black font-bold py-3 px-6 rounded-xl border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all duration-200 flex items-center justify-center gap-3 w-full active:scale-95"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-[#FEDA45] via-[#FF4B91] to-[#3A76D1] opacity-0 group-hover:opacity-20 transition-opacity" />
-            <Cpu className="w-5 h-5 group-hover:animate-spin-slow" />
-            <span className="uppercase tracking-tight">Looking for something more interactive?</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            <div className="absolute inset-0 bg-[#FEDA45] opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
+            <Cpu className="w-6 h-6 shrink-0" />
+            <span className="uppercase tracking-tight text-lg font-vt323 leading-none pt-1">Explore Interactive OS</span>
+            <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
           </button>
 
           {/* Social Pills */}
-          <div className="flex items-center gap-2 bg-[#1a1a2e] border border-gray-700 p-1.5 rounded-full shadow-lg backdrop-blur-md">
-            <a href={PORTFOLIO_DATA.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+          <div className="flex items-center justify-center gap-2 bg-black/90 border-2 border-[#FEDA45] p-2 rounded-xl shadow-lg backdrop-blur-md">
+            <a href={PORTFOLIO_DATA.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
               <Github size={20} />
             </a>
-            <div className="w-px h-4 bg-gray-700" />
-            <a href={PORTFOLIO_DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+            <div className="w-0.5 h-4 bg-[#FEDA45]/30" />
+            <a href={PORTFOLIO_DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
               <Linkedin size={20} />
             </a>
-            <div className="w-px h-4 bg-gray-700" />
-            <a href={`mailto:${PORTFOLIO_DATA.personal.email}`} className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-full transition-colors">
+            <div className="w-0.5 h-4 bg-[#FEDA45]/30" />
+            <a href={`mailto:${PORTFOLIO_DATA.personal.email}`} className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
               <Mail size={20} />
             </a>
           </div>
