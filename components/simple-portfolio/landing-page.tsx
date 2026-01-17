@@ -8,7 +8,6 @@ import InkCursor from "./ink-cursor"
 import SocialLinks from "./social-links"
 import ProjectCard from "./project-card"
 import LetsTalk from "./lets-talk"
-import ProjectDetailModal from "./project-detail-modal"
 
 interface SimpleLandingProps {
   onEnterOS: () => void
@@ -18,7 +17,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   const [mounted, setMounted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHoveringBlue, setIsHoveringBlue] = useState(false)
-  const [selectedProject, setSelectedProject] = useState<typeof PORTFOLIO_DATA.projects[0] | null>(null)
+  const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -127,7 +126,8 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
               <ProjectCard 
                 key={project.id} 
                 project={project} 
-                onOpenDetails={setSelectedProject}
+                isExpanded={expandedProjectId === project.id}
+                onToggleExpand={() => setExpandedProjectId(curr => curr === project.id ? null : project.id)}
               />
             ))}
           </div>
@@ -155,12 +155,6 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         </motion.div>
 
       </motion.div>
-
-      <ProjectDetailModal 
-        project={selectedProject} 
-        isOpen={!!selectedProject} 
-        onClose={() => setSelectedProject(null)} 
-      />
     </div>
   )
 }

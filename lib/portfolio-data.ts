@@ -21,7 +21,14 @@ export const PORTFOLIO_DATA = {
             description: "A multi-persona AI chatbot designed to provide mental health support using RAG and fine-tuned models.",
             tech: ["FastAPI", "Supabase", "DistilBERT", "Qdrant", "Next.js"],
             link: "https://slurpy.life",
-            github: null
+            github: null,
+            features: [
+                "Utilizes Retrieval-Augmented Generation (RAG) for accurate, context-aware responses.",
+                "Features fine-tuned DistilBERT models for sentiment analysis and empathy.",
+                "Supports multiple distinct AI personas tailored to different user needs.",
+                "Built with FastAPI for high-performance concurrent request handling.",
+                "Integrates Qdrant vector database for semantic search capabilities."
+            ]
         },
         {
             id: "sarge",
@@ -29,7 +36,14 @@ export const PORTFOLIO_DATA = {
             description: "Self-service infrastructure management platform with real-time CI/CD monitoring.",
             tech: ["Docker", "Prometheus", "Grafana", "AWS", "Nginx"],
             link: "https://v0-sarge.vercel.app",
-            github: null
+            github: null,
+            features: [
+                "Provides a self-service dashboard for managing infrastructure resources.",
+                "Real-time monitoring and alerting via Prometheus and Grafana integration.",
+                "Automated CI/CD pipelines for seamless deployment workflows.",
+                "Containerized microservices architecture using Docker.",
+                "Secure reverse proxy configuration with Nginx and SSL termination."
+            ]
         },
         {
             id: "notoria",
@@ -37,7 +51,14 @@ export const PORTFOLIO_DATA = {
             description: "Mobile application for academic collaboration featuring real-time notes and RBAC.",
             tech: ["Flutter", "Firebase", "Dart", "Mobile"],
             link: null,
-            github: "https://github.com/ItsMysterix/notoria"
+            github: "https://github.com/ItsMysterix/notoria",
+            features: [
+                "Real-time collaborative note-taking with smooth synchronization.",
+                "Role-Based Access Control (RBAC) for secure group management.",
+                "Cross-platform mobile performance using Flutter framework.",
+                "Firebase backend for authentication and real-time database updates.",
+                "Offline-first architecture ensuring data availability without internet."
+            ]
         }
     ],
     experience: [
