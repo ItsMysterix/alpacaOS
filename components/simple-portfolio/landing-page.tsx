@@ -214,7 +214,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
             <motion.div 
                initial={{ y: 100 }}
                animate={{ y: 0 }}
-               className="fixed bottom-0 left-0 w-full bg-[#1A2C42] border-t-4 border-[#FEDA45] py-2 px-6 z-[100] flex justify-between items-center overflow-hidden shadow-[0px_-4px_10px_rgba(0,0,0,0.5)]"
+               className="fixed bottom-0 left-0 w-full bg-[#1A2C42] border-t-4 border-[#FEDA45] py-1 md:py-2 px-4 md:px-6 z-[100] flex justify-between items-center overflow-hidden shadow-[0px_-4px_10px_rgba(0,0,0,0.5)]"
             >
                 <div className="text-[#FEDA45] font-vt323 text-xl md:text-2xl tracking-widest flex items-center gap-2">
                     <span>uptime:</span>
