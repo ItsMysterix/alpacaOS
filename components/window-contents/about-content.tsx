@@ -42,7 +42,7 @@ export default function AboutContent() {
               <Calendar className="w-6 h-6 text-[#FFCD4B]" />
               <div>
                 <span className="font-vt323 text-gray-500 text-sm uppercase block leading-none">Education Status</span>
-                <span className="font-vt323 text-xl text-black uppercase">Senior @ Georgia State University</span>
+                <span className="font-vt323 text-xl text-black uppercase">Computer Science Graduate</span>
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -91,7 +91,7 @@ export default function AboutContent() {
               </div>
               <div className="space-y-2 pl-11">
                 <p className="font-vt323 text-2xl text-black italic uppercase">Computer Science</p>
-                <p className="font-vt323 text-xl text-gray-600">Georgia State University • 2022 - 2025</p>
+                <p className="font-vt323 text-xl text-gray-600">Georgia State University • Class of 2025</p>
                 <div className="mt-4 bg-[#FEDA45] p-3 border-2 border-black inline-block shadow-[3px_3px_0px_rgba(0,0,0,1)]">
                   <span className="font-vt323 text-xl text-black font-bold uppercase">GSU HONORS PROGRAM | GPA: 3.58/4.0</span>
                 </div>
