@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, useMotionValue } from "framer-motion"
 
 export default function InkCursor({ 
   containerRef,
@@ -10,42 +9,83 @@ export default function InkCursor({
   containerRef: React.RefObject<HTMLDivElement | null>
   isHoveringBlue: boolean
 }) {
-  const [trail, setTrail] = useState<{x: number, y: number, id: number}[]>([])
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-
+  const [points, setPoints] = useState<{x: number, y: number, id: number}[]>([])
+  
+  // Track mouse movement
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      x.set(e.clientX)
-      y.set(e.clientY)
-      
+      // Only draw if hovering the blue section
       if (isHoveringBlue) {
-        const id = Date.now()
-        setTrail(prev => [...prev, { x: e.clientX, y: e.clientY, id }].slice(-20)) // Keep last 20 points
+        setPoints(prev => {
+          const newPoints = [...prev, { x: e.clientX, y: e.clientY, id: Date.now() }]
+          // Keep a reasonable history length to effectively manage "motion history"
+          return newPoints.slice(-100) 
+        })
       }
     }
     
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [isHoveringBlue, x, y])
+    // "erased at the top with every scroll" -> Clear trail on scroll
+    const handleScroll = () => {
+       if (points.length > 0) {
+         setPoints([])
+       }
+    }
 
-  // Cleanup old trail points
+    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [isHoveringBlue, points.length])
+
+  // Fade out / cleanup old points logic
   useEffect(() => {
+    // 60FPS update to clean old points creating the trailing erase effect
     const interval = setInterval(() => {
-      setTrail(prev => prev.filter(p => Date.now() - p.id < 500))
-    }, 50)
+       setPoints(prev => {
+         if (prev.length === 0) return prev
+         const now = Date.now()
+         // Points live for 1 second max
+         return prev.filter(p => now - p.id < 1000) 
+       }) 
+    }, 16)
     return () => clearInterval(interval)
   }, [])
 
+  if (points.length < 2) return null
+
+  // Create smooth path data
+  // Using simple L commands relative to viewport (since positions are clientX/Y)
+  const pathData = `M ${points.map(p => `${p.x} ${p.y}`).join(' L ')}`
+
+  // The latest point (The "Dot" to the left/ahead of the line)
+  const latest = points[points.length - 1]
+
   return (
-    <>
-      {trail.map(point => (
-        <div 
-          key={point.id}
-          className="fixed w-4 h-4 rounded-full bg-[#000080] pointer-events-none z-[9998] opacity-50"
-          style={{ left: point.x, top: point.y, transform: "translate(-50%, -50%)" }}
-        />
-      ))}
-    </>
+    <div className="fixed inset-0 pointer-events-none z-[9998]">
+       <svg className="w-full h-full overflow-visible">
+          {/* The Thin Trail Line */}
+          <path 
+            d={pathData} 
+            fill="none" 
+            stroke="#FEDA45" 
+            strokeWidth="1.5"
+            strokeLinecap="round" 
+            strokeLinejoin="round"
+            className="transition-all duration-75"
+          />
+          
+          {/* The Leading/Trailing Dot */}
+          {latest && (
+             <circle 
+               cx={latest.x} 
+               cy={latest.y} 
+               r="3" 
+               fill="#FEDA45" 
+             />
+          )}
+       </svg>
+    </div>
   )
 }
