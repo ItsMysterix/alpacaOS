@@ -37,20 +37,41 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   }, [])
 
   // Handle Scroll Logic for Logo and Footer Discovery
-  const handleScroll = () => {
-     if (!containerRef.current) return
-     
-     const { scrollTop, scrollHeight, clientHeight } = containerRef.current
-     
-     // Logo Animation Trigger
-     setIsScrolled(scrollTop > 100)
+  useEffect(() => {
+    const handleScrollEvent = () => {
+       const container = containerRef.current
+       // Check container scroll OR window scroll (robustness)
+       const scrollTop = container ? container.scrollTop : 0
+       const windowScroll = window.scrollY
+       const effectiveScroll = scrollTop > 0 ? scrollTop : windowScroll
+       
+       const scrollHeight = container ? container.scrollHeight : document.documentElement.scrollHeight
+       const clientHeight = container ? container.clientHeight : window.innerHeight
+       
+       // Logo Animation Trigger (Low threshold for responsiveness)
+       setIsScrolled(effectiveScroll > 50)
 
-     // Footer Discovery Trigger (Once Discovered, stays fixed)
-     // If user is near bottom (within 50px)
-     if (!footerDiscovered && (scrollHeight - scrollTop - clientHeight < 50)) {
-        setFooterDiscovered(true)
-     }
-  }
+       // Footer Discovery Trigger
+       if (!footerDiscovered && (scrollHeight - effectiveScroll - clientHeight < 50)) {
+          setFooterDiscovered(true)
+       }
+    }
+
+    // Attach to both container and window to cover all bases
+    const container = containerRef.current
+    if (container) {
+       container.addEventListener("scroll", handleScrollEvent, { passive: true })
+    }
+    window.addEventListener("scroll", handleScrollEvent, { passive: true })
+    
+    // Initial check
+    handleScrollEvent()
+    
+    return () => {
+       if (container) container.removeEventListener("scroll", handleScrollEvent)
+       window.removeEventListener("scroll", handleScrollEvent)
+    }
+  }, [footerDiscovered])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -75,7 +96,6 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
       className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden cursor-none relative"
       onMouseEnter={() => setIsHoveringBlue(true)}
       onMouseLeave={() => setIsHoveringBlue(false)}
-      onScroll={handleScroll}
     >
       <InkCursor containerRef={containerRef} isHoveringBlue={isHoveringBlue} />
 
