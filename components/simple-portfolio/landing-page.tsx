@@ -8,6 +8,7 @@ import InkCursor from "./ink-cursor"
 import SocialLinks from "./social-links"
 import ProjectCard from "./project-card"
 import LetsTalk from "./lets-talk"
+import ProjectDetailModal from "./project-detail-modal"
 
 interface SimpleLandingProps {
   onEnterOS: () => void
@@ -17,6 +18,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   const [mounted, setMounted] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHoveringBlue, setIsHoveringBlue] = useState(false)
+  const [selectedProject, setSelectedProject] = useState<typeof PORTFOLIO_DATA.projects[0] | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -122,7 +124,11 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
           </h2>
           <div className="grid gap-8">
             {PORTFOLIO_DATA.projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                onOpenDetails={setSelectedProject}
+              />
             ))}
           </div>
         </motion.div>
