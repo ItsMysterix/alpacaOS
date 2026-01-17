@@ -34,7 +34,21 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black">
+    <div className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden">
+      {/* OS Trigger - Top Right */}
+      <motion.button
+        onClick={onEnterOS}
+        className="fixed top-4 right-4 z-50 group bg-[#E1F5FE] text-black border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-0.5 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all duration-200 py-2 px-4 flex items-center gap-2 rounded-lg active:scale-95"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Cpu className="w-5 h-5" />
+        <span className="hidden md:inline font-bold uppercase tracking-tight">Enter Interactive OS</span>
+        <span className="md:hidden font-bold uppercase tracking-tight">OS Mode</span>
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+      </motion.button>
+
       {/* Main Content Container */}
       <motion.div 
         className="max-w-3xl mx-auto px-6 py-12 md:py-20 pb-40"
@@ -55,6 +69,19 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
             Hi, I'm <span className="bg-[#FEDA45] text-black px-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] inline-block transform -rotate-1">Arkaparna Gantait</span>. <br />
             I'm a {PORTFOLIO_DATA.personal.role} building scalable web applications and AI solutions.
           </h1>
+
+          {/* Social Links - Static Header */}
+          <div className="flex flex-wrap gap-3 mb-8">
+            <a href={PORTFOLIO_DATA.socials.github} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-black/20 hover:bg-black/40 border border-white/20 px-3 py-1.5 rounded-lg transition-colors text-white">
+              <Github size={18} /> <span className="text-lg">GitHub</span>
+            </a>
+            <a href={PORTFOLIO_DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-black/20 hover:bg-black/40 border border-white/20 px-3 py-1.5 rounded-lg transition-colors text-white">
+              <Linkedin size={18} /> <span className="text-lg">LinkedIn</span>
+            </a>
+            <a href={`mailto:${PORTFOLIO_DATA.personal.email}`} className="flex items-center gap-2 bg-black/20 hover:bg-black/40 border border-white/20 px-3 py-1.5 rounded-lg transition-colors text-white">
+              <Mail size={18} /> <span className="text-lg">Email</span>
+            </a>
+          </div>
           
           <div className="p-6 border-2 border-black bg-[#E1F5FE] shadow-[6px_6px_0px_rgba(0,0,0,1)] relative mt-8">
             <p className="text-xl md:text-2xl text-black leading-relaxed font-vt323">
@@ -135,44 +162,6 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
           </a>
         </motion.div>
 
-      </motion.div>
-
-      {/* Floating Action Bar - Mobile Optimized */}
-      <motion.div 
-        className="fixed bottom-6 left-0 right-0 z-50 px-4 flex justify-center pointer-events-none"
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 1, duration: 0.5 }}
-      >
-        <div className="flex flex-col items-center gap-3 w-full max-w-md pointer-events-auto">
-          
-          {/* THE CREATIVE OS TRIGGER */}
-          <button
-            onClick={onEnterOS}
-            className="group relative overflow-hidden bg-[#E1F5FE] text-black font-bold py-3 px-6 rounded-xl border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-none transition-all duration-200 flex items-center justify-center gap-3 w-full active:scale-95"
-          >
-            <div className="absolute inset-0 bg-[#FEDA45] opacity-0 group-hover:opacity-100 transition-opacity -z-10" />
-            <Cpu className="w-6 h-6 shrink-0" />
-            <span className="uppercase tracking-tight text-lg font-vt323 leading-none pt-1">Explore Interactive OS</span>
-            <ArrowRight className="w-5 h-5 shrink-0 group-hover:translate-x-1 transition-transform" />
-          </button>
-
-          {/* Social Pills */}
-          <div className="flex items-center justify-center gap-2 bg-black/90 border-2 border-[#FEDA45] p-2 rounded-xl shadow-lg backdrop-blur-md">
-            <a href={PORTFOLIO_DATA.socials.github} target="_blank" rel="noopener noreferrer" className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
-              <Github size={20} />
-            </a>
-            <div className="w-0.5 h-4 bg-[#FEDA45]/30" />
-            <a href={PORTFOLIO_DATA.socials.linkedin} target="_blank" rel="noopener noreferrer" className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
-              <Linkedin size={20} />
-            </a>
-            <div className="w-0.5 h-4 bg-[#FEDA45]/30" />
-            <a href={`mailto:${PORTFOLIO_DATA.personal.email}`} className="p-2 text-[#FEDA45] hover:text-black hover:bg-[#FEDA45] rounded-lg transition-colors">
-              <Mail size={20} />
-            </a>
-          </div>
-
-        </div>
       </motion.div>
 
     </div>
