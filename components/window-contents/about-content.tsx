@@ -21,7 +21,7 @@ export default function AboutContent() {
               <User className="w-6 h-6 text-[#FF7676]" />
               <div>
                 <span className="font-vt323 text-gray-500 text-sm uppercase block leading-none">Name</span>
-                <span className="font-vt323 text-xl text-black uppercase">Arka Gantait</span>
+                <span className="font-vt323 text-xl text-black uppercase">Arkaparna Gantait</span>
               </div>
             </div>
             <div className="about-item flex items-center gap-4 p-4 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)]">

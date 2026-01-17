@@ -17,9 +17,37 @@ const pressStart2P = Press_Start_2P({
 })
 
 export const metadata: Metadata = {
-  title: "AlpacaOS",
-  description: "Portfolio website styled as an operating system",
-    generator: 'v0.dev'
+  title: "Arkaparna Gantait | Personal Portfolio",
+  description: "Official personal portfolio of Arkaparna Gantait, a Software Engineer and BS CS graduate from Georgia State University. Explore projects, skills, and experience in a unique retro Operating System interface (AlpacaOS).",
+  keywords: ["Arkaparna Gantait", "Arkaparna", "Gantait", "Software Engineer", "Full Stack Developer", "Computer Science", "Georgia State University", "Portfolio", "AlpacaOS", "Web Developer", "React", "Next.js", "TypeScript"],
+  authors: [{ name: "Arkaparna Gantait" }],
+  creator: "Arkaparna Gantait",
+  publisher: "Arkaparna Gantait",
+  openGraph: {
+    title: "Arkaparna Gantait | Personal Portfolio",
+    description: "Explore the interactive portfolio of Arkaparna Gantait, featuring a retro OS interface showcasing Full Stack projects and experience.",
+    url: "https://www.alpacaos.info", // Assuming this is the domain based on previous context
+    siteName: "Arkaparna Gantait Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Arkaparna Gantait | Personal Portfolio",
+    description: "Interactive portfolio of Arkaparna Gantait. Check out my projects and skills on AlpacaOS.",
+    creator: "@ArkaparnaGantait", // Placeholder or if known
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 }
 
 export default function RootLayout({
@@ -29,9 +57,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <Script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js" strategy="beforeInteractive" />
-      </head>
       <body className={`${vt323.variable} ${pressStart2P.variable}`}>{children}</body>
     </html>
   )

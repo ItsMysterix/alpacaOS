@@ -35,6 +35,7 @@ export default function Home() {
 
   return (
     <EnvironmentalBackground>
+      <h1 className="sr-only">Arkaparna Gantait - Personal Portfolio</h1>
       {isLoading && <LoadingScreen />}
       {/* Only show header when not loading */}
       {!isLoading && <Header />}
