@@ -452,22 +452,24 @@ export default function DesktopLayout() {
           onPause={() => setIsPlaying(false)}
         />
       )}
-      {/* Desktop Centerpiece - Simple & Peaceful */}
-      <div 
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-all duration-1000 pointer-events-none
-          ${activeApps.length > 0 ? "opacity-5 scale-95 blur-md" : "opacity-80 scale-100"}`}
-      >
-        {mounted && (
-          <>
-            <div className="font-vt323 text-[180px] leading-none text-white drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] animate-pulse-slow">
-              {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
-            </div>
-            <div className="font-vt323 text-4xl text-white/70 uppercase tracking-[0.2em] bg-black/40 px-6 py-2 rounded-full backdrop-blur-sm border-2 border-white/20">
-              {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
-            </div>
-          </>
-        )}
-      </div>
+      {/* Desktop Centerpiece - Simple & Peaceful (Hide on Mobile) */}
+      {!isMobile && (
+        <div 
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-all duration-1000 pointer-events-none
+            ${activeApps.length > 0 ? "opacity-5 scale-95 blur-md" : "opacity-80 scale-100"}`}
+        >
+          {mounted && (
+            <>
+              <div className="font-vt323 text-[180px] leading-none text-white drop-shadow-[8px_8px_0px_rgba(0,0,0,1)] animate-pulse-slow">
+                {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
+              </div>
+              <div className="font-vt323 text-4xl text-white/70 uppercase tracking-[0.2em] bg-black/40 px-6 py-2 rounded-full backdrop-blur-sm border-2 border-white/20">
+                {time.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' })}
+              </div>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Mobile Retro OS Layout */}
       {isMobile && !activeApps.length && (
@@ -516,82 +518,84 @@ export default function DesktopLayout() {
         </div>
       )}
 
-      {/* Grid Layout Container - hide on mobile */}
-      <div className={`grid-layout w-full h-full relative z-10 ${isMobile ? "hidden" : ""}`}>
-        {/* Left Side Apps */}
-        <div className="left-apps absolute left-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
-          {leftSideApps.map((app, index) => (
-            <button
-              key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
-              onClick={() => handleIconClick(app)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleIconClick(app)
-                }
-              }}
-            >
-              <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
-                <Image
-                  src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
-                  alt={app.name}
-                  width={84}
-                  height={84}
-                  className="pixel-effect no-borders"
-                  style={{
-                    imageRendering: "pixelated",
-                    objectFit: "contain",
-                  }}
-                  onError={() => handleImageError(app.id)}
-                />
-              </div>
-              <div
-                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
-                style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
+      {/* Grid Layout Container - visible only on desktop */}
+      {!isMobile && (
+        <div className="grid-layout w-full h-full relative z-10">
+          {/* Left Side Apps */}
+          <div className="left-apps absolute left-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
+            {leftSideApps.map((app, index) => (
+              <button
+                key={app.id}
+                className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
+                onClick={() => handleIconClick(app)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleIconClick(app)
+                  }
+                }}
               >
-                <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
-              </div>
-            </button>
-          ))}
-        </div>
+                <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+                  <Image
+                    src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
+                    alt={app.name}
+                    width={84}
+                    height={84}
+                    className="pixel-effect no-borders"
+                    style={{
+                      imageRendering: "pixelated",
+                      objectFit: "contain",
+                    }}
+                    onError={() => handleImageError(app.id)}
+                  />
+                </div>
+                <div
+                  className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
+                  style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
+                >
+                  <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
+                </div>
+              </button>
+            ))}
+          </div>
 
-        {/* Right Side Apps */}
-        <div className="right-apps absolute right-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
-          {rightSideApps.map((app, index) => (
-            <button
-              key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
-              onClick={() => handleIconClick(app)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleIconClick(app)
-                }
-              }}
-            >
-              <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
-                <Image
-                  src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
-                  alt={app.name}
-                  width={84}
-                  height={84}
-                  className="pixel-effect no-borders"
-                  style={{
-                    imageRendering: "pixelated",
-                    objectFit: "contain",
-                  }}
-                  onError={() => handleImageError(app.id)}
-                />
-              </div>
-              <div
-                className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
-                style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
+          {/* Right Side Apps */}
+          <div className="right-apps absolute right-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
+            {rightSideApps.map((app, index) => (
+              <button
+                key={app.id}
+                className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
+                onClick={() => handleIconClick(app)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleIconClick(app)
+                  }
+                }}
               >
-                <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
-              </div>
-            </button>
-          ))}
+                <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
+                  <Image
+                    src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
+                    alt={app.name}
+                    width={84}
+                    height={84}
+                    className="pixel-effect no-borders"
+                    style={{
+                      imageRendering: "pixelated",
+                      objectFit: "contain",
+                    }}
+                    onError={() => handleImageError(app.id)}
+                  />
+                </div>
+                <div
+                  className={`mt-2 ${activeApps.includes(app.id) ? "bg-[#FFCD4B]" : "bg-[#87CEEB]"} px-2 py-1 text-center border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,0.5)] transition-all group-hover:translate-y-[-2px] group-hover:shadow-[5px_5px_0px_rgba(0,0,0,0.5)]`}
+                  style={{ width: "calc(100% - 10px)", marginLeft: "5px", marginRight: "5px" }}
+                >
+                  <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Bottom Taskbar - System v5 High-Fidelity Layout - Hidden on Mobile */}
       {!isMobile && (
