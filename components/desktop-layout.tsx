@@ -441,17 +441,15 @@ export default function DesktopLayout() {
       </div>
 
       {/* Background Audio - Synchronized with Environment (Desktop Only) */}
-      {!isMobile && (
-        <audio 
-          key={BACKGROUNDS[currentBgIdx].trackUrl} // Force re-render on source change to trigger autoplay
-          ref={audioRef}
-          src={BACKGROUNDS[currentBgIdx].trackUrl}
-          loop
-          autoPlay={isPlaying}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-        />
-      )}
+      <audio 
+        key={BACKGROUNDS[currentBgIdx].trackUrl} // Force re-render on source change to trigger autoplay
+        ref={audioRef}
+        src={BACKGROUNDS[currentBgIdx].trackUrl}
+        loop
+        autoPlay={!isMobile && isPlaying}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
       {/* Desktop Centerpiece - Simple & Peaceful (Hide on Mobile) */}
       {!isMobile && (
         <div 
