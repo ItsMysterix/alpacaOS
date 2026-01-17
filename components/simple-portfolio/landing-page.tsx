@@ -115,7 +115,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
 
       {/* Fixed Logo (When Scrolled) - Always rendered, fades in */}
       <motion.div 
-         className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
+         className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] overflow-hidden"
          initial={{ opacity: 0, scale: 0.8, x: -20 }}
          animate={{ 
             opacity: isScrolled ? 1 : 0, 
