@@ -476,15 +476,67 @@ export default function DesktopLayout() {
         )}
       </div>
 
-      {/* Grid Layout Container - hide on mobile when window is open */}
-      <div className={`grid-layout w-full h-full relative z-10 ${isMobile && activeApps.length > 0 ? "hidden" : ""}`}>
+      {/* Mobile Retro OS Layout */}
+      {isMobile && !activeApps.length && (
+        <div className="absolute inset-0 z-20 flex flex-col">
+          {/* Retro Status Bar */}
+          <div className="h-8 bg-black/80 text-[#87CEEB] font-vt323 flex items-center justify-between px-4 text-lg border-b-2 border-[#87CEEB]/20">
+             <div className="flex items-center gap-2">
+               <span>ALPACA-CELL</span>
+               <div className="flex gap-0.5">
+                 <div className="w-1 h-2 bg-[#87CEEB]" />
+                 <div className="w-1 h-3 bg-[#87CEEB]" />
+                 <div className="w-1 h-4 bg-[#87CEEB]" />
+               </div>
+             </div>
+             <div className="flex items-center gap-4">
+               <span>{time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+               <div className="flex items-center gap-1">
+                 <span>100%</span>
+                 <div className="w-6 h-3 border border-[#87CEEB] p-0.5"><div className="w-full h-full bg-[#87CEEB]" /></div>
+               </div>
+             </div>
+          </div>
+          
+          {/* Mobile Home Screen Grid */}
+          <div className="flex-1 p-6 grid grid-cols-3 gap-6 overflow-y-auto content-start">
+             {[...leftSideApps, ...rightSideApps, {id: 'terminal', name: 'Terminal', icon: '/terminal.png'}, {id: 'spotify', name: 'Music', icon: '/images/pixel-alpaca.png'}].map((app) => (
+                <button
+                  key={app.id}
+                  className="flex flex-col items-center gap-2"
+                  onClick={() => handleIconClick(app)}
+                >
+                   <div className="w-16 h-16 bg-white/10 rounded-xl border-2 border-white/20 flex items-center justify-center backdrop-blur-sm shadow-lg active:scale-95 transition-transform">
+                      <Image 
+                        src={app.icon || "/placeholder.svg"} 
+                        alt={app.name}
+                        width={48}
+                        height={48}
+                        className="pixel-effect"
+                        onError={() => handleImageError(app.id)}
+                      />
+                   </div>
+                   <span className="text-white font-vt323 text-lg drop-shadow shadow-black">{app.name}</span>
+                </button>
+             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Grid Layout Container - hide on mobile */}
+      <div className={`grid-layout w-full h-full relative z-10 ${isMobile ? "hidden" : ""}`}>
         {/* Left Side Apps */}
         <div className="left-apps absolute left-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
           {leftSideApps.map((app, index) => (
-            <div
+            <button
               key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer group"
+              className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
               onClick={() => handleIconClick(app)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleIconClick(app)
+                }
+              }}
             >
               <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
@@ -506,17 +558,22 @@ export default function DesktopLayout() {
               >
                 <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
         {/* Right Side Apps */}
         <div className="right-apps absolute right-16 top-0 h-full pt-6 flex flex-col justify-start gap-8">
           {rightSideApps.map((app, index) => (
-            <div
+            <button
               key={app.id}
-              className="icon-container flex flex-col items-center cursor-pointer group"
+              className="icon-container flex flex-col items-center cursor-pointer group focus:outline-none focus:ring-2 focus:ring-[#FFCD4B] focus:ring-offset-2 focus:ring-offset-black rounded-lg"
               onClick={() => handleIconClick(app)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleIconClick(app)
+                }
+              }}
             >
               <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
@@ -538,12 +595,13 @@ export default function DesktopLayout() {
               >
                 <span className="text-black text-center text-lg font-vt323 font-bold block w-full uppercase">{app.name}</span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Bottom Taskbar - System v5 High-Fidelity Layout */}
+      {/* Bottom Taskbar - System v5 High-Fidelity Layout - Hidden on Mobile */}
+      {!isMobile && (
       <div className="absolute bottom-0 left-0 w-full h-14 bg-[#335DA1] border-t-2 border-black flex items-center px-2 z-[100] shadow-[0_-4px_10px_rgba(0,0,0,0.3)]">
         
         {/* Left Side: Dynamic App Tabs */}
@@ -675,6 +733,7 @@ export default function DesktopLayout() {
         </div>
       </div>
 
+      )}
       {/* Active Windows */}
       {activeApps.map((appId) => {
         // For special windows, use custom titles
