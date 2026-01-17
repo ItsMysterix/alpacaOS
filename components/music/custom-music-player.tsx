@@ -8,15 +8,23 @@ export default function CustomMusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(true) // Initialized to true to match desktop logic
 
   const tracks = [
-    { name: "Peaceful Piano 1", artist: "Classical Dreams", color: "#FFCD4B" },
-    { name: "Peaceful Piano 2", artist: "Misty Mornings", color: "#87CEEB" },
-    { name: "Peaceful Piano 3", artist: "Starlight Beats", color: "#FF7676" },
+    { name: "Beautiful Fairy Piano", artist: "Meadow Lush", color: "#FFCD4B" },
+    { name: "Calm Chill Piano", artist: "Solar Rise", color: "#87CEEB" },
+    { name: "Relaxing Piano Music", artist: "Neon Ramen", color: "#FF7676" },
+    { name: "Relaxing Piano Jazz", artist: "City Skyline", color: "#9370DB" },
   ]
 
   const sendControl = (action: string, index?: number) => {
+    // Dispatch event to desktop-layout to handle actual audio playback and background switching
     window.dispatchEvent(new CustomEvent('alpaca-music-control', { 
       detail: { action, index: index !== undefined ? index : currentTrack }
     }))
+    
+    // If we're changing tracks, we also need to trigger the atmosphere change
+    if (action === 'change' && index !== undefined) {
+      // Logic to sync with atmosphere background would go here if bi-directional sync is needed
+      console.log('Requesting track change to:', index)
+    }
   }
 
   const handlePlayPause = () => {
