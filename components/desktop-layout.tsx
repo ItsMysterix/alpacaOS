@@ -508,7 +508,7 @@ export default function DesktopLayout() {
                 >
                    <div className="w-16 h-16 bg-white/10 rounded-xl border-2 border-white/20 flex items-center justify-center backdrop-blur-sm shadow-lg active:scale-95 transition-transform">
                       <Image 
-                        src={app.icon || "/placeholder.svg"} 
+                        src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")} 
                         alt={app.name}
                         width={48}
                         height={48}
@@ -540,7 +540,7 @@ export default function DesktopLayout() {
             >
               <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
-                  src={app.icon || "/placeholder.svg"}
+                  src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
                   alt={app.name}
                   width={84}
                   height={84}
@@ -577,7 +577,7 @@ export default function DesktopLayout() {
             >
               <div className="w-20 h-20 flex items-center justify-center transition-transform hover:scale-110 active:scale-95">
                 <Image
-                  src={app.icon || "/placeholder.svg"}
+                  src={iconErrors[app.id] ? "/placeholder.svg" : (app.icon || "/placeholder.svg")}
                   alt={app.name}
                   width={84}
                   height={84}
