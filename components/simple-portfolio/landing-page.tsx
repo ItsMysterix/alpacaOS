@@ -89,6 +89,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
             github={PORTFOLIO_DATA.socials.github} 
             linkedin={PORTFOLIO_DATA.socials.linkedin} 
             email={PORTFOLIO_DATA.personal.email} 
+            resume="/resume.pdf"
           />
           
           <div className="p-6 border-2 border-black bg-[#E1F5FE] shadow-[6px_6px_0px_rgba(0,0,0,1)] relative mt-8">
@@ -124,17 +125,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
           <p className="text-xl text-white/90 mb-6 font-vt323">
             I'm currently open to new opportunities. Feel free to reach out.
           </p>
-          <div className="flex flex-wrap gap-4">
-            <LetsTalk />
-            <a 
-              href="/resume.pdf" // Ensure this file exists in public/
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-3 px-8 py-3 bg-[#87CEEB] border-2 border-black text-black font-vt323 text-2xl font-bold uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-[#AEEEEE] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all"
-            >
-              Resume
-            </a>
-          </div>
+          <LetsTalk />
         </motion.div>
 
       </motion.div>
