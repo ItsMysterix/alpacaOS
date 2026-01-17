@@ -113,20 +113,25 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </motion.button>
 
-      {/* Fixed Logo (When Scrolled) - Moved to Root Level */}
-      {isScrolled && (
-             <motion.div 
-                layoutId="ag-logo"
-                className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
-             >
-                 <Image 
-                   src="/images/Arkaparna Gantait 8bit.jpeg"
-                   alt="Arkaparna Gantait 8bit"
-                   fill
-                   className="object-cover"
-                 />
-             </motion.div>
-      )}
+      {/* Fixed Logo (When Scrolled) - Always rendered, fades in */}
+      <motion.div 
+         className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
+         initial={{ opacity: 0, scale: 0.8, x: -20 }}
+         animate={{ 
+            opacity: isScrolled ? 1 : 0, 
+            scale: isScrolled ? 1 : 0.8,
+            x: isScrolled ? 0 : -20,
+            pointerEvents: isScrolled ? "auto" : "none"
+         }}
+         transition={{ duration: 0.3 }}
+      >
+         <Image 
+           src="/images/Arkaparna%20Gantait%208bit.jpeg"
+           alt="Arkaparna Gantait 8bit"
+           fill
+           className="object-cover"
+         />
+      </motion.div>
       
 
       {/* Main Content Container */}
@@ -139,21 +144,16 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         {/* Header / Intro */}
         <motion.div variants={itemVariants} className="mb-16 md:mb-20">
           
-          {/* Logo Placeholder to preserve layout flow - Increased Size */}
+          {/* Logo Placeholder - Always Visible (Scrolls with page) */}
           <div className="w-32 h-32 mb-8">
-             {!isScrolled && (
-                 <motion.div 
-                    layoutId="ag-logo"
-                    className="w-32 h-32 bg-[#FEDA45] border-4 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)] relative overflow-hidden"
-                 >
-                     <Image 
-                       src="/images/Arkaparna Gantait 8bit.jpeg"
-                       alt="Arkaparna Gantait 8bit"
-                       fill
-                       className="object-cover"
-                     />
-                 </motion.div>
-             )}
+             <div className="w-32 h-32 bg-[#FEDA45] border-4 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)] relative overflow-hidden">
+                 <Image 
+                   src="/images/Arkaparna%20Gantait%208bit.jpeg"
+                   alt="Arkaparna Gantait 8bit"
+                   fill
+                   className="object-cover"
+                 />
+             </div>
           </div>
           
           
