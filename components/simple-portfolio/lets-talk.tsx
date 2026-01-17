@@ -23,7 +23,7 @@ export default function LetsTalk() {
 
       <AnimatePresence>
         {isOpen && (
-          <div key="lets-talk-modal" className="fixed inset-0 z-[10000] flex items-center justify-center p-4">
+          <div key="lets-talk-modal" className="fixed inset-0 z-[99999] flex items-center justify-center p-4">
             {/* Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
