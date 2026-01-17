@@ -112,12 +112,12 @@ export default function InkCursor({
     <>
       <canvas 
         ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-0"
+        className="fixed inset-0 pointer-events-none z-0 hidden md:block"
       />
       {/* Leading Dot */}
       {isHoveringBlue && (
         <div 
-          className="fixed w-2 h-2 rounded-full bg-[#FEDA45] pointer-events-none z-50"
+          className="fixed w-2 h-2 rounded-full bg-[#FEDA45] pointer-events-none z-50 hidden md:block"
           style={{ 
             left: position.x, 
             top: position.y, 
