@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { ArrowRight, Cpu } from "lucide-react"
 import { PORTFOLIO_DATA } from "@/lib/portfolio-data"
+import Image from "next/image"
 import InkCursor from "./ink-cursor"
 import SocialLinks from "./social-links"
 import ProjectCard from "./project-card"
@@ -18,10 +19,38 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isHoveringBlue, setIsHoveringBlue] = useState(false)
   const [expandedProjectId, setExpandedProjectId] = useState<string | null>(null)
+  
+  // New States for Logo and Footer
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [footerDiscovered, setFooterDiscovered] = useState(false)
+  const [sessionTime, setSessionTime] = useState(0)
 
   useEffect(() => {
     setMounted(true)
+    // Timer for session duration (High precision)
+    const startTime = Date.now()
+    const timerInterval = setInterval(() => {
+       setSessionTime((Date.now() - startTime) / 1000)
+    }, 50) // Update every 50ms implies 20fps for text, roughly. 10ms is overkill.
+
+    return () => clearInterval(timerInterval)
   }, [])
+
+  // Handle Scroll Logic for Logo and Footer Discovery
+  const handleScroll = () => {
+     if (!containerRef.current) return
+     
+     const { scrollTop, scrollHeight, clientHeight } = containerRef.current
+     
+     // Logo Animation Trigger
+     setIsScrolled(scrollTop > 100)
+
+     // Footer Discovery Trigger (Once Discovered, stays fixed)
+     // If user is near bottom (within 50px)
+     if (!footerDiscovered && (scrollHeight - scrollTop - clientHeight < 50)) {
+        setFooterDiscovered(true)
+     }
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -43,9 +72,10 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   return (
     <div 
       ref={containerRef}
-      className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden cursor-none"
+      className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden cursor-none relative"
       onMouseEnter={() => setIsHoveringBlue(true)}
       onMouseLeave={() => setIsHoveringBlue(false)}
+      onScroll={handleScroll}
     >
       <InkCursor containerRef={containerRef} isHoveringBlue={isHoveringBlue} />
 
@@ -62,6 +92,32 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         <span className="md:hidden font-bold uppercase tracking-tight">OS Mode</span>
         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </motion.button>
+      
+      {/* Animated Fixed Logo */}
+      <motion.div
+         layout
+         className={`z-50 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] flex items-center justify-center bg-[#FEDA45] ${
+             isScrolled 
+             ? "fixed top-6 left-6 w-14 h-14 border-2" 
+             : "absolute top-[48px] md:top-[80px] left-6 md:left-[calc(50%-384px+24px)] w-24 h-24 border-4 hidden" 
+             // We start hidden in 'absolute' mode because the main render loop handles the static one 
+             // actually, better to have ONE element that switches.
+         }`}
+         initial={false}
+         animate={{
+             width: isScrolled ? 56 : 96,
+             height: isScrolled ? 56 : 96,
+             borderWidth: isScrolled ? 2 : 4,
+             x: isScrolled ? 0 : 0, // In flow vs Fixed logic needs AnimatePresence or conditional positioning
+         }}
+      >
+          <span className={`font-bold text-black font-vt323 ${isScrolled ? "text-xl" : "text-4xl"}`}>AG</span>
+      </motion.div>
+      {/* 
+         The above motion.div approach for FLIP animation between fixed and static/absolute is complex.
+         Simplified approach: Two variants. One fixed (always visible if scrolled). One static (visible if NOT scrolled).
+         Crossfade or MatchLayout.
+      */}
 
       {/* Main Content Container */}
       <motion.div 
@@ -72,12 +128,38 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
       >
         {/* Header / Intro */}
         <motion.div variants={itemVariants} className="mb-16 md:mb-20">
-          <div className="w-24 h-24 bg-[#FEDA45] border-4 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] mb-8 flex items-center justify-center">
-             {/* Initials with VT323 font */}
-             <div className="text-4xl font-bold text-black font-vt323">
-               AG
-             </div>
+          
+          {/* Logo Placeholder to preserve layout flow - Increased Size */}
+          <div className="w-32 h-32 mb-8">
+             {!isScrolled && (
+                 <motion.div 
+                    layoutId="ag-logo"
+                    className="w-32 h-32 bg-[#FEDA45] border-4 border-black shadow-[6px_6px_0px_rgba(0,0,0,1)] relative overflow-hidden"
+                 >
+                     <Image 
+                       src="/images/Arkaparna Gantait 8bit.jpeg"
+                       alt="Arkaparna Gantait 8bit"
+                       fill
+                       className="object-cover"
+                     />
+                 </motion.div>
+             )}
           </div>
+          
+          {/* Fixed Logo (When Scrolled) renders outside the flow but we use layoutId to connect them */}
+          {isScrolled && (
+             <motion.div 
+                layoutId="ag-logo"
+                className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
+             >
+                 <Image 
+                   src="/images/Arkaparna Gantait 8bit.jpeg"
+                   alt="Arkaparna Gantait 8bit"
+                   fill
+                   className="object-cover"
+                 />
+             </motion.div>
+          )}
           
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
             Hi, I'm <span className="bg-[#FEDA45] text-black px-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] inline-block transform -rotate-1">Arkaparna Gantait</span>. <br />
@@ -129,6 +211,27 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         </motion.div>
 
       </motion.div>
+
+      {/* Sticky Footer (Discovered State) */}
+      <AnimatePresence>
+        {footerDiscovered && (
+            <motion.div 
+               initial={{ y: 100 }}
+               animate={{ y: 0 }}
+               className="fixed bottom-0 left-0 w-full bg-black border-t-4 border-[#FEDA45] py-2 px-6 z-[100] flex justify-between items-center overflow-hidden"
+            >
+                <div className="text-[#FEDA45] font-vt323 text-xl md:text-2xl tracking-widest flex items-center gap-2">
+                    <span>uptime:</span>
+                    <span className="w-24">{sessionTime.toFixed(4)}s</span>
+                </div>
+                
+                <div className="text-white/60 font-vt323 text-lg md:text-xl">
+                    &copy; {new Date().getFullYear()} Arkaparna Gantait. All rights reserved.
+                </div>
+            </motion.div>
+        )}
+      </AnimatePresence>
+      <div className={`${footerDiscovered ? "h-16" : "h-0"}`} /> {/* Spacer if needed */}
     </div>
   )
 }
