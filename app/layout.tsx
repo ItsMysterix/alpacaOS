@@ -48,6 +48,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  icons: {
+    icon: "/fluffy-alpaca-icon.png",
+    shortcut: "/fluffy-alpaca-icon.png",
+    apple: "/fluffy-alpaca-icon.png",
+  },
 }
 
 export default function RootLayout({
@@ -55,9 +60,23 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Arkaparna Gantait",
+    "alternateName": ["AlpacaOS", "Arkaparna Gantait Portfolio"],
+    "url": "https://www.alpacaos.info",
+  }
+
   return (
     <html lang="en">
-      <body className={`${vt323.variable} ${pressStart2P.variable}`}>{children}</body>
+      <body className={`${vt323.variable} ${pressStart2P.variable}`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        {children}
+      </body>
     </html>
   )
 }
