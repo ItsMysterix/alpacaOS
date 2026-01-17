@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail } from "lucide-react"
+import { Github, Linkedin, Mail, FileText } from "lucide-react"
 
 interface SocialLinksProps {
   github: string
@@ -21,7 +21,7 @@ export default function SocialLinks({ github, linkedin, email, resume }: SocialL
       </a>
       {resume && (
         <a href={resume} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-black/20 hover:bg-black/40 border border-white/20 px-3 py-1.5 rounded-lg transition-colors text-white">
-           <span className="text-lg">Resume</span>
+           <FileText size={18} /> <span className="text-lg">Resume</span>
         </a>
       )}
     </div>
