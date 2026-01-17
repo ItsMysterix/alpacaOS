@@ -39,10 +39,6 @@ export default function InkCursor({
 
   return (
     <>
-      <motion.div
-        className="fixed top-0 left-0 w-6 h-6 rounded-full bg-[#FEDA45] mix-blend-difference pointer-events-none z-[9999]"
-        style={{ x, y }}
-      />
       {trail.map(point => (
         <div 
           key={point.id}

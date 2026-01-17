@@ -42,7 +42,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
   return (
     <div 
       ref={containerRef}
-      className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden cursor-none"
+      className="h-screen w-full bg-[#335DA1] text-white font-vt323 selection:bg-[#FEDA45] selection:text-black overflow-y-auto overflow-x-hidden"
       onMouseEnter={() => setIsHoveringBlue(true)}
       onMouseLeave={() => setIsHoveringBlue(false)}
     >
