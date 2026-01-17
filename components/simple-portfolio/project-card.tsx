@@ -1,4 +1,4 @@
-"use client"
+import { useRef, useEffect } from "react"
 import { ExternalLink, Github, ChevronDown, ChevronUp } from "lucide-react"
 import { PORTFOLIO_DATA } from "@/lib/portfolio-data"
 import Image from "next/image"
@@ -11,6 +11,18 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, isExpanded, onToggleExpand }: ProjectCardProps) {
+  const cardRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to top when expanded
+  useEffect(() => {
+    if (isExpanded && cardRef.current) {
+        // Small timeout to allow layout transition to start
+        setTimeout(() => {
+            cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }, 100)
+    }
+  }, [isExpanded])
+
   // Extract domain for display
   const getDomain = (url: string | null) => {
     if (!url) return "Deployment"
@@ -23,18 +35,19 @@ export default function ProjectCard({ project, isExpanded, onToggleExpand }: Pro
 
   return (
     <motion.div 
+      ref={cardRef}
       layout
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className={`group border-2 border-black bg-[#E1F5FE] shadow-[6px_6px_0px_rgba(0,0,0,1)] transition-all duration-200 flex flex-col md:flex-row overflow-hidden ${
-        isExpanded ? "h-auto bg-white" : "h-auto md:h-48 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+        isExpanded ? "h-auto bg-white scroll-mt-20" : "h-auto md:h-48 hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] scroll-mt-20"
       }`}
     >
       
-      {/* LEFT: Preview Section */}
+      {/* LEFT: Preview Section - Hidden when Expanded */}
       <motion.div 
         layout="position"
         className={`relative shrink-0 overflow-hidden bg-black border-b-2 md:border-b-0 md:border-r-2 border-black transition-all duration-300 ${
-          isExpanded ? "w-full md:w-80" : "w-full md:w-56"
+          isExpanded ? "w-0 md:w-0 border-none" : "w-full md:w-56"
         }`}
       >
         {/* Browser Toolbar Decoration */}
@@ -119,10 +132,11 @@ export default function ProjectCard({ project, isExpanded, onToggleExpand }: Pro
                       {/* Key Features Section */}
                       <div>
                         <h4 className="font-bold text-lg uppercase font-vt323 mb-2 bg-[#FEDA45] inline-block px-2 border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)]">Key Features</h4>
-                        <ul className="space-y-1 list-none">
+                        <ul className="space-y-2 list-none">
                             {project.features?.map((feature, idx) => (
                                 <li key={idx} className="font-vt323 text-xl text-black/80 flex items-start gap-2">
-                                   <span className="text-[#335DA1] font-bold">&gt;</span> {feature}
+                                   <span className="text-[#335DA1] font-bold text-2xl leading-none">&rsaquo;</span> 
+                                   <span className="leading-snug">{feature}</span>
                                 </li>
                             )) || (
                                 <li className="font-vt323 text-lg text-gray-500 italic">No detailed features listed.</li>
@@ -131,27 +145,16 @@ export default function ProjectCard({ project, isExpanded, onToggleExpand }: Pro
                       </div>
 
                       {/* Links Section */}
-                      <div className="flex gap-4 pt-2">
+                      <div className="flex gap-4 pt-4">
                           {project.link && (
                              <a 
                                href={project.link} 
                                target="_blank" 
                                rel="noopener noreferrer"
                                onClick={(e) => e.stopPropagation()} // Prevent collapse
-                               className="flex items-center gap-2 px-4 py-2 bg-[#335DA1] text-white border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all font-vt323 text-lg uppercase"
+                               className="flex items-center gap-2 px-6 py-3 bg-[#335DA1] text-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all font-vt323 text-xl uppercase"
                              >
-                                <ExternalLink size={18} /> Visit Deployment
-                             </a>
-                          )}
-                          {project.github && (
-                             <a 
-                               href={project.github} 
-                               target="_blank" 
-                               rel="noopener noreferrer"
-                               onClick={(e) => e.stopPropagation()} // Prevent collapse
-                               className="flex items-center gap-2 px-4 py-2 bg-white text-black border-2 border-black shadow-[3px_3px_0px_rgba(0,0,0,1)] hover:translate-y-[-2px] hover:shadow-[5px_5px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all font-vt323 text-lg uppercase"
-                             >
-                                <Github size={18} /> Source Code
+                                <ExternalLink size={20} /> Visit Deployment
                              </a>
                           )}
                       </div>
@@ -160,11 +163,11 @@ export default function ProjectCard({ project, isExpanded, onToggleExpand }: Pro
             )}
          </AnimatePresence>
 
-         {/* Default Tech Tags (Always visible but pushed down in expand) */}
+         {/* Tech Tags */}
          <motion.div layout="position" className="flex items-center justify-between pt-4 mt-auto">
-            <div className="flex flex-wrap gap-1.5">
+            <div className={`flex flex-wrap ${isExpanded ? "gap-2" : "gap-1.5"}`}>
                {project.tech.slice(0, isExpanded ? undefined : 3).map(t => (
-                 <span key={t} className="text-xs font-bold text-black bg-[#87CEEB] px-2 py-0.5 border border-black">
+                 <span key={t} className={`font-bold text-black bg-[#87CEEB] border border-black ${isExpanded ? "text-sm px-3 py-1" : "text-xs px-2 py-0.5"}`}>
                    {t}
                  </span>
                ))}

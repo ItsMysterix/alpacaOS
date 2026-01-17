@@ -98,28 +98,11 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
           </div>
         </motion.div>
 
-        {/* What I do */}
-        <motion.div variants={itemVariants} className="mb-16 md:mb-20">
-          <h2 className="text-3xl font-bold text-[#FEDA45] bg-black inline-block px-3 py-1 mb-8 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
-            WHAT I DO
-          </h2>
-          <div className="space-y-6 text-white text-xl md:text-2xl leading-relaxed">
-            <p>
-              I help technical teams and startups build digital products from scratch or improve existing ones. 
-              Whether you're building a <strong className="text-[#FEDA45]">SaaS platform</strong>, <strong className="text-[#FF4B91]">AI integration</strong>, or <strong className="text-[#87CEEB]">Developer Tool</strong>, 
-              I write clean, maintainable code across the full stack.
-            </p>
-            <p>
-              From architecting backend systems with <strong className="text-[#FEDA45]">FastAPI</strong> and <strong className="text-[#FEDA45]">Supabase</strong> to crafting responsive frontends with <strong className="text-[#87CEEB]">React</strong> and <strong className="text-[#87CEEB]">Next.js</strong>,
-              I ensure your product is not just functional, but performant and user-friendly.
-            </p>
-          </div>
-        </motion.div>
 
         {/* Projects */}
         <motion.div variants={itemVariants} className="mb-16 md:mb-20">
           <h2 className="text-3xl font-bold text-[#FEDA45] bg-black inline-block px-3 py-1 mb-8 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
-            SELECTED WORK
+            PROJECTS
           </h2>
           <div className="grid gap-8">
             {PORTFOLIO_DATA.projects.map((project) => (
