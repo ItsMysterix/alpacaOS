@@ -29,9 +29,9 @@ export default function ShutdownModal({ isOpen, onClose, onConfirm }: ShutdownMo
             <Power className="w-8 h-8 text-black" />
           </div>
           
-          <div className="space-y-2">
-            <h3 className="font-vt323 text-3xl font-bold uppercase">Terminate Session?</h3>
-            <p className="font-vt323 text-xl text-gray-700">Ready to go back to minimal mode?</p>
+          <div className="space-y-4">
+            <h3 className="font-vt323 text-3xl font-bold uppercase">Return to Simplicity?</h3>
+            <p className="font-vt323 text-xl text-gray-700">Disconnect from the interactive session and return to minimal mode?</p>
           </div>
 
           <div className="flex gap-4 justify-center pt-2">
@@ -39,13 +39,13 @@ export default function ShutdownModal({ isOpen, onClose, onConfirm }: ShutdownMo
               onClick={onClose}
               className="px-6 py-2 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 font-vt323 text-xl hover:bg-gray-100 transition-all uppercase"
             >
-              Cancel
+              Stay
             </button>
             <button 
               onClick={onConfirm}
               className="px-6 py-2 bg-red-500 text-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-y-1 font-vt323 text-xl hover:bg-red-600 transition-all uppercase"
             >
-              Shut Down
+              Disconnect
             </button>
           </div>
         </div>
