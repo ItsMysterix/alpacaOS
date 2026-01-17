@@ -628,6 +628,7 @@ export default function DesktopLayout({ onShutdown }: DesktopLayoutProps) {
              if(audioRef.current) audioRef.current.volume = newVol;
           }}
           currentBgName={BACKGROUNDS[currentBgIdx].name}
+          onShutdown={() => setShowShutdownConfirm(true)}
         />
       )}
       {/* Active Windows */}
@@ -690,14 +691,6 @@ export default function DesktopLayout({ onShutdown }: DesktopLayoutProps) {
         )
       })}
       
-      {/* Shutdown Button - Bottom Right System Tray style */}
-      <button 
-        onClick={() => setShowShutdownConfirm(true)}
-        className="fixed bottom-4 right-4 z-50 bg-red-500 hover:bg-red-600 text-white p-3 rounded-full border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:translate-y-1 transition-all active:scale-95 group"
-        title="System Shutdown"
-      >
-        <Power className="w-6 h-6 group-hover:animate-pulse" />
-      </button>
 
       {/* Retro Shutdown Confirmation Modal */}
       <ShutdownModal 
