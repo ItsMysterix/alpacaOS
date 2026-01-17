@@ -64,7 +64,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
 
       {/* Main Content Container */}
       <motion.div 
-        className="max-w-3xl mx-auto px-6 py-12 md:py-20 pb-40"
+        className="max-w-3xl mx-auto px-6 py-12 md:py-20 pb-40 relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
@@ -135,8 +135,17 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
           <p className="text-xl text-white/90 mb-6 font-vt323">
             I'm currently open to new opportunities. Feel free to reach out.
           </p>
-          {/* Contact Form Replaces Email Link */}
-          <LetsTalk />
+          <div className="flex flex-wrap gap-4">
+            <LetsTalk />
+            <a 
+              href="/resume.pdf" // Ensure this file exists in public/
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-8 py-3 bg-[#87CEEB] border-2 border-black text-black font-vt323 text-2xl font-bold uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)] hover:bg-[#AEEEEE] hover:translate-y-[-2px] hover:shadow-[6px_6px_0px_rgba(0,0,0,1)] active:translate-y-[1px] active:shadow-[2px_2px_0px_rgba(0,0,0,1)] transition-all"
+            >
+              Resume
+            </a>
+          </div>
         </motion.div>
 
       </motion.div>
