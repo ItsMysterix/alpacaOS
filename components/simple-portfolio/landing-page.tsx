@@ -156,6 +156,11 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
 
       </motion.div>
 
+      <ProjectDetailModal 
+        project={selectedProject} 
+        isOpen={!!selectedProject} 
+        onClose={() => setSelectedProject(null)} 
+      />
     </div>
   )
 }
