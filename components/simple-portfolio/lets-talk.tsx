@@ -23,7 +23,7 @@ export default function LetsTalk() {
 
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <div key="lets-talk-modal" className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
             {/* Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
@@ -76,8 +76,8 @@ export default function LetsTalk() {
                   <>
                     <div className="mb-6 bg-[#FEDA45] border-2 border-black p-4 shadow-[4px_4px_0px_rgba(0,0,0,0.2)]">
                       <p className="font-vt323 text-lg text-black">
-                        > INITIATING SECURE TRANSMISSION CHANNEL...<br/>
-                        > PLEASE ENTER YOUR CREDENTIALS BELOW.
+                        &gt; INITIATING SECURE TRANSMISSION CHANNEL...<br/>
+                        &gt; PLEASE ENTER YOUR CREDENTIALS BELOW.
                       </p>
                     </div>
 
