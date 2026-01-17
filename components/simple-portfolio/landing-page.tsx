@@ -167,7 +167,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
             github={PORTFOLIO_DATA.socials.github} 
             linkedin={PORTFOLIO_DATA.socials.linkedin} 
             email={PORTFOLIO_DATA.personal.email} 
-            resume="/resume.pdf"
+            resume="/Arkaparna_Gantait_Resume.pdf"
           />
           
           <div className="p-6 border-2 border-black bg-[#E1F5FE] shadow-[6px_6px_0px_rgba(0,0,0,1)] relative mt-8">
