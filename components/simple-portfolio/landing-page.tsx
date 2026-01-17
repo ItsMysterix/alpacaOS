@@ -113,31 +113,6 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </motion.button>
       
-      {/* Animated Fixed Logo */}
-      <motion.div
-         layout
-         className={`z-50 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] flex items-center justify-center bg-[#FEDA45] ${
-             isScrolled 
-             ? "fixed top-6 left-6 w-14 h-14 border-2" 
-             : "absolute top-[48px] md:top-[80px] left-6 md:left-[calc(50%-384px+24px)] w-24 h-24 border-4 hidden" 
-             // We start hidden in 'absolute' mode because the main render loop handles the static one 
-             // actually, better to have ONE element that switches.
-         }`}
-         initial={false}
-         animate={{
-             width: isScrolled ? 56 : 96,
-             height: isScrolled ? 56 : 96,
-             borderWidth: isScrolled ? 2 : 4,
-             x: isScrolled ? 0 : 0, // In flow vs Fixed logic needs AnimatePresence or conditional positioning
-         }}
-      >
-          <span className={`font-bold text-black font-vt323 ${isScrolled ? "text-xl" : "text-4xl"}`}>AG</span>
-      </motion.div>
-      {/* 
-         The above motion.div approach for FLIP animation between fixed and static/absolute is complex.
-         Simplified approach: Two variants. One fixed (always visible if scrolled). One static (visible if NOT scrolled).
-         Crossfade or MatchLayout.
-      */}
 
       {/* Main Content Container */}
       <motion.div 
@@ -238,7 +213,7 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
             <motion.div 
                initial={{ y: 100 }}
                animate={{ y: 0 }}
-               className="fixed bottom-0 left-0 w-full bg-black border-t-4 border-[#FEDA45] py-2 px-6 z-[100] flex justify-between items-center overflow-hidden"
+               className="fixed bottom-0 left-0 w-full bg-[#1A2C42] border-t-4 border-[#FEDA45] py-2 px-6 z-[100] flex justify-between items-center overflow-hidden shadow-[0px_-4px_10px_rgba(0,0,0,0.5)]"
             >
                 <div className="text-[#FEDA45] font-vt323 text-xl md:text-2xl tracking-widest flex items-center gap-2">
                     <span>uptime:</span>
