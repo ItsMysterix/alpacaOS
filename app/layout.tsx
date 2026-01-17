@@ -49,9 +49,9 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: "/images/pixel-alpaca.png",
-    shortcut: "/images/pixel-alpaca.png",
-    apple: "/images/pixel-alpaca.png",
+    icon: "/images/alpaca.png",
+    shortcut: "/images/alpaca.png",
+    apple: "/images/alpaca.png",
   },
 }
 

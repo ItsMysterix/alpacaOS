@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import LoadingScreen from "@/components/loading-screen"
 import DesktopLayout from "@/components/desktop-layout"
 import Header from "@/components/header"
@@ -9,9 +9,21 @@ import SimpleLanding from "@/components/simple-portfolio/landing-page"
 
 export default function Home() {
   const [viewState, setViewState] = useState<'simple' | 'booting' | 'os'>('simple')
+  const [mounted, setMounted] = useState(false)
+
+  // Check persistence on mount
+  useEffect(() => {
+    setMounted(true)
+    const savedMode = localStorage.getItem('alpaca_mode')
+    if (savedMode === 'os') {
+      setViewState('os')
+    }
+  }, [])
 
   const handleEnterOS = () => {
     setViewState('booting')
+    localStorage.setItem('alpaca_mode', 'os')
+    
     // Simulate boot sequence
     setTimeout(() => {
       setViewState('os')
@@ -21,6 +33,14 @@ export default function Home() {
       }, 500)
     }, 3500)
   }
+
+  const handleShutdown = () => {
+    localStorage.setItem('alpaca_mode', 'simple')
+    setViewState('simple')
+  }
+
+  // Prevent hydration mismatch
+  if (!mounted) return null
 
   // Simple Landing View (Recruiter Friendly)
   if (viewState === 'simple') {
@@ -38,7 +58,7 @@ export default function Home() {
         <>
           <Header />
             <div className="flex-1 overflow-hidden">
-            <DesktopLayout />
+            <DesktopLayout onShutdown={handleShutdown} />
           </div>
         </>
       )}
