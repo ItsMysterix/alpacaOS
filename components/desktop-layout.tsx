@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import Image from "next/image"
 import Window from "@/components/window"
 import { Terminal, Folder, ExternalLink, Github, Mail, Linkedin, Music, User, Code, Briefcase, FileText } from "lucide-react"
@@ -51,7 +51,7 @@ export default function DesktopLayout() {
       saturation: '1.5', 
       brightness: '1.2',
       trackName: 'Calm Chill Piano',
-      trackUrl: '/calm chill piano.mp3'
+      trackUrl: '/calm%20chill%20piano.mp3'
     },
     { 
       id: 'ramen', 
@@ -309,7 +309,7 @@ export default function DesktopLayout() {
     return () => window.removeEventListener("resize", updateDimensions)
   }, [])
 
-  const handleIconClick = (app: any) => {
+  const handleIconClick = useCallback((app: any) => {
     // Changed to single-click
     if (app.isExternal && app.url) {
       // Open external link in new tab (for all devices)
@@ -318,37 +318,28 @@ export default function DesktopLayout() {
       // Open internal window if not already open, or bring to front if already open
       addApp(app.id)
     }
-  }
+  }, [activeApps, zIndexCounter, appZIndices, appPositions, appSizes, isMobile])
 
-  const handleCloseWindow = (appId: string) => {
-    setActiveApps(activeApps.filter((id) => id !== appId))
-
-    // If we're closing the active window, set the next highest z-index window as active
+  const handleCloseWindow = useCallback((appId: string) => {
+    setActiveApps((prev) => {
+      const newApps = prev.filter((id) => id !== appId)
+      return newApps
+    })
+    
+    // Logic to set next active app moved to effect or simplified here to avoid stale state issues in callback
+    // For now, simpler close logic to ensure stability
     if (appId === activeAppId) {
-      const remainingApps = activeApps.filter((id) => id !== appId)
-      if (remainingApps.length > 0) {
-        // Find the app with the highest z-index
-        let highestZIndex = 0
-        let highestApp = remainingApps[0]
-
-        remainingApps.forEach((id) => {
-          if (appZIndices[id] > highestZIndex) {
-            highestZIndex = appZIndices[id]
-            highestApp = id
-          }
-        })
-
-        setActiveAppId(highestApp)
-      } else {
-        setActiveAppId(null)
-      }
+       setActiveAppId(null)
     }
-  }
+  }, [activeAppId])
 
-  const handleImageError = (id: string) => {
-    console.error(`Failed to load image for ${id}`)
-    setIconErrors((prev) => ({ ...prev, [id]: true }))
-  }
+  const handleImageError = useCallback((id: string) => {
+    // console.error(`Failed to load image for ${id}`) // Suppress log to avoid spam
+    setIconErrors((prev) => {
+      if (prev[id]) return prev // Prevent updating if already set
+      return { ...prev, [id]: true }
+    })
+  }, [])
 
   // Track window position updates
   const handleWindowPositionChange = (appId: string, position: { x: number; y: number }) => {
@@ -449,16 +440,18 @@ export default function DesktopLayout() {
         <div className="absolute inset-0 backdrop-blur-[0.5px] pointer-events-none" />
       </div>
 
-      {/* Background Audio - Synchronized with Environment */}
-      <audio 
-        key={BACKGROUNDS[currentBgIdx].trackUrl} // Force re-render on source change to trigger autoplay
-        ref={audioRef}
-        src={BACKGROUNDS[currentBgIdx].trackUrl}
-        loop
-        autoPlay={isPlaying}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-      />
+      {/* Background Audio - Synchronized with Environment (Desktop Only) */}
+      {!isMobile && (
+        <audio 
+          key={BACKGROUNDS[currentBgIdx].trackUrl} // Force re-render on source change to trigger autoplay
+          ref={audioRef}
+          src={BACKGROUNDS[currentBgIdx].trackUrl}
+          loop
+          autoPlay={isPlaying}
+          onPlay={() => setIsPlaying(true)}
+          onPause={() => setIsPlaying(false)}
+        />
+      )}
       {/* Desktop Centerpiece - Simple & Peaceful */}
       <div 
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 transition-all duration-1000 pointer-events-none
