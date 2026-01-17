@@ -112,6 +112,21 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
         <span className="md:hidden font-bold uppercase tracking-tight">OS Mode</span>
         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </motion.button>
+
+      {/* Fixed Logo (When Scrolled) - Moved to Root Level */}
+      {isScrolled && (
+             <motion.div 
+                layoutId="ag-logo"
+                className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
+             >
+                 <Image 
+                   src="/images/Arkaparna Gantait 8bit.jpeg"
+                   alt="Arkaparna Gantait 8bit"
+                   fill
+                   className="object-cover"
+                 />
+             </motion.div>
+      )}
       
 
       {/* Main Content Container */}
@@ -141,20 +156,6 @@ export default function SimpleLanding({ onEnterOS }: SimpleLandingProps) {
              )}
           </div>
           
-          {/* Fixed Logo (When Scrolled) renders outside the flow but we use layoutId to connect them */}
-          {isScrolled && (
-             <motion.div 
-                layoutId="ag-logo"
-                className="fixed top-6 left-6 z-50 w-16 h-16 bg-[#FEDA45] border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] relative overflow-hidden"
-             >
-                 <Image 
-                   src="/images/Arkaparna Gantait 8bit.jpeg"
-                   alt="Arkaparna Gantait 8bit"
-                   fill
-                   className="object-cover"
-                 />
-             </motion.div>
-          )}
           
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight drop-shadow-[2px_2px_0px_rgba(0,0,0,0.5)]">
             Hi, I'm <span className="bg-[#FEDA45] text-black px-2 shadow-[4px_4px_0px_rgba(0,0,0,1)] inline-block transform -rotate-1">Arkaparna Gantait</span>. <br />
